@@ -8,10 +8,10 @@
         <div class="header-section">
             <div class="section-badge">
                 <i class="fas fa-code"></i>
-                My Work
+                {{translate('myWork')}}
             </div>
-            <h1>Selected <span class="gradient-text">Projects</span></h1>
-            <p class="subtitle">A showcase of my best work, side projects, and open source contributions</p>
+            <h1>{{translate('projectsTitle')}} <span class="gradient-text">{{translate('projectsSubtitle')}}</span></h1>
+            <p class="subtitle">{{translate('projectsDesc')}}</p>
         </div>
 
         <div class="projects-grid">
@@ -20,7 +20,7 @@
                 <div class="project-header">
                     <div class="project-title">
                         <h3>E-Commerce Platform</h3>
-                        <span class="project-type">Full Stack Development</span>
+                        <span class="project-type">{{translate('fullStackDev')}}</span>
                     </div>
                     <div class="project-links">
                         <a href="#" class="project-link" target="_blank">
@@ -38,8 +38,7 @@
                 </div>
                 <div class="project-content">
                     <p class="project-description">
-                        A full-stack e-commerce solution with modern UI, secure payments, and real-time inventory
-                        management.
+                        {{translate('ecommerceDesc')}}
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag">Angular</span>
@@ -54,8 +53,8 @@
             <div class="project-card">
                 <div class="project-header">
                     <div class="project-title">
-                        <h3>Task Management App</h3>
-                        <span class="project-type">Frontend Development</span>
+                        <h3>{{translate('taskApp')}}</h3>
+                        <span class="project-type">{{translate('frontendDev')}}</span>
                     </div>
                     <div class="project-links">
                         <a href="#" class="project-link" target="_blank">
@@ -73,7 +72,7 @@
                 </div>
                 <div class="project-content">
                     <p class="project-description">
-                        A beautiful and intuitive task management application with drag-and-drop functionality.
+                        {{translate('taskAppDesc')}}
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag">React</span>
@@ -87,8 +86,8 @@
             <div class="project-card">
                 <div class="project-header">
                     <div class="project-title">
-                        <h3>Weather Dashboard</h3>
-                        <span class="project-type">API Integration</span>
+                        <h3>{{translate('weatherApp')}}</h3>
+                        <span class="project-type">{{translate('apiIntegration')}}</span>
                     </div>
                     <div class="project-links">
                         <a href="#" class="project-link" target="_blank">
@@ -106,7 +105,7 @@
                 </div>
                 <div class="project-content">
                     <p class="project-description">
-                        Real-time weather application with location tracking and beautiful visualizations.
+                        {{translate('weatherAppDesc')}}
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag">Vue.js</span>
@@ -120,8 +119,8 @@
             <div class="project-card">
                 <div class="project-header">
                     <div class="project-title">
-                        <h3>Portfolio Website</h3>
-                        <span class="project-type">UI/UX Design</span>
+                        <h3>{{translate('portfolioApp')}}</h3>
+                        <span class="project-type">{{translate('uiuxDesign')}}</span>
                     </div>
                     <div class="project-links">
                         <a href="#" class="project-link" target="_blank">
@@ -139,7 +138,7 @@
                 </div>
                 <div class="project-content">
                     <p class="project-description">
-                        Modern portfolio website with experimental design and smooth animations.
+                        {{translate('portfolioAppDesc')}}
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag">Angular</span>
@@ -152,7 +151,7 @@
 
         <!-- Other Projects Section -->
         <div class="other-projects">
-            <h2>Other Noteworthy Projects</h2>
+            <h2>{{translate('otherProjects')}}</h2>
             <div class="projects-mini-grid">
                 <a href="#" class="mini-card" target="_blank">
                     <div class="card-header">
@@ -162,8 +161,8 @@
                             <i class="fas fa-external-link-alt"></i>
                         </div>
                     </div>
-                    <h3>Chat Application</h3>
-                    <p>Real-time chat app with WebSocket integration</p>
+                    <h3>{{translate('chatApp')}}</h3>
+                    <p>{{translate('chatAppDesc')}}</p>
                     <div class="tech-stack">
                         <span>Socket.io</span>
                         <span>Express</span>
@@ -179,8 +178,8 @@
                             <i class="fas fa-external-link-alt"></i>
                         </div>
                     </div>
-                    <h3>Blog Platform</h3>
-                    <p>Markdown-based blog with CMS integration</p>
+                    <h3>{{translate('blogApp')}}</h3>
+                    <p>{{translate('blogAppDesc')}}</p>
                     <div class="tech-stack">
                         <span>Next.js</span>
                         <span>Strapi</span>
@@ -196,8 +195,8 @@
                             <i class="fas fa-external-link-alt"></i>
                         </div>
                     </div>
-                    <h3>URL Shortener</h3>
-                    <p>Simple and fast URL shortening service</p>
+                    <h3>{{translate('urlApp')}}</h3>
+                    <p>{{translate('urlAppDesc')}}</p>
                     <div class="tech-stack">
                         <span>Node.js</span>
                         <span>Redis</span>
