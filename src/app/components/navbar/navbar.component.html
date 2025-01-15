@@ -1,0 +1,82 @@
+<nav class="nav-container" [class.nav-open]="isMenuOpen">
+  <!-- Language Selector and Menu Button -->
+  <div class="nav-controls">
+    <div class="lang-selector">
+      <button class="lang-toggle" (click)="toggleLanguage()">
+        <span class="lang-icon">
+          <i class="fas fa-globe"></i>
+        </span>
+        <span class="lang-text">{{ currentLang.toUpperCase() }}</span>
+        <span class="lang-arrow">
+          <i class="fas fa-chevron-down"></i>
+        </span>
+      </button>
+    </div>
+    <div class="menu-button">
+      <div class="button-wrapper">
+        <button class="toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
+          <span class="line"></span>
+          <span class="line"></span>
+          <span class="line"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Experimental Navigation -->
+  <div class="nav-experience" [class.active]="isMenuOpen">
+    <!-- Animated Background -->
+    <div class="nav-background">
+      <div class="noise"></div>
+      <div class="gradient-sphere"></div>
+      <div class="gradient-sphere-2"></div>
+    </div>
+
+    <!-- Navigation Content -->
+    <div class="nav-content">
+      <!-- Left Side - Menu Items -->
+      <div class="menu-items">
+        <div class="menu-item" *ngFor="let item of menuItems; let i = index" (mouseenter)="onItemHover(i)"
+          [class.active]="currentRoute === item.route">
+          <a [routerLink]="item.route" (click)="closeMenu()">
+            <span class="item-number">0{{i + 1}}</span>
+            <span class="item-text">{{translate(item.text)}}</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Side - Preview -->
+      <div class="preview-container">
+        <div class="preview-content">
+          <!-- Preview changes based on hovered menu item -->
+          <div class="preview" *ngFor="let item of menuItems; let i = index" [class.active]="hoveredIndex === i">
+            <div class="preview-image" [style.background-image]="'url(' + item.preview + ')'"></div>
+            <div class="preview-text">
+              <h3>{{translate(item.previewTitle)}}</h3>
+              <p>{{translate(item.previewDesc)}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Info -->
+    <div class="nav-footer">
+      <div class="social-links">
+        <a href="#" class="social-link" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="#" class="social-link" target="_blank">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="#" class="social-link" target="_blank">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </div>
+      <div class="nav-info">
+        <p class="location">{{translate('basedIn')}} Milan, Italy</p>
+        <p class="availability">{{translate('availableFor')}}</p>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,205 @@
+<div class="home-container">
+  <!-- Dynamic Background -->
+  <div class="dynamic-bg">
+    <div class="noise"></div>
+    <div class="gradient-sphere"></div>
+    <div class="gradient-sphere-2"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content-wrapper">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="split-text">
+          <span class="text-reveal">{{translate('heroTitle')}}</span>
+          <span class="text-reveal">{{translate('heroSubtitle')}} <span class="accent">2024</span></span>
+        </div>
+        <p class="subtitle">{{translate('heroText')}}</p>
+
+        <!-- Stats Container -->
+        <div class="stats-container">
+          <div class="stat">
+            <div class="stat-value">3<span class="symbol">+</span></div>
+            <div class="stat-label">{{translate('yearsExp')}}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">50<span class="symbol">+</span></div>
+            <div class="stat-label">{{translate('projectsCompleted')}}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">20<span class="symbol">+</span></div>
+            <div class="stat-label">{{translate('happyClients')}}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="scroll-indicator">
+        <div class="indicator-wrapper">
+          <div class="circle">
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <span>Scroll Down</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Work Section -->
+    <section class="featured-work">
+      <h2 class="section-title">{{translate('featuredProjects')}} <span class="gradient-text">2024</span></h2>
+      <div class="project-cards">
+        <!-- Project Card 1 -->
+        <div class="project-card">
+          <div class="card-content">
+            <span class="project-number">01</span>
+            <h3 class="project-title">E-Commerce Platform</h3>
+            <p class="project-desc">
+              A full-stack e-commerce solution with modern UI, secure payments,
+              and real-time inventory management.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">Angular</span>
+              <span class="tech-tag">Node.js</span>
+              <span class="tech-tag">MongoDB</span>
+              <span class="tech-tag">Stripe</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="btn primary">
+                {{translate('viewLive')}}
+                <i class="fas fa-external-link-alt"></i>
+              </a>
+              <a href="#" class="btn secondary">
+                {{translate('sourceCode')}}
+                <i class="fab fa-github"></i>
+              </a>
+            </div>
+          </div>
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=1000&auto=format&fit=crop"
+              alt="E-Commerce Project">
+            <div class="image-overlay"></div>
+          </div>
+        </div>
+
+        <!-- Project Card 2 -->
+        <div class="project-card">
+          <div class="card-content">
+            <span class="project-number">02</span>
+            <h3 class="project-title">Task Management App</h3>
+            <p class="project-desc">
+              A beautiful and intuitive task management application with drag-and-drop
+              functionality and real-time collaboration.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">Firebase</span>
+              <span class="tech-tag">Material UI</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="btn primary">
+                {{translate('viewLive')}}
+                <i class="fas fa-external-link-alt"></i>
+              </a>
+              <a href="#" class="btn secondary">
+                {{translate('sourceCode')}}
+                <i class="fab fa-github"></i>
+              </a>
+            </div>
+          </div>
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=1000&auto=format&fit=crop"
+              alt="Task Management App">
+            <div class="image-overlay"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Preview Section -->
+    <section class="skills-preview">
+      <h2 class="section-title">{{translate('technicalSkills')}} <span class="gradient-text">2024</span></h2>
+      <div class="skill-rings">
+        <div class="ring">
+          <div class="ring-content">
+            <i class="fab fa-html5"></i>
+            <span class="ring-label">HTML5</span>
+          </div>
+        </div>
+        <div class="ring">
+          <div class="ring-content">
+            <i class="fab fa-css3-alt"></i>
+            <span class="ring-label">CSS3</span>
+          </div>
+        </div>
+        <div class="ring">
+          <div class="ring-content">
+            <i class="fab fa-js"></i>
+            <span class="ring-label">JavaScript</span>
+          </div>
+        </div>
+        <div class="ring">
+          <div class="ring-content">
+            <i class="fab fa-angular"></i>
+            <span class="ring-label">Angular</span>
+          </div>
+        </div>
+        <div class="ring">
+          <div class="ring-content">
+            <i class="fab fa-node-js"></i>
+            <span class="ring-label">Node.js</span>
+          </div>
+        </div>
+        <div class="ring">
+          <div class="ring-content">
+            <i class="fab fa-react"></i>
+            <span class="ring-label">React</span>
+          </div>
+        </div>
+      </div>
+      <a routerLink="/skills" class="explore-link">
+        {{translate('exploreAllSkills')}}
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </section>
+
+    <!-- Contact CTA Section -->
+    <section class="contact-cta">
+      <div class="cta-pattern"></div>
+      <div class="cta-content">
+        <h2>{{translate('contactTitle')}} <span class="gradient-text">{{translate('contactSubtitle')}}</span></h2>
+        <p>{{translate('contactText')}}</p>
+        <a routerLink="/contact" class="btn">
+          {{translate('getInTouch')}}
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </section>
+
+    <!-- Minimal Footer -->
+    <footer class="minimal-footer">
+      <div class="footer-content">
+        <div class="footer-left">
+          <p class="copyright">{{translate('copyright')}} — {{translate('madeWith')}} <span class="accent">♥</span></p>
+        </div>
+        <div class="footer-right">
+          <div class="social-links">
+            <a href="#" target="_blank" rel="noopener" class="social-link">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="#" target="_blank" rel="noopener" class="social-link">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="#" target="_blank" rel="noopener" class="social-link">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" target="_blank" rel="noopener" class="social-link">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
