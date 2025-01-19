@@ -661,9 +661,10 @@
   bottom: 2rem;
   right: 2rem;
   z-index: 100;
+  display: block;
 
   @media (max-width: 768px) {
-    display: none;
+    display: none !important;
   }
 
   .dashboard-card {
@@ -678,13 +679,6 @@
     gap: 1rem;
     min-width: 240px;
     transition: all 0.3s ease;
-
-    @media (max-width: 768px) {
-      background: var(--surface);
-      backdrop-filter: none;
-      width: 100%;
-      min-width: 0;
-    }
 
     .time-section,
     .weather-section,
@@ -852,71 +846,154 @@
 @media (max-width: 768px) {
   .home-container {
     .hero-section {
-      padding: 6rem 0 3rem;
+      padding: 6rem 1.5rem 3rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
 
       .hero-content {
         .main-title {
-          font-size: 4rem;
+          font-size: 3rem;
+          margin-bottom: 1rem;
         }
 
         .split-text {
-          font-size: 2.5rem;
+          font-size: 2rem;
+          margin-bottom: 1.5rem;
         }
 
-        // Move dashboard after subtitle
         .subtitle {
-          margin-bottom: 0;
+          font-size: 1.1rem;
+          margin-bottom: 2rem;
+        }
+
+        .hero-cta {
+          flex-direction: column;
+          gap: 1rem;
+          width: 100%;
+
+          .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 1rem;
+          }
         }
       }
 
       .stats-container {
         flex-direction: column;
         gap: 2rem;
+        margin: 3rem 0;
+        padding: 2rem;
+        background: var(--surface);
+        border-radius: 1rem;
+        box-shadow: var(--shadow-md);
+
+        .stat {
+          text-align: center;
+          padding: 1rem;
+          border-bottom: 1px solid var(--border);
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          .stat-value {
+            font-size: 2.5rem;
+          }
+        }
       }
     }
 
-    .featured-work,
-    .skills-preview {
-      padding: 4rem 0;
+    .featured-work {
+      padding: 4rem 1.5rem;
 
       .section-title {
         font-size: 2.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .project-cards {
+        gap: 2rem;
+
+        .project-card {
+          padding: 1.5rem;
+
+          .card-content {
+            padding: 1.5rem;
+
+            .project-title {
+              font-size: 1.5rem;
+            }
+
+            .project-links {
+              flex-direction: column;
+              gap: 1rem;
+
+              .btn {
+                width: 100%;
+                justify-content: center;
+              }
+            }
+          }
+
+          .card-image {
+            min-height: 250px;
+          }
+        }
+      }
+    }
+
+    .skills-preview {
+      padding: 4rem 1.5rem;
+
+      .skill-rings {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
       }
     }
 
     .contact-cta {
-      padding: 4rem 2rem;
+      margin: 2rem 1.5rem;
+      padding: 3rem 1.5rem;
+      border-radius: 1.5rem;
 
       .cta-content {
         h2 {
-          font-size: 2.5rem;
+          font-size: 2rem;
+          margin-bottom: 1rem;
+        }
+
+        p {
+          font-size: 1rem;
+          margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+          flex-direction: column;
+          gap: 1rem;
+
+          .btn {
+            width: 100%;
+            justify-content: center;
+          }
         }
       }
     }
 
     .minimal-footer {
+      padding: 2rem 1.5rem;
+
       .footer-content {
         flex-direction: column;
         gap: 1.5rem;
         text-align: center;
+
+        .social-links {
+          justify-content: center;
+        }
       }
-    }
-  }
-
-  // Mobile styles for Verona Dashboard
-  .verona-dashboard {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: 100;
-    padding: 1rem;
-
-    .dashboard-card {
-      margin: 0 auto;
-      max-width: 100%;
-      border-radius: 1rem 1rem 0 0;
-      padding: 1rem;
     }
   }
 }

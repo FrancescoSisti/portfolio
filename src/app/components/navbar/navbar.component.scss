@@ -388,6 +388,7 @@
     .menu-button {
       top: 1rem;
       right: 1rem;
+      z-index: 1001;
 
       .toggle {
         width: 50px;
@@ -396,31 +397,51 @@
     }
 
     .nav-experience {
+      width: 100%;
+      height: 100vh;
+
       .nav-content {
-        padding: 4rem 1.5rem;
+        padding: 6rem 1.5rem 4rem;
+        height: 100%;
+        overflow-y: auto;
 
         .menu-items {
-          .menu-item a {
-            .item-text {
-              font-size: 2rem;
+          .menu-item {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+
+            &.show {
+              opacity: 1;
+              transform: translateY(0);
+            }
+
+            a {
+              padding: 1rem 0;
+
+              .item-number {
+                font-size: 1rem;
+                opacity: 0.7;
+              }
+
+              .item-text {
+                font-size: 2rem;
+              }
             }
           }
         }
       }
 
       .nav-footer {
+        position: relative;
+        padding: 1.5rem;
         flex-direction: column;
         gap: 1rem;
         align-items: center;
-        left: 1.5rem;
-        right: 1.5rem;
-        bottom: 1.5rem;
-
-        .nav-info {
-          flex-direction: column;
-          gap: 0.5rem;
-          align-items: center;
-        }
+        text-align: center;
+        background: var(--surface);
+        margin-top: 2rem;
+        border-radius: 1rem;
       }
     }
   }
