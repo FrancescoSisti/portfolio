@@ -3,6 +3,22 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
+interface Project {
+  number: string;
+  title: string;
+  description: string;
+  technologies: string[];
+  previewUrl?: string;
+  githubUrl?: string;
+  imageUrl: string;
+  imageAlt: string;
+}
+
+interface Skill {
+  name: string;
+  icon: string;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -19,22 +35,67 @@ export class HomeComponent implements OnInit, OnDestroy {
   private weatherInterval: any;
   private isHydrated = false;
 
+  skills: Skill[] = [
+    { name: 'HTML5', icon: 'fab fa-html5' },
+    { name: 'CSS3', icon: 'fab fa-css3-alt' },
+    { name: 'JavaScript', icon: 'fab fa-js' },
+    { name: 'Angular', icon: 'fab fa-angular' },
+    { name: 'PHP', icon: 'fab fa-php' },
+    { name: 'Laravel', icon: 'fab fa-laravel' }
+  ];
+
+  featuredProjects: Project[] = [
+    {
+      number: '01',
+      title: 'Opus Agency Website',
+      description: 'Sito web aziendale moderno con design personalizzato, ottimizzazione SEO e interfaccia utente reattiva. Realizzato completamente da zero con tecnologie all\'avanguardia.',
+      technologies: ['Angular', 'TypeScript', 'SCSS', 'SEO'],
+      previewUrl: 'https://opusagency.it/',
+      imageUrl: 'https://placehold.co/800x600/2a2a2a/e6e6e6?text=Opus+Agency',
+      imageAlt: 'Opus Agency Website Preview'
+    },
+    {
+      number: '02',
+      title: 'Laravel BDoctors',
+      description: 'Piattaforma per la gestione di profili medici con sistema di prenotazione e dashboard amministrativa.',
+      technologies: ['Laravel', 'PHP', 'MySQL', 'Bootstrap'],
+      githubUrl: 'https://github.com/FrancescoSisti/laravel-bdoctors',
+      imageUrl: 'https://placehold.co/800x600/2a2a2a/e6e6e6?text=BDoctors',
+      imageAlt: 'Laravel BDoctors Platform Preview'
+    }
+  ];
+
+  socialLinks = [
+    {
+      url: 'https://github.com/FrancescoSisti',
+      icon: 'fab fa-github',
+      label: 'GitHub'
+    },
+    {
+      url: 'https://www.linkedin.com/in/francesco-sisti-21b88023a/',
+      icon: 'fab fa-linkedin-in',
+      label: 'LinkedIn'
+    },
+    {
+      url: 'https://www.instagram.com/_francescosisti_/',
+      icon: 'fab fa-instagram',
+      label: 'Instagram'
+    }
+  ];
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private appRef: ApplicationRef,
     private ngZone: NgZone
   ) {
-    // Initialize values immediately
     this.setInitialValues();
   }
 
   async ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
-      // Run outside Angular zone to prevent blocking hydration
       this.ngZone.runOutsideAngular(async () => {
         try {
           await firstValueFrom(this.appRef.isStable);
-          // Run initialization back inside Angular zone
           this.ngZone.run(() => {
             this.isHydrated = true;
             this.initBrowserFeatures();
@@ -57,6 +118,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  scrollToContent() {
+    if (!this.isHydrated) return;
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.ngZone.runOutsideAngular(() => {
+        const featuredWork = document.getElementById('featured-work');
+        if (featuredWork) {
+          featuredWork.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+  }
+
   private setInitialValues() {
     const hour = new Date().getHours();
     if (hour >= 5 && hour < 12) {
@@ -71,7 +145,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private initBrowserFeatures() {
-    // Run timers outside Angular zone to prevent blocking hydration
     this.ngZone.runOutsideAngular(() => {
       this.initScrollAnimations();
       this.initDashboard();
@@ -79,7 +152,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private initDashboard() {
-    // Update time every second
     this.updateTime();
     this.timeInterval = setInterval(() => {
       this.ngZone.run(() => {
@@ -87,7 +159,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
     }, 1000);
 
-    // Update weather every 30 minutes
     this.updateWeather();
     this.weatherInterval = setInterval(() => {
       this.ngZone.run(() => {
@@ -161,19 +232,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           } else {
             scrollIndicator.classList.remove('fade-out');
           }
-        }
-      });
-    }
-  }
-
-  scrollToContent() {
-    if (!this.isHydrated) return;
-
-    if (isPlatformBrowser(this.platformId)) {
-      this.ngZone.runOutsideAngular(() => {
-        const featuredWork = document.querySelector('.featured-work');
-        if (featuredWork) {
-          featuredWork.scrollIntoView({ behavior: 'smooth' });
         }
       });
     }
