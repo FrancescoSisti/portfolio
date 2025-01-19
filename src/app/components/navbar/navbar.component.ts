@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { TranslationService, Language } from '../../services/translation.service';
 
 interface MenuItem {
   text: string;
@@ -21,55 +20,57 @@ interface MenuItem {
   imports: [CommonModule, RouterModule]
 })
 export class NavbarComponent implements OnInit, OnDestroy {
+  @ViewChildren('menuItem') menuItems!: QueryList<ElementRef>;
+
   isMenuOpen = false;
   currentRoute = '/';
   hoveredIndex = -1;
-  currentLang: Language = 'en';
   private routerSubscription?: Subscription;
-  private langSubscription?: Subscription;
   private isBrowser: boolean;
+  private scrollThreshold = 50;
+  private lastScrollTop = 0;
+  isNavbarVisible = true;
 
-  menuItems: MenuItem[] = [
+  menu: MenuItem[] = [
     {
-      text: 'home',
+      text: 'Home',
       route: '/',
       preview: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop',
-      previewTitle: 'welcome',
-      previewDesc: 'welcomeDesc'
+      previewTitle: 'Benvenuto',
+      previewDesc: 'Portfolio moderno e creativo'
     },
     {
-      text: 'about',
+      text: 'Chi Sono',
       route: '/about',
       preview: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=1000&auto=format&fit=crop',
-      previewTitle: 'aboutMe',
-      previewDesc: 'aboutDesc'
+      previewTitle: 'Chi Sono',
+      previewDesc: 'Scopri il mio percorso e la mia esperienza'
     },
     {
-      text: 'projects',
+      text: 'Progetti',
       route: '/projects',
       preview: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1000&auto=format&fit=crop',
-      previewTitle: 'myWork',
-      previewDesc: 'projectsDesc'
+      previewTitle: 'I Miei Lavori',
+      previewDesc: 'Esplora i miei ultimi progetti e esperimenti'
     },
     {
-      text: 'skills',
+      text: 'Competenze',
       route: '/skills',
       preview: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1000&auto=format&fit=crop',
-      previewTitle: 'myExpertise',
-      previewDesc: 'skillsDesc'
+      previewTitle: 'Le Mie Competenze',
+      previewDesc: 'Scopri le mie competenze tecniche'
     },
     {
-      text: 'contact',
+      text: 'Contatti',
       route: '/contact',
       preview: 'https://images.unsplash.com/photo-1516387938699-a93567ec168e?q=80&w=1000&auto=format&fit=crop',
-      previewTitle: 'getInTouch',
-      previewDesc: 'contactDesc'
+      previewTitle: 'Contattami',
+      previewDesc: 'Parliamo del tuo prossimo progetto'
     }
   ];
 
   constructor(
     private router: Router,
-    private translationService: TranslationService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -85,19 +86,39 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.langSubscription = this.translationService.currentLang$.subscribe(lang => {
-      this.currentLang = lang;
-    });
-
     this.currentRoute = this.router.url;
+
+    if (this.isBrowser) {
+      window.addEventListener('scroll', this.handleScroll.bind(this));
+      window.addEventListener('keydown', this.handleKeyPress.bind(this));
+    }
   }
 
   ngOnDestroy() {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
-    if (this.langSubscription) {
-      this.langSubscription.unsubscribe();
+
+    if (this.isBrowser) {
+      window.removeEventListener('scroll', this.handleScroll.bind(this));
+      window.removeEventListener('keydown', this.handleKeyPress.bind(this));
+    }
+  }
+
+  private handleScroll(): void {
+    const currentScrollTop = window.scrollY;
+
+    if (Math.abs(currentScrollTop - this.lastScrollTop) < this.scrollThreshold) {
+      return;
+    }
+
+    this.isNavbarVisible = currentScrollTop < this.lastScrollTop || currentScrollTop < this.scrollThreshold;
+    this.lastScrollTop = currentScrollTop;
+  }
+
+  private handleKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Escape' && this.isMenuOpen) {
+      this.closeMenu();
     }
   }
 
@@ -105,13 +126,28 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.isMenuOpen = !this.isMenuOpen;
     if (this.isBrowser) {
       document.body.style.overflow = this.isMenuOpen ? 'hidden' : '';
+
+      if (this.isMenuOpen) {
+        this.animateMenuItems();
+      }
     }
+  }
+
+  private animateMenuItems(): void {
+    this.menuItems.forEach((item: ElementRef, index: number) => {
+      setTimeout(() => {
+        item.nativeElement.classList.add('show');
+      }, index * 100);
+    });
   }
 
   closeMenu() {
     this.isMenuOpen = false;
     if (this.isBrowser) {
       document.body.style.overflow = '';
+      this.menuItems.forEach((item: ElementRef) => {
+        item.nativeElement.classList.remove('show');
+      });
     }
     this.hoveredIndex = -1;
   }
@@ -123,17 +159,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   onItemClick(route: string) {
-    if (this.currentRoute === route) {
-      this.closeMenu();
-    }
-  }
-
-  toggleLanguage() {
-    const newLang = this.currentLang === 'en' ? 'it' : 'en';
-    this.translationService.setLanguage(newLang);
-  }
-
-  translate(key: string): string {
-    return this.translationService.translate(key);
+    this.closeMenu();
   }
 }

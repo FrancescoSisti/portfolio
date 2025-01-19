@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslationService } from '../../services/translation.service';
 
 @Component({
   selector: 'app-about',
@@ -10,9 +9,6 @@ import { TranslationService } from '../../services/translation.service';
   imports: [CommonModule]
 })
 export class AboutComponent {
-  constructor(private translationService: TranslationService) { }
-
-  translate(key: string): string {
-    return this.translationService.translate(key);
-  }
+  personalStory = 'Come sviluppatore Full Stack con sede a Verona, combino competenze tecniche con problem-solving creativo per costruire applicazioni web moderne. Il mio percorso nello sviluppo web mi ha fornito una profonda comprensione delle tecnologie sia frontend che backend.';
+  personalStory2 = 'Mi impegno a creare codice pulito ed efficiente e interfacce user-friendly che fanno la differenza nelle esperienze digitali delle persone.';
 }

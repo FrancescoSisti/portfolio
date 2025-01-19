@@ -1,17 +1,9 @@
-<nav class="nav-container" [class.nav-open]="isMenuOpen">
-  <!-- Language Selector and Menu Button -->
+<nav class="nav-container" [class.nav-open]="isMenuOpen" [class.nav-hidden]="!isNavbarVisible">
+  <!-- Menu Button -->
   <div class="nav-controls">
-    <div class="lang-selector">
-      <button class="lang-toggle" (click)="toggleLanguage()">
-        <span class="lang-icon">
-          <i class="fas fa-globe-europe"></i>
-        </span>
-        <span class="lang-text">{{currentLang}}</span>
-      </button>
-    </div>
     <div class="menu-button">
       <div class="button-wrapper">
-        <button class="toggle" (click)="toggleMenu()" [class.active]="isMenuOpen">
+        <button class="toggle" (click)="toggleMenu()" [class.active]="isMenuOpen" aria-label="Toggle Menu">
           <span class="line"></span>
           <span class="line"></span>
           <span class="line"></span>
@@ -33,11 +25,11 @@
     <div class="nav-content">
       <!-- Left Side - Menu Items -->
       <div class="menu-items">
-        <div class="menu-item" *ngFor="let item of menuItems; let i = index" (mouseenter)="onItemHover(i)"
+        <div class="menu-item" *ngFor="let item of menu; let i = index" #menuItem (mouseenter)="onItemHover(i)"
           [class.active]="currentRoute === item.route">
-          <a [routerLink]="item.route" (click)="closeMenu()">
+          <a [routerLink]="item.route" (click)="onItemClick(item.route)" [routerLinkActive]="'active'">
             <span class="item-number">0{{i + 1}}</span>
-            <span class="item-text">{{translate(item.text)}}</span>
+            <span class="item-text">{{item.text}}</span>
           </a>
         </div>
       </div>
@@ -46,11 +38,12 @@
       <div class="preview-container">
         <div class="preview-content">
           <!-- Preview changes based on hovered menu item -->
-          <div class="preview" *ngFor="let item of menuItems; let i = index" [class.active]="hoveredIndex === i">
+          <div class="preview" *ngFor="let item of menu; let i = index" [class.active]="hoveredIndex === i"
+            [attr.aria-hidden]="hoveredIndex !== i">
             <div class="preview-image" [style.background-image]="'url(' + item.preview + ')'"></div>
             <div class="preview-text">
-              <h3>{{translate(item.previewTitle)}}</h3>
-              <p>{{translate(item.previewDesc)}}</p>
+              <h3>{{item.previewTitle}}</h3>
+              <p>{{item.previewDesc}}</p>
             </div>
           </div>
         </div>
@@ -60,19 +53,24 @@
     <!-- Bottom Info -->
     <div class="nav-footer">
       <div class="social-links">
-        <a href="#" class="social-link" target="_blank">
+        <a href="https://github.com" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
           <i class="fab fa-github"></i>
         </a>
-        <a href="#" class="social-link" target="_blank">
+        <a href="https://linkedin.com" class="social-link" target="_blank" rel="noopener noreferrer"
+          aria-label="LinkedIn">
           <i class="fab fa-linkedin-in"></i>
         </a>
-        <a href="#" class="social-link" target="_blank">
+        <a href="https://twitter.com" class="social-link" target="_blank" rel="noopener noreferrer"
+          aria-label="Twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </div>
       <div class="nav-info">
-        <p class="location">{{translate('basedIn')}} Milan, Italy</p>
-        <p class="availability">{{translate('availableFor')}}</p>
+        <p class="location">
+          <i class="fas fa-map-marker-alt"></i>
+          Verona, Italia
+        </p>
+        <p class="availability">Disponibile per progetti</p>
       </div>
     </div>
   </div>

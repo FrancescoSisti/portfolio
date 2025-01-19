@@ -13,24 +13,24 @@
     <section class="hero-section">
       <div class="hero-content">
         <div class="split-text">
-          <span class="text-reveal">{{translate('heroTitle')}}</span>
-          <span class="text-reveal">{{translate('heroSubtitle')}} <span class="accent">2024</span></span>
+          <span class="text-reveal">Sviluppatore Full Stack</span>
+          <span class="text-reveal">Creativo <span class="accent">2024</span></span>
         </div>
-        <p class="subtitle">{{translate('heroText')}}</p>
+        <p class="subtitle">Creo esperienze web innovative e funzionali con tecnologie all'avanguardia</p>
 
         <!-- Stats Container -->
         <div class="stats-container">
           <div class="stat">
             <div class="stat-value">3<span class="symbol">+</span></div>
-            <div class="stat-label">{{translate('yearsExp')}}</div>
+            <div class="stat-label">Anni di Esperienza</div>
           </div>
           <div class="stat">
             <div class="stat-value">50<span class="symbol">+</span></div>
-            <div class="stat-label">{{translate('projectsCompleted')}}</div>
+            <div class="stat-label">Progetti Completati</div>
           </div>
           <div class="stat">
             <div class="stat-value">20<span class="symbol">+</span></div>
-            <div class="stat-label">{{translate('happyClients')}}</div>
+            <div class="stat-label">Clienti Soddisfatti</div>
           </div>
         </div>
       </div>
@@ -41,23 +41,23 @@
           <div class="circle">
             <i class="fas fa-chevron-down"></i>
           </div>
-          <span>Scroll Down</span>
+          <span>Scorri Giù</span>
         </div>
       </div>
     </section>
 
     <!-- Featured Work Section -->
     <section class="featured-work">
-      <h2 class="section-title">{{translate('featuredProjects')}} <span class="gradient-text">2024</span></h2>
+      <h2 class="section-title">Progetti in Evidenza <span class="gradient-text">2024</span></h2>
       <div class="project-cards">
         <!-- Project Card 1 -->
         <div class="project-card">
           <div class="card-content">
             <span class="project-number">01</span>
-            <h3 class="project-title">E-Commerce Platform</h3>
+            <h3 class="project-title">Piattaforma E-commerce</h3>
             <p class="project-desc">
-              A full-stack e-commerce solution with modern UI, secure payments,
-              and real-time inventory management.
+              Una soluzione e-commerce completa con interfaccia moderna, pagamenti sicuri
+              e gestione dell'inventario in tempo reale.
             </p>
             <div class="project-tech">
               <span class="tech-tag">Angular</span>
@@ -67,18 +67,17 @@
             </div>
             <div class="project-links">
               <a href="#" class="btn primary">
-                {{translate('viewLive')}}
+                Anteprima
                 <i class="fas fa-external-link-alt"></i>
               </a>
               <a href="#" class="btn secondary">
-                {{translate('sourceCode')}}
+                Codice Sorgente
                 <i class="fab fa-github"></i>
               </a>
             </div>
           </div>
           <div class="card-image">
-            <img src="https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=1000&auto=format&fit=crop"
-              alt="E-Commerce Project">
+            <img src="assets/images/projects/ecommerce.jpg" alt="Progetto E-commerce">
             <div class="image-overlay"></div>
           </div>
         </div>
@@ -87,10 +86,10 @@
         <div class="project-card">
           <div class="card-content">
             <span class="project-number">02</span>
-            <h3 class="project-title">Task Management App</h3>
+            <h3 class="project-title">Gestione Attività</h3>
             <p class="project-desc">
-              A beautiful and intuitive task management application with drag-and-drop
-              functionality and real-time collaboration.
+              Un'applicazione intuitiva per la gestione delle attività con funzionalità
+              di trascinamento e collaborazione in tempo reale.
             </p>
             <div class="project-tech">
               <span class="tech-tag">React</span>
@@ -99,18 +98,17 @@
             </div>
             <div class="project-links">
               <a href="#" class="btn primary">
-                {{translate('viewLive')}}
+                Anteprima
                 <i class="fas fa-external-link-alt"></i>
               </a>
               <a href="#" class="btn secondary">
-                {{translate('sourceCode')}}
+                Codice Sorgente
                 <i class="fab fa-github"></i>
               </a>
             </div>
           </div>
           <div class="card-image">
-            <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=1000&auto=format&fit=crop"
-              alt="Task Management App">
+            <img src="assets/images/projects/taskmanager.jpg" alt="App Gestione Attività">
             <div class="image-overlay"></div>
           </div>
         </div>
@@ -119,7 +117,7 @@
 
     <!-- Skills Preview Section -->
     <section class="skills-preview">
-      <h2 class="section-title">{{translate('technicalSkills')}} <span class="gradient-text">2024</span></h2>
+      <h2 class="section-title">Competenze Tecniche <span class="gradient-text">2024</span></h2>
       <div class="skill-rings">
         <div class="ring">
           <div class="ring-content">
@@ -159,7 +157,7 @@
         </div>
       </div>
       <a routerLink="/skills" class="explore-link">
-        {{translate('exploreAllSkills')}}
+        Esplora tutte le competenze
         <i class="fas fa-arrow-right"></i>
       </a>
     </section>
@@ -168,20 +166,41 @@
     <section class="contact-cta">
       <div class="cta-pattern"></div>
       <div class="cta-content">
-        <h2>{{translate('contactTitle')}} <span class="gradient-text">{{translate('contactSubtitle')}}</span></h2>
-        <p>{{translate('contactText')}}</p>
+        <h2>Creiamo Qualcosa di <span class="gradient-text">Grande Insieme</span></h2>
+        <p>Sono sempre interessato a sentire parlare di nuovi progetti e opportunità.</p>
         <a routerLink="/contact" class="btn">
-          {{translate('getInTouch')}}
+          Contattami
           <i class="fas fa-arrow-right"></i>
         </a>
       </div>
     </section>
 
+    <!-- Verona Dashboard Widget -->
+    <div class="verona-dashboard">
+      <div class="dashboard-card">
+        <div class="time-section">
+          <i class="far fa-clock"></i>
+          <span class="time">{{currentTime | date:'HH:mm:ss'}}</span>
+          <span class="date">{{currentTime | date:'dd MMM yyyy'}}</span>
+        </div>
+        <div class="weather-section">
+          <i class="fas fa-cloud-sun"></i>
+          <span class="temperature">{{temperature}}°C</span>
+          <span class="weather-desc">{{weatherDescription}}</span>
+        </div>
+        <div class="greeting-section">
+          <i class="far fa-smile"></i>
+          <span class="greeting">{{greeting}}</span>
+          <span class="location">Verona, Italia</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Minimal Footer -->
     <footer class="minimal-footer">
       <div class="footer-content">
         <div class="footer-left">
-          <p class="copyright">{{translate('copyright')}} — {{translate('madeWith')}} <span class="accent">♥</span></p>
+          <p class="copyright">© 2024 Tutti i diritti riservati — Fatto con <span class="accent">♥</span></p>
         </div>
         <div class="footer-right">
           <div class="social-links">

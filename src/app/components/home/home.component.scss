@@ -536,6 +536,59 @@
   }
 }
 
+// Verona Dashboard Widget
+.verona-dashboard {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 100;
+
+  .dashboard-card {
+    background: rgba(var(--surface-rgb), 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-light);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 240px;
+
+    .time-section,
+    .weather-section,
+    .greeting-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--text-primary);
+
+      i {
+        font-size: 1.2rem;
+        color: var(--primary);
+      }
+
+      span {
+        display: block;
+      }
+
+      .time,
+      .temperature,
+      .greeting {
+        font-size: 1.1rem;
+        font-weight: 500;
+      }
+
+      .date,
+      .weather-desc,
+      .location {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+    }
+  }
+}
+
 // Animations
 @keyframes revealText {
   0% {
@@ -703,6 +756,23 @@
         gap: 1.5rem;
         text-align: center;
       }
+    }
+  }
+
+  // Mobile styles for Verona Dashboard
+  .verona-dashboard {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 100;
+    padding: 1rem;
+
+    .dashboard-card {
+      margin: 0 auto;
+      max-width: 100%;
+      border-radius: 1rem 1rem 0 0;
+      padding: 1rem;
     }
   }
 }

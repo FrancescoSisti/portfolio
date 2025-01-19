@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslationService } from '../../services/translation.service';
 
 @Component({
   selector: 'app-projects',
@@ -9,10 +8,4 @@ import { TranslationService } from '../../services/translation.service';
   standalone: true,
   imports: [CommonModule]
 })
-export class ProjectsComponent {
-  constructor(private translationService: TranslationService) { }
-
-  translate(key: string): string {
-    return this.translationService.translate(key);
-  }
-}
+export class ProjectsComponent { }
