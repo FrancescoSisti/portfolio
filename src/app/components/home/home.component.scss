@@ -90,8 +90,8 @@
         line-height: 1;
         background: var(--gradient-1);
         -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
         background-clip: text;
+        -webkit-text-fill-color: transparent;
         opacity: 0;
         transform: translateY(50px);
         animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;

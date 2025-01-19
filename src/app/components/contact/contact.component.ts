@@ -1,6 +1,7 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, PLATFORM_ID, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import * as L from 'leaflet';
 
 interface ContactForm {
@@ -15,7 +16,7 @@ interface ContactForm {
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
   standalone: true,
-  imports: [FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule, HttpClientModule]
 })
 export class ContactComponent implements OnInit, AfterViewInit {
   formData: ContactForm = {
@@ -27,7 +28,10 @@ export class ContactComponent implements OnInit, AfterViewInit {
 
   isSubmitting = false;
   submitSuccess = false;
+  submitError = false;
   private map: L.Map | null = null;
+  private isBrowser: boolean;
+  private readonly FORMSPREE_ENDPOINT = 'https://formspree.io/f/mdkkrjjy';
 
   // Map configuration
   private readonly center: L.LatLngExpression = [45.4396, 11.0025]; // Corso Venezia 83, Verona
@@ -38,34 +42,37 @@ export class ContactComponent implements OnInit, AfterViewInit {
     popupAnchor: [0, -40]
   });
 
-  constructor() { }
-
-  ngOnInit() {
-    // Non è più necessario caricare il CSS qui
+  constructor(
+    @Inject(PLATFORM_ID) platformId: Object,
+    private http: HttpClient
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
   }
 
+  ngOnInit() { }
+
   ngAfterViewInit() {
-    // Diamo un po' di tempo al DOM per renderizzare completamente
-    setTimeout(() => {
-      this.initMap();
-    }, 100);
+    if (this.isBrowser) {
+      setTimeout(() => {
+        this.initMap();
+      }, 100);
+    }
   }
 
   private initMap(): void {
+    if (!this.isBrowser) return;
+
     try {
-      // Verifichiamo che il container della mappa esista
       const mapElement = document.getElementById('map');
       if (!mapElement) {
         console.error('Map container not found');
         return;
       }
 
-      // Se c'è già una mappa, la rimuoviamo
       if (this.map) {
         this.map.remove();
       }
 
-      // Inizializziamo la mappa
       this.map = L.map(mapElement, {
         center: this.center,
         zoom: 15,
@@ -74,14 +81,12 @@ export class ContactComponent implements OnInit, AfterViewInit {
         dragging: true
       });
 
-      // Aggiungiamo il layer della mappa con stile scuro personalizzato
       L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         maxZoom: 19,
         subdomains: 'abcd'
       }).addTo(this.map);
 
-      // Aggiungiamo il marker personalizzato
       const marker = L.marker(this.center, { icon: this.customIcon })
         .addTo(this.map)
         .bindPopup('Corso Venezia 83, Verona 📍', {
@@ -90,7 +95,6 @@ export class ContactComponent implements OnInit, AfterViewInit {
         })
         .openPopup();
 
-      // Aggiorniamo la mappa dopo un breve ritardo per assicurarci che il container sia completamente renderizzato
       setTimeout(() => {
         this.map?.invalidateSize();
       }, 200);
@@ -101,10 +105,11 @@ export class ContactComponent implements OnInit, AfterViewInit {
   }
 
   scrollToMap() {
+    if (!this.isBrowser) return;
+
     const mapSection = document.getElementById('map-section');
     if (mapSection) {
       mapSection.scrollIntoView({ behavior: 'smooth' });
-      // Aggiorniamo la mappa dopo lo scroll
       setTimeout(() => {
         this.map?.invalidateSize();
       }, 500);
@@ -115,9 +120,11 @@ export class ContactComponent implements OnInit, AfterViewInit {
     if (this.isSubmitting) return;
 
     this.isSubmitting = true;
+    this.submitSuccess = false;
+    this.submitError = false;
+
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await this.http.post(this.FORMSPREE_ENDPOINT, this.formData).toPromise();
       this.submitSuccess = true;
       this.formData = {
         name: '',
@@ -127,6 +134,7 @@ export class ContactComponent implements OnInit, AfterViewInit {
       };
     } catch (error) {
       console.error('Error submitting form:', error);
+      this.submitError = true;
     } finally {
       this.isSubmitting = false;
     }
