@@ -8,10 +8,10 @@
     <div class="header-section">
       <div class="section-badge">
         <i class="fas fa-paper-plane"></i>
-        Get in Touch
+        Contattami
       </div>
-      <h1>Let's <span class="gradient-text">Connect</span></h1>
-      <p class="subtitle">Have a project in mind? Let's discuss how we can work together</p>
+      <h1>Restiamo in <span class="gradient-text">Contatto</span></h1>
+      <p class="subtitle">Hai un progetto in mente? Parliamo di come possiamo collaborare insieme</p>
     </div>
 
     <div class="contact-grid">
@@ -21,9 +21,9 @@
             <i class="fas fa-envelope"></i>
           </div>
           <h3>Email</h3>
-          <p>your.email&#64;example.com</p>
-          <a href="mailto:your.email@example.com" class="action-link">
-            Send Email
+          <p>francescosisti61&#64;gmail.com</p>
+          <a href="mailto:francescosisti61@gmail.com" class="action-link">
+            Invia Email
             <i class="fas fa-arrow-right"></i>
           </a>
         </div>
@@ -32,27 +32,26 @@
           <div class="icon-wrapper">
             <i class="fas fa-map-marker-alt"></i>
           </div>
-          <h3>Location</h3>
-          <p>City, Country</p>
-          <a href="#" class="action-link">
-            View on Map
+          <h3>Posizione</h3>
+          <p>Corso Venezia 83, Verona</p>
+          <a (click)="scrollToMap()" class="action-link">
+            Visualizza sulla Mappa
             <i class="fas fa-arrow-right"></i>
           </a>
         </div>
 
         <div class="social-links">
-          <h3>Follow Me</h3>
+          <h3>Seguimi</h3>
           <div class="links">
-            <a href="#" class="social-link github">
+            <a href="https://github.com/FrancescoSisti" class="social-link github" target="_blank" title="GitHub">
               <i class="fab fa-github"></i>
             </a>
-            <a href="#" class="social-link linkedin">
+            <a href="https://www.linkedin.com/in/francesco-sisti-21b88023a/" class="social-link linkedin"
+              target="_blank" title="LinkedIn">
               <i class="fab fa-linkedin-in"></i>
             </a>
-            <a href="#" class="social-link twitter">
-              <i class="fab fa-twitter"></i>
-            </a>
-            <a href="#" class="social-link instagram">
+            <a href="https://www.instagram.com/_francescosisti_/" class="social-link instagram" target="_blank"
+              title="Instagram">
               <i class="fab fa-instagram"></i>
             </a>
           </div>
@@ -62,33 +61,44 @@
       <div class="contact-form">
         <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
           <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" [(ngModel)]="formData.name" required placeholder="Your Name">
+            <label for="name">Nome</label>
+            <input type="text" id="name" name="name" [(ngModel)]="formData.name" required placeholder="Il tuo nome">
           </div>
 
           <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" [(ngModel)]="formData.email" required
-              placeholder="your.email@example.com">
+              placeholder="tua.email@esempio.com">
           </div>
 
           <div class="form-group">
-            <label for="subject">Subject</label>
+            <label for="subject">Oggetto</label>
             <input type="text" id="subject" name="subject" [(ngModel)]="formData.subject" required
-              placeholder="Project Inquiry">
+              placeholder="Richiesta Progetto">
           </div>
 
           <div class="form-group">
-            <label for="message">Message</label>
+            <label for="message">Messaggio</label>
             <textarea id="message" name="message" [(ngModel)]="formData.message" required rows="5"
-              placeholder="Tell me about your project..."></textarea>
+              placeholder="Parlami del tuo progetto..."></textarea>
           </div>
 
-          <button type="submit" class="submit-btn" [disabled]="!contactForm.form.valid">
-            Send Message
+          <button type="submit" class="submit-btn" [disabled]="!contactForm.form.valid || isSubmitting">
+            {{ isSubmitting ? 'Invio in corso...' : 'Invia Messaggio' }}
             <i class="fas fa-paper-plane"></i>
           </button>
+
+          <div *ngIf="submitSuccess" class="success-message">
+            <i class="fas fa-check-circle"></i>
+            Messaggio inviato con successo!
+          </div>
         </form>
+      </div>
+    </div>
+
+    <div class="map-section" id="map-section">
+      <div class="map-container">
+        <div id="map"></div>
       </div>
     </div>
   </div>

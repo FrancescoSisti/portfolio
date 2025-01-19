@@ -1,163 +1,161 @@
 <div class="skills-container">
-    <div class="background-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="header-section">
+      <span class="section-badge">
+        <i class="fas fa-laptop-code"></i>
+      </span>
+      <h2>I Miei <span class="text-gradient">Strumenti</span></h2>
+      <p>Una collezione di widget interattivi che mostrano le mie competenze tecniche</p>
+      <div class="disclaimer">
+        <strong>Nota:</strong> Questi widget sono parte di un progetto di ricerca e sviluppo in continua evoluzione. Le
+        funzionalità sono in fase di ottimizzazione e potrebbero essere soggette a modifiche o aggiornamenti.
+      </div>
     </div>
-    <div class="content-wrapper animate-in">
-        <div class="header-section">
-            <div class="section-badge">
-                <i class="fas fa-code"></i>
-                Competenze Tecniche
-            </div>
-            <h1>Le Mie <span class="gradient-text">Specializzazioni</span></h1>
-            <p class="subtitle">Una panoramica delle mie competenze tecniche e della padronanza delle varie tecnologie
-            </p>
-        </div>
 
-        <div class="skills-grid">
-            <div class="skill-category">
-                <h2>Sviluppo Frontend</h2>
-                <div class="skills-list">
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <i class="fab fa-html5"></i>
-                            <span class="skill-name">HTML5</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="progress" style="width: 95%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <i class="fab fa-css3-alt"></i>
-                            <span class="skill-name">CSS3</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="progress" style="width: 90%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <i class="fab fa-js"></i>
-                            <span class="skill-name">JavaScript</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="progress" style="width: 85%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <i class="fab fa-angular"></i>
-                            <span class="skill-name">Angular</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="progress" style="width: 80%"></div>
-                        </div>
-                    </div>
+    <div class="widgets-grid">
+      <!-- Weather Widget -->
+      <div class="widget-wrapper">
+        <div class="widget weather">
+          <div class="widget-header">
+            <h3><i class="fas fa-cloud-sun"></i> Meteo</h3>
+            <div class="widget-controls">
+              <button (click)="toggleFullscreen($event)"><i class="fas fa-expand"></i></button>
+            </div>
+          </div>
+          <div class="widget-content">
+            <div class="location-search">
+              <input type="text" [(ngModel)]="locationQuery" placeholder="Cerca una località..."
+                (keyup.enter)="searchLocation()">
+              <button (click)="searchLocation()"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="recent-locations" *ngIf="recentLocations.length">
+              <div class="location-tag" *ngFor="let location of recentLocations" (click)="selectLocation(location)">
+                {{ location }}
+              </div>
+            </div>
+            <div class="forecast" *ngIf="weatherData">
+              <h4>Previsioni</h4>
+              <div class="forecast-items">
+                <div class="forecast-item" *ngFor="let item of weatherData.forecast">
+                  <div class="date">{{ item.date }}</div>
+                  <i [class]="'fas ' + item.icon"></i>
+                  <div class="temp">{{ item.temp }}°C</div>
+                  <div class="cond">{{ item.condition }}</div>
                 </div>
+              </div>
             </div>
-
-            <div class="skill-category">
-                <h2>Backend Development</h2>
-                <div class="skills-list">
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <i class="fab fa-node-js"></i>
-                            <span class="skill-name">Node.js</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="progress" style="width: 85%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <i class="fas fa-database"></i>
-                            <span class="skill-name">MongoDB</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="progress" style="width: 80%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <i class="fas fa-server"></i>
-                            <span class="skill-name">Express.js</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="progress" style="width: 75%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <i class="fas fa-database"></i>
-                            <span class="skill-name">SQL</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="progress" style="width: 70%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-category">
-                <h2>Tools & Technologies</h2>
-                <div class="skills-list">
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <i class="fab fa-git-alt"></i>
-                            <span class="skill-name">Git</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="progress" style="width: 90%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <i class="fab fa-docker"></i>
-                            <span class="skill-name">Docker</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="progress" style="width: 75%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <i class="fas fa-cloud"></i>
-                            <span class="skill-name">AWS</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="progress" style="width: 70%"></div>
-                        </div>
-                    </div>
-                    <div class="skill-item">
-                        <div class="skill-header">
-                            <i class="fas fa-terminal"></i>
-                            <span class="skill-name">CI/CD</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="progress" style="width: 80%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-
-        <div class="additional-skills">
-            <h2>Additional Skills</h2>
-            <div class="skills-tags">
-                <span class="skill-tag">TypeScript</span>
-                <span class="skill-tag">React</span>
-                <span class="skill-tag">Vue.js</span>
-                <span class="skill-tag">Python</span>
-                <span class="skill-tag">Java</span>
-                <span class="skill-tag">RESTful APIs</span>
-                <span class="skill-tag">GraphQL</span>
-                <span class="skill-tag">Webpack</span>
-                <span class="skill-tag">SASS</span>
-                <span class="skill-tag">UI/UX Design</span>
-                <span class="skill-tag">Responsive Design</span>
-                <span class="skill-tag">Agile/Scrum</span>
-            </div>
+        <div class="widget-legend">
+          <p>Widget meteo che mostra le previsioni del tempo in tempo reale. Cerca una località per visualizzare le
+            previsioni.</p>
         </div>
+      </div>
+
+      <!-- Chatbot Widget -->
+      <div class="widget-wrapper">
+        <div class="widget chatbot">
+          <div class="widget-header">
+            <h3><i class="fas fa-robot"></i> Assistente</h3>
+            <div class="widget-controls">
+              <button (click)="toggleFullscreen($event)"><i class="fas fa-expand"></i></button>
+            </div>
+          </div>
+          <div class="widget-content">
+            <div class="chat-messages">
+              <div class="message" *ngFor="let msg of chatMessages" [ngClass]="msg.type">
+                <div class="message-content">{{ msg.text }}</div>
+                <div class="message-time">{{ msg.time }}</div>
+                <div class="message-options" *ngIf="msg.options">
+                  <button class="option-btn" *ngFor="let opt of msg.options" (click)="selectChatOption(opt)">
+                    {{ opt }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="chat-input">
+              <input type="text" [(ngModel)]="chatInput" placeholder="Scrivi un messaggio..."
+                (keyup.enter)="sendMessage()">
+              <button (click)="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="widget-legend">
+          <p>Chatbot interattivo che risponde alle tue domande sulle mie competenze e progetti.</p>
+        </div>
+      </div>
+
+      <!-- Terminal Widget -->
+      <div class="widget-wrapper">
+        <div class="widget terminal">
+          <div class="widget-header">
+            <h3><i class="fas fa-terminal"></i> Terminale</h3>
+            <div class="widget-controls">
+              <button (click)="toggleFullscreen($event)"><i class="fas fa-expand"></i></button>
+            </div>
+          </div>
+          <div class="widget-content">
+            <div class="command-history">
+              <div class="line" *ngFor="let cmd of commandHistory">
+                <ng-container *ngIf="cmd.type === 'input'">
+                  <span class="prompt">{{ currentDirectory }}$</span> {{ cmd.text }}
+                </ng-container>
+                <div class="output" *ngIf="cmd.type === 'output'" [ngClass]="cmd.status">
+                  {{ cmd.text }}
+                </div>
+              </div>
+            </div>
+            <div class="command-input">
+              <span class="prompt">{{ currentDirectory }}$</span>
+              <input type="text" [(ngModel)]="terminalInput" (keydown)="handleTerminalKeydown($event)"
+                placeholder="Digita un comando...">
+            </div>
+          </div>
+        </div>
+        <div class="widget-legend">
+          <p>Terminale interattivo con comandi personalizzati. Prova 'help' per vedere i comandi disponibili.</p>
+        </div>
+      </div>
+
+      <!-- Color Picker Widget -->
+      <div class="widget-wrapper">
+        <div class="widget color-picker">
+          <div class="widget-header">
+            <h3><i class="fas fa-palette"></i> Temi</h3>
+            <div class="widget-controls">
+              <button (click)="toggleFullscreen($event)"><i class="fas fa-expand"></i></button>
+            </div>
+          </div>
+          <div class="widget-content">
+            <div class="theme-actions">
+              <input type="text" [(ngModel)]="newThemeName" placeholder="Nome del tema...">
+              <button (click)="saveTheme()">
+                <i class="fas fa-save"></i>
+                Salva Tema
+              </button>
+            </div>
+            <div class="saved-themes">
+              <div class="theme" *ngFor="let theme of savedThemes" [class.active]="theme === currentTheme"
+                (click)="applyTheme(theme)">
+                <div class="theme-colors">
+                  <div class="color" [style.background]="color" *ngFor="let color of theme.colors"></div>
+                </div>
+                <div class="theme-name">{{ theme.name }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="widget-legend">
+          <p>Personalizza i colori del portfolio e salva i tuoi temi preferiti. N.B: I temi salvati sono visibili solo
+            nel browser in cui sono stati salvati. La funzionalità è attualmente in fase di sviluppo ed è attiva solo
+            in questa pagina del portfolio.</p>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

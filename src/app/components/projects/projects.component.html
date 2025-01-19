@@ -14,139 +14,74 @@
             <p class="subtitle">Una raccolta dei miei migliori progetti e lavori personali</p>
         </div>
 
+        <!-- Opus Agency Preview -->
+        <div class="opus-preview">
+            <h2>Opus Agency Website</h2>
+            <p class="opus-description">Sito web aziendale moderno con design personalizzato, ottimizzazione SEO e
+                interfaccia utente reattiva.</p>
+            <div class="preview-actions">
+                <button class="preview-btn" (click)="openPreviewModal()">
+                    <i class="fas fa-eye"></i>
+                    Anteprima Sito
+                </button>
+                <a href="https://opusagency.it/" target="_blank" class="visit-btn">
+                    <i class="fas fa-external-link-alt"></i>
+                    Visita il Sito
+                </a>
+            </div>
+        </div>
+
+        <!-- Preview Modal -->
+        <div class="preview-modal" *ngIf="isModalOpen">
+            <div class="modal-overlay" (click)="closePreviewModal()"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Anteprima Opus Agency</h3>
+                    <button class="close-btn" (click)="closePreviewModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="iframe-container" [class.blurred]="showTimeoutMessage">
+                        <iframe [src]="getSafeUrl('https://opusagency.it')" frameborder="0"></iframe>
+                    </div>
+                    <div class="timeout-message" *ngIf="showTimeoutMessage">
+                        <div class="message-content">
+                            <i class="fas fa-clock"></i>
+                            <h4>Tempo di Anteprima Scaduto</h4>
+                            <p>Per continuare a esplorare il sito, ti invitiamo a visitare la versione completa.</p>
+                            <button class="visit-full-btn" (click)="visitFullSite()">
+                                <i class="fas fa-external-link-alt"></i>
+                                Visita il Sito Completo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="projects-grid">
-            <!-- Project Card 1 -->
-            <div class="project-card">
+            <!-- Project Cards -->
+            <div class="project-card" *ngFor="let project of filteredFeaturedProjects">
                 <div class="project-header">
                     <div class="project-title">
-                        <h3>E-Commerce Platform</h3>
-                        <span class="project-type">Full Stack Development</span>
+                        <h3>{{ project.title }}</h3>
+                        <span class="project-type">{{ project.type }}</span>
+                        <span class="project-status" [class]="project.status">{{ project.status }}</span>
                     </div>
                     <div class="project-links">
-                        <a href="#" class="project-link" target="_blank">
+                        <a *ngIf="project.githubUrl" [href]="project.githubUrl" class="project-link" target="_blank">
                             <i class="fab fa-github"></i>
                         </a>
-                        <a href="#" class="project-link" target="_blank">
+                        <a *ngIf="project.liveUrl" [href]="project.liveUrl" class="project-link" target="_blank">
                             <i class="fas fa-external-link-alt"></i>
                         </a>
                     </div>
                 </div>
-                <div class="project-image">
-                    <img src="https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=1000&auto=format&fit=crop"
-                        alt="E-Commerce Project">
-                    <div class="image-overlay"></div>
-                </div>
                 <div class="project-content">
-                    <p class="project-description">
-                        Una piattaforma e-commerce completa con interfaccia moderna, gestione pagamenti
-                        e sistema di inventario in tempo reale.
-                    </p>
+                    <p class="project-description">{{ project.description }}</p>
                     <div class="tech-stack">
-                        <span class="tech-tag">Angular</span>
-                        <span class="tech-tag">Node.js</span>
-                        <span class="tech-tag">MongoDB</span>
-                        <span class="tech-tag">Stripe</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project Card 2 -->
-            <div class="project-card">
-                <div class="project-header">
-                    <div class="project-title">
-                        <h3>Task Manager</h3>
-                        <span class="project-type">Frontend Development</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="#" class="project-link" target="_blank">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="#" class="project-link" target="_blank">
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="project-image">
-                    <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=1000&auto=format&fit=crop"
-                        alt="Task Management App">
-                    <div class="image-overlay"></div>
-                </div>
-                <div class="project-content">
-                    <p class="project-description">
-                        Un'applicazione intuitiva per la gestione delle attività con funzionalità
-                        di drag-and-drop e collaborazione in tempo reale.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">React</span>
-                        <span class="tech-tag">Firebase</span>
-                        <span class="tech-tag">Material UI</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project Card 3 -->
-            <div class="project-card">
-                <div class="project-header">
-                    <div class="project-title">
-                        <h3>App Meteo</h3>
-                        <span class="project-type">Integrazione API</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="#" class="project-link" target="_blank">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="#" class="project-link" target="_blank">
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="project-image">
-                    <img src="https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?q=80&w=1000&auto=format&fit=crop"
-                        alt="Weather Dashboard">
-                    <div class="image-overlay"></div>
-                </div>
-                <div class="project-content">
-                    <p class="project-description">
-                        Un'applicazione meteo moderna che fornisce previsioni accurate e informazioni in tempo reale.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">React</span>
-                        <span class="tech-tag">Firebase</span>
-                        <span class="tech-tag">Material UI</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project Card 4 -->
-            <div class="project-card">
-                <div class="project-header">
-                    <div class="project-title">
-                        <h3>Portfolio Website</h3>
-                        <span class="project-type">UI/UX Design</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="#" class="project-link" target="_blank">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="#" class="project-link" target="_blank">
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="project-image">
-                    <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?q=80&w=1000&auto=format&fit=crop"
-                        alt="Portfolio Website">
-                    <div class="image-overlay"></div>
-                </div>
-                <div class="project-content">
-                    <p class="project-description">
-                        Un portfolio personale moderno con animazioni fluide e design responsivo, costruito con le
-                        ultime tecnologie web.
-                    </p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Angular</span>
-                        <span class="tech-tag">SCSS</span>
-                        <span class="tech-tag">TypeScript</span>
+                        <span class="tech-tag" *ngFor="let tech of project.technologies">{{ tech }}</span>
                     </div>
                 </div>
             </div>
@@ -154,58 +89,24 @@
 
         <!-- Other Projects Section -->
         <div class="other-projects">
-            <h2>Altri Progetti Degni di Nota</h2>
+            <h2>Altri Progetti</h2>
             <div class="projects-mini-grid">
-                <a href="#" class="mini-card" target="_blank">
+                <div class="mini-card" *ngFor="let project of otherProjects">
                     <div class="card-header">
                         <i class="fas fa-folder"></i>
                         <div class="card-links">
-                            <i class="fab fa-github"></i>
-                            <i class="fas fa-external-link-alt"></i>
+                            <a *ngIf="project.githubUrl" [href]="project.githubUrl" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <span class="status-badge" [class]="project.status">{{ project.status }}</span>
                         </div>
                     </div>
-                    <h3>Chat App</h3>
-                    <p>Applicazione di chat in tempo reale con supporto per messaggi privati e canali.</p>
+                    <h3>{{ project.title }}</h3>
+                    <p>{{ project.description }}</p>
                     <div class="tech-stack">
-                        <span>Socket.io</span>
-                        <span>Express</span>
-                        <span>React</span>
+                        <span *ngFor="let tech of project.technologies">{{ tech }}</span>
                     </div>
-                </a>
-
-                <a href="#" class="mini-card" target="_blank">
-                    <div class="card-header">
-                        <i class="fas fa-folder"></i>
-                        <div class="card-links">
-                            <i class="fab fa-github"></i>
-                            <i class="fas fa-external-link-alt"></i>
-                        </div>
-                    </div>
-                    <h3>Blog Platform</h3>
-                    <p>Piattaforma di blogging con CMS headless e design moderno.</p>
-                    <div class="tech-stack">
-                        <span>Next.js</span>
-                        <span>Strapi</span>
-                        <span>Tailwind</span>
-                    </div>
-                </a>
-
-                <a href="#" class="mini-card" target="_blank">
-                    <div class="card-header">
-                        <i class="fas fa-folder"></i>
-                        <div class="card-links">
-                            <i class="fab fa-github"></i>
-                            <i class="fas fa-external-link-alt"></i>
-                        </div>
-                    </div>
-                    <h3>URL Shortener</h3>
-                    <p>Servizio di abbreviazione URL con analytics e gestione link.</p>
-                    <div class="tech-stack">
-                        <span>Node.js</span>
-                        <span>Redis</span>
-                        <span>Express</span>
-                    </div>
-                </a>
+                </div>
             </div>
         </div>
     </div>
