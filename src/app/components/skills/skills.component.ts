@@ -1,7 +1,9 @@
-import { Component, OnInit, inject, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID, Inject, OnDestroy } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { WeatherService, WeatherData, WeatherForecast, AirQuality, CityAutocomplete } from '../../services/weather.service';
+import { firstValueFrom, Subject, debounceTime, distinctUntilChanged, takeUntil, Subscription } from 'rxjs';
 
 interface Command {
   type: 'input' | 'output';
@@ -14,17 +16,6 @@ interface ChatMessage {
   text: string;
   time: string;
   options?: string[];
-}
-
-interface WeatherData {
-  forecast: WeatherForecast[];
-}
-
-interface WeatherForecast {
-  date: string;
-  temp: number;
-  condition: string;
-  icon: string;
 }
 
 interface ColorTheme {
@@ -42,22 +33,17 @@ interface FileSystem {
   '~': FileSystemItem;
 }
 
-const weatherIcons = {
-  sun: 'fas fa-sun',
-  cloud: 'fas fa-cloud',
-  rain: 'fas fa-cloud-rain',
-  storm: 'fas fa-bolt',
-  snow: 'fas fa-snowflake'
-} as const;
+type WeatherTab = 'current' | 'forecast' | 'air';
 
 @Component({
   selector: 'app-skills',
   templateUrl: './skills.component.html',
   styleUrls: ['./skills.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule]
+  imports: [CommonModule, FormsModule, HttpClientModule],
+  providers: [WeatherService]
 })
-export class SkillsComponent implements OnInit {
+export class SkillsComponent implements OnInit, OnDestroy {
   private http = inject(HttpClient);
   private readonly OPENWEATHER_API_KEY = 'YOUR_API_KEY';
   private readonly OPENWEATHER_API_URL = 'https://api.openweathermap.org/data/2.5';
@@ -65,13 +51,24 @@ export class SkillsComponent implements OnInit {
     THEMES: 'portfolio_saved_themes',
     LOCATIONS: 'portfolio_recent_locations'
   };
+  private readonly DEFAULT_CITY = 'Verona';
   private isBrowser: boolean;
 
   // Weather Widget
-  locationQuery = '';
+  locationQuery: string = '';
+  selectedCountry: string = 'IT';
+  citySuggestions: CityAutocomplete[] = [];
+  showSuggestions: boolean = false;
+  private searchSubject = new Subject<string>();
+  private searchSubscription: Subscription;
   recentLocations: string[] = [];
   weatherData: WeatherData | null = null;
-  isLoadingWeather = false;
+  forecast: WeatherForecast[] = [];
+  airQuality: AirQuality | null = null;
+  isLoadingWeather: boolean = false;
+  selectedTab: WeatherTab = 'current';
+  weatherAlerts: string[] = [];
+  lastUpdateTime: string | null = null;
 
   // Chatbot Widget
   chatInput = '';
@@ -156,60 +153,187 @@ export class SkillsComponent implements OnInit {
     }
   ];
 
-  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+  // Update weather icons mapping
+  private readonly weatherIcons = {
+    '01d': 'fas fa-sun',
+    '01n': 'fas fa-moon',
+    '02d': 'fas fa-cloud-sun',
+    '02n': 'fas fa-cloud-moon',
+    '03d': 'fas fa-cloud',
+    '03n': 'fas fa-cloud',
+    '04d': 'fas fa-cloud',
+    '04n': 'fas fa-cloud',
+    '09d': 'fas fa-cloud-showers-heavy',
+    '09n': 'fas fa-cloud-showers-heavy',
+    '10d': 'fas fa-cloud-sun-rain',
+    '10n': 'fas fa-cloud-moon-rain',
+    '11d': 'fas fa-bolt',
+    '11n': 'fas fa-bolt',
+    '13d': 'fas fa-snowflake',
+    '13n': 'fas fa-snowflake',
+    '50d': 'fas fa-smog',
+    '50n': 'fas fa-smog'
+  } as const;
+
+  constructor(
+    @Inject(PLATFORM_ID) platformId: Object,
+    private weatherService: WeatherService
+  ) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.currentTheme = this.defaultThemes[0];
     if (this.isBrowser) {
       this.loadSavedData();
     }
     this.initializeChat();
+
+    this.searchSubscription = this.searchSubject
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged()
+      )
+      .subscribe(query => {
+        if (query) {
+          this.weatherService.getCitySuggestions(query, this.selectedCountry)
+            .subscribe(suggestions => {
+              this.citySuggestions = suggestions;
+              this.showSuggestions = suggestions.length > 0;
+            });
+        } else {
+          this.citySuggestions = [];
+          this.showSuggestions = false;
+        }
+      });
   }
 
   ngOnInit() {
     this.initializeTerminal();
     if (this.isBrowser) {
       this.applyTheme(this.currentTheme);
+      this.loadWeather(this.DEFAULT_CITY);
+      this.loadRecentLocations();
     }
   }
 
-  // Weather Widget Methods
-  async searchLocation() {
-    if (!this.locationQuery.trim() || this.isLoadingWeather) return;
+  ngOnDestroy() {
+    this.searchSubscription.unsubscribe();
+  }
+
+  get availableCountries() {
+    return this.weatherService.availableCountries;
+  }
+
+  onCountryChange(countryCode: string) {
+    this.selectedCountry = countryCode;
+    if (this.locationQuery) {
+      this.searchSubject.next(this.locationQuery);
+    }
+  }
+
+  searchLocation() {
+    if (this.locationQuery && !this.isLoadingWeather) {
+      this.loadWeather(this.locationQuery);
+    }
+  }
+
+  async loadWeather(city: string) {
+    if (this.isLoadingWeather) return;
 
     this.isLoadingWeather = true;
+    this.weatherAlerts = [];
+
     try {
-      // Simulate API call (replace with actual API call when key is available)
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const geoData = await firstValueFrom(this.weatherService.getGeoLocation(city));
+      const [weather, forecastData, airQualityData] = await Promise.all([
+        firstValueFrom(this.weatherService.getCurrentWeather(city, this.selectedCountry)),
+        firstValueFrom(this.weatherService.getForecast(city, this.selectedCountry)),
+        firstValueFrom(this.weatherService.getAirQuality(geoData.lat, geoData.lon))
+      ]);
 
-      const mockWeatherData: WeatherData = {
-        forecast: [
-          { date: 'Oggi', temp: Math.round(15 + Math.random() * 10), condition: 'Soleggiato', icon: 'fa-sun' },
-          { date: 'Domani', temp: Math.round(15 + Math.random() * 10), condition: 'Nuvoloso', icon: 'fa-cloud' },
-          { date: 'Dopodomani', temp: Math.round(15 + Math.random() * 10), condition: 'Pioggia', icon: 'fa-cloud-rain' }
-        ]
-      };
+      this.weatherData = weather;
+      this.forecast = forecastData;
+      this.airQuality = airQualityData;
+      this.lastUpdateTime = new Date().toLocaleTimeString('it-IT', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
 
-      this.weatherData = mockWeatherData;
-      this.updateRecentLocations(this.locationQuery);
-    } catch (error) {
-      console.error('Error fetching weather data:', error);
+      // Generate weather alerts
+      this.generateWeatherAlerts(weather, forecastData[0]);
+
+      // Update recent locations
+      if (!this.recentLocations.includes(city)) {
+        this.recentLocations.unshift(city);
+        this.recentLocations = this.recentLocations.slice(0, 5);
+        localStorage.setItem('recentLocations', JSON.stringify(this.recentLocations));
+      }
+    } catch (error: any) {
+      this.weatherAlerts.push(error.message || 'Errore nel caricamento dei dati meteo');
     } finally {
       this.isLoadingWeather = false;
     }
   }
 
-  selectLocation(location: string) {
-    this.locationQuery = location;
-    this.searchLocation();
+  private loadRecentLocations() {
+    const saved = localStorage.getItem('recentLocations');
+    if (saved) {
+      this.recentLocations = JSON.parse(saved);
+    }
   }
 
-  private updateRecentLocations(location: string) {
-    if (!this.isBrowser) return;
+  getWeatherIcon(iconCode: string): string {
+    return this.weatherIcons[iconCode as keyof typeof this.weatherIcons] || 'fas fa-cloud';
+  }
 
-    if (!this.recentLocations.includes(location)) {
-      this.recentLocations = [location, ...this.recentLocations].slice(0, 3);
-      localStorage.setItem(this.STORAGE_KEYS.LOCATIONS, JSON.stringify(this.recentLocations));
-    }
+  getWeatherConditionClass(condition: string): string {
+    const conditions: Record<string, string> = {
+      'Clear': 'clear',
+      'Clouds': 'cloudy',
+      'Rain': 'rain',
+      'Snow': 'snow',
+      'Thunderstorm': 'storm',
+      'Drizzle': 'rain',
+      'Mist': 'mist',
+      'Fog': 'mist'
+    };
+    return conditions[condition] || '';
+  }
+
+  getPrecipitationIcon(forecast: WeatherForecast): string {
+    if (forecast.snowAmount !== undefined) return 'fas fa-snowflake';
+    if (forecast.rainAmount !== undefined) return 'fas fa-cloud-rain';
+    return 'fas fa-cloud';
+  }
+
+  getPrecipitationAmount(forecast: WeatherForecast): string {
+    if (forecast.snowAmount !== undefined) return `${forecast.snowAmount} cm`;
+    if (forecast.rainAmount !== undefined) return `${forecast.rainAmount} mm`;
+    return '0 mm';
+  }
+
+  getWindSpeedClass(speed: number): string {
+    if (speed < 5) return 'light';
+    if (speed < 15) return 'moderate';
+    if (speed < 25) return 'strong';
+    return 'extreme';
+  }
+
+  getVisibilityDescription(visibility: number): string {
+    if (visibility >= 10) return 'Ottima';
+    if (visibility >= 5) return 'Buona';
+    if (visibility >= 2) return 'Moderata';
+    return 'Scarsa';
+  }
+
+  onLocationInput(event: Event) {
+    const query = (event.target as HTMLInputElement).value;
+    this.locationQuery = query;
+    this.searchSubject.next(query);
+  }
+
+  selectCity(city: CityAutocomplete) {
+    this.locationQuery = city.name;
+    this.showSuggestions = false;
+    this.loadWeather(city.name);
   }
 
   // Chatbot Widget Methods
@@ -379,7 +503,7 @@ Comandi disponibili:
 
       case 'weather':
         if (this.weatherData) {
-          const forecast = this.weatherData.forecast
+          const forecast = this.forecast
             .map(f => `${f.date}: ${f.temp}°C, ${f.condition}`)
             .join('\n');
           this.addCommandOutput(forecast, 'info');
@@ -647,6 +771,33 @@ Comandi disponibili:
       if (widget.classList.contains('chatbot')) {
         this.scrollChatToBottom();
       }
+    }
+  }
+
+  private generateWeatherAlerts(current: WeatherData, forecast: WeatherForecast): void {
+    // Temperature alerts
+    if (current.temperature >= 35) {
+      this.weatherAlerts.push('Allerta caldo estremo');
+    } else if (current.temperature <= 0) {
+      this.weatherAlerts.push('Temperature sotto lo zero');
+    }
+
+    // Rain/Snow alerts
+    if (forecast.rainAmount && forecast.rainAmount > 10) {
+      this.weatherAlerts.push('Forti precipitazioni previste');
+    }
+    if (forecast.snowAmount && forecast.snowAmount > 5) {
+      this.weatherAlerts.push('Nevicate significative previste');
+    }
+
+    // Wind alerts
+    if (current.windSpeed > 50) {
+      this.weatherAlerts.push('Venti molto forti');
+    }
+
+    // Visibility alerts
+    if (current.visibility < 1) {
+      this.weatherAlerts.push('Visibilità molto ridotta');
     }
   }
 }

@@ -29,31 +29,213 @@
           </div>
           <div class="widget-content">
             <div class="location-search">
-              <input type="text" [(ngModel)]="locationQuery" placeholder="Cerca una località..."
-                (keyup.enter)="searchLocation()">
-              <button (click)="searchLocation()"><i class="fas fa-search"></i></button>
-            </div>
-            <div class="recent-locations" *ngIf="recentLocations.length">
-              <div class="location-tag" *ngFor="let location of recentLocations" (click)="selectLocation(location)">
-                {{ location }}
+              <div class="search-container">
+                <select class="country-select" [ngModel]="selectedCountry" (ngModelChange)="onCountryChange($event)">
+                  <option *ngFor="let country of availableCountries" [value]="country.code">
+                    {{country.name}}
+                  </option>
+                </select>
+                <input type="text" [(ngModel)]="locationQuery" (input)="onLocationInput($event)"
+                  placeholder="Cerca una città..." [class.has-suggestions]="showSuggestions">
+                <button (click)="searchLocation()" [disabled]="isLoadingWeather || !locationQuery">
+                  <i class="fas" [class.fa-search]="!isLoadingWeather" [class.fa-spinner]="isLoadingWeather"
+                    [class.fa-spin]="isLoadingWeather"></i>
+                </button>
+              </div>
+              <div class="suggestions" *ngIf="showSuggestions">
+                <div class="suggestion-item" *ngFor="let city of citySuggestions" (click)="selectCity(city)">
+                  <div class="city-info">
+                    <span class="city-name">{{city.name}}</span>
+                    <span class="city-details" *ngIf="city.state">{{city.state}}, {{city.country}}</span>
+                    <span class="city-details" *ngIf="!city.state">{{city.country}}</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="forecast" *ngIf="weatherData">
-              <h4>Previsioni</h4>
-              <div class="forecast-items">
-                <div class="forecast-item" *ngFor="let item of weatherData.forecast">
-                  <div class="date">{{ item.date }}</div>
-                  <i [class]="'fas ' + item.icon"></i>
-                  <div class="temp">{{ item.temp }}°C</div>
-                  <div class="cond">{{ item.condition }}</div>
+
+            <div class="recent-locations" *ngIf="recentLocations.length > 0">
+              <button *ngFor="let location of recentLocations" (click)="loadWeather(location)" class="location-tag">
+                {{location}}
+              </button>
+            </div>
+
+            <div class="weather-tabs" *ngIf="weatherData">
+              <button [class.active]="selectedTab === 'current'" (click)="selectedTab = 'current'">
+                <i class="fas fa-thermometer-half"></i> Attuale
+              </button>
+              <button [class.active]="selectedTab === 'forecast'" (click)="selectedTab = 'forecast'">
+                <i class="fas fa-calendar-alt"></i> Previsioni
+              </button>
+              <button [class.active]="selectedTab === 'air'" (click)="selectedTab = 'air'">
+                <i class="fas fa-wind"></i> Qualità Aria
+              </button>
+            </div>
+
+            <!-- Weather Alerts -->
+            <div class="weather-alerts" *ngIf="weatherAlerts.length > 0">
+              <div class="alert" *ngFor="let alert of weatherAlerts">
+                <i class="fas fa-exclamation-triangle"></i>
+                {{ alert }}
+              </div>
+            </div>
+
+            <!-- Current Weather Tab -->
+            <div class="weather-content" *ngIf="selectedTab === 'current' && weatherData">
+              <div class="current-weather">
+                <div class="weather-main">
+                  <div class="city-name">{{weatherData.cityName}}</div>
+                  <div class="last-update">Ultimo aggiornamento: {{lastUpdateTime}}</div>
+                  <i [class]="getWeatherIcon(weatherData.icon)"></i>
+                  <div class="weather-info">
+                    <div class="temperature">{{weatherData.temperature}}°C</div>
+                    <div class="description">{{weatherData.description}}</div>
+                  </div>
+                </div>
+                <div class="weather-details">
+                  <div class="detail">
+                    <i class="fas fa-thermometer-half"></i>
+                    <div class="detail-content">
+                      <div class="label">Percepita</div>
+                      <div class="value">{{weatherData.feelsLike}}°C</div>
+                    </div>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-tint"></i>
+                    <div class="detail-content">
+                      <div class="label">Umidità</div>
+                      <div class="value">{{weatherData.humidity}}%</div>
+                    </div>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-wind"></i>
+                    <div class="detail-content">
+                      <div class="label">Vento</div>
+                      <div class="value">{{weatherData.windSpeed}} km/h {{weatherData.windDirection}}</div>
+                    </div>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-compress-arrows-alt"></i>
+                    <div class="detail-content">
+                      <div class="label">Pressione</div>
+                      <div class="value">{{weatherData.pressure}} hPa</div>
+                    </div>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-eye"></i>
+                    <div class="detail-content">
+                      <div class="label">Visibilità</div>
+                      <div class="value">{{weatherData.visibility}} km</div>
+                      <div class="sub-value">{{getVisibilityDescription(weatherData.visibility)}}</div>
+                    </div>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-cloud"></i>
+                    <div class="detail-content">
+                      <div class="label">Nuvolosità</div>
+                      <div class="value">{{weatherData.cloudiness}}%</div>
+                    </div>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-sun"></i>
+                    <div class="detail-content">
+                      <div class="label">Alba</div>
+                      <div class="value">{{weatherData.sunrise}}</div>
+                    </div>
+                  </div>
+                  <div class="detail">
+                    <i class="fas fa-moon"></i>
+                    <div class="detail-content">
+                      <div class="label">Tramonto</div>
+                      <div class="value">{{weatherData.sunset}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Forecast Tab -->
+            <div class="weather-content" *ngIf="selectedTab === 'forecast' && forecast.length > 0">
+              <div class="forecast">
+                <div class="forecast-items">
+                  <div class="forecast-item" *ngFor="let day of forecast"
+                    [class]="getWeatherConditionClass(day.condition)">
+                    <div class="date">
+                      <div class="day">{{day.dayOfWeek}}</div>
+                      <div class="date-value">{{day.date}}</div>
+                    </div>
+                    <i [class]="getWeatherIcon(day.icon)"></i>
+                    <div class="temp-range">
+                      <span class="temp-max">{{day.tempMax}}°</span>
+                      <span class="temp-min">{{day.tempMin}}°</span>
+                    </div>
+                    <div class="condition">{{day.description}}</div>
+                    <div class="forecast-details">
+                      <div class="detail">
+                        <i class="fas fa-tint"></i>
+                        <span>{{day.humidity}}%</span>
+                      </div>
+                      <div class="detail">
+                        <i class="fas fa-wind"></i>
+                        <span>{{day.windSpeed}} km/h {{day.windDirection}}</span>
+                      </div>
+                      <div class="detail precipitation">
+                        <i [class]="getPrecipitationIcon(day)"></i>
+                        <span>{{getPrecipitationAmount(day)}}</span>
+                        <div class="pop">{{day.pop}}%</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Air Quality Tab -->
+            <div class="weather-content" *ngIf="selectedTab === 'air' && airQuality">
+              <div class="air-quality">
+                <div class="aqi-main">
+                  <div class="aqi-value">
+                    <div class="value">{{airQuality.aqi}}</div>
+                    <div class="label">Indice Qualità Aria</div>
+                    <div class="quality-level" [class]="airQuality.qualityLevel.toLowerCase()">
+                      {{airQuality.qualityLevel}}
+                    </div>
+                  </div>
+                </div>
+                <div class="aqi-components">
+                  <div class="component">
+                    <div class="label">PM2.5</div>
+                    <div class="value">{{airQuality.components.pm2_5}} µg/m³</div>
+                  </div>
+                  <div class="component">
+                    <div class="label">PM10</div>
+                    <div class="value">{{airQuality.components.pm10}} µg/m³</div>
+                  </div>
+                  <div class="component">
+                    <div class="label">NO₂</div>
+                    <div class="value">{{airQuality.components.no2}} µg/m³</div>
+                  </div>
+                  <div class="component">
+                    <div class="label">O₃</div>
+                    <div class="value">{{airQuality.components.o3}} µg/m³</div>
+                  </div>
+                  <div class="component">
+                    <div class="label">CO</div>
+                    <div class="value">{{airQuality.components.co}} µg/m³</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="widget-legend">
-          <p>Widget meteo che mostra le previsioni del tempo in tempo reale. Cerca una località per visualizzare le
-            previsioni.</p>
+          <p>Widget meteo avanzato con dati in tempo reale, previsioni a 5 giorni e qualità dell'aria.</p>
+          <div class="data-attribution">
+            Dati forniti da <a href="https://openweathermap.org/" target="_blank"
+              rel="noopener noreferrer">OpenWeather</a>
+            <div class="update-time" *ngIf="lastUpdateTime">
+              Ultimo aggiornamento: {{lastUpdateTime}}
+            </div>
+          </div>
         </div>
       </div>
 

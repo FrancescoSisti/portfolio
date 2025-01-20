@@ -2,6 +2,8 @@ import { Component, OnInit, HostListener, PLATFORM_ID, Inject, OnDestroy, Applic
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { WeatherService, WeatherData } from '../../services/weather.service';
+import { HttpClientModule } from '@angular/common/http';
 
 interface Project {
   number: string;
@@ -24,7 +26,8 @@ interface Skill {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule, HttpClientModule],
+  providers: [WeatherService]
 })
 export class HomeComponent implements OnInit, OnDestroy {
   currentTime: Date = new Date();
@@ -86,7 +89,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private appRef: ApplicationRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private weatherService: WeatherService
   ) {
     this.setInitialValues();
   }
@@ -185,9 +189,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private async updateWeather() {
     try {
-      // Temporary mock data since API key is not configured
-      this.temperature = '18';
-      this.weatherDescription = 'Soleggiato';
+      const weatherData: WeatherData = await firstValueFrom(this.weatherService.getCurrentWeather());
+      this.temperature = weatherData.temperature;
+      this.weatherDescription = weatherData.description;
     } catch (error) {
       console.error('Error fetching weather:', error);
       this.temperature = '--';
