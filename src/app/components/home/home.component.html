@@ -19,8 +19,11 @@
         </div>
         <p class="subtitle">Ciao! Ti do il benvenuto nel mio portfolio!</p>
 
-        <!-- Verona Dashboard (will be repositioned in mobile via CSS) -->
-        <div class="verona-dashboard">
+        <!-- Verona Dashboard -->
+        <div class="verona-dashboard" [class.collapsed]="isDashboardCollapsed">
+          <div class="dashboard-toggle">
+            <i class="fas fa-compass"></i>
+          </div>
           <div class="dashboard-card">
             <div class="time-section">
               <i class="far fa-clock"></i>

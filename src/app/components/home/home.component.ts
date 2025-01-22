@@ -34,8 +34,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   temperature: number | string = '--';
   weatherDescription: string = 'Caricamento...';
   greeting: string = '';
+  isDashboardCollapsed: boolean = false;
   private timeInterval: any;
   private weatherInterval: any;
+  private dashboardCollapseTimeout: any;
   private isHydrated = false;
 
   skills: Skill[] = [
@@ -103,6 +105,11 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.ngZone.run(() => {
             this.isHydrated = true;
             this.initBrowserFeatures();
+            this.dashboardCollapseTimeout = setTimeout(() => {
+              this.ngZone.run(() => {
+                this.isDashboardCollapsed = true;
+              });
+            }, 5000);
           });
         } catch (error) {
           console.error('Error during hydration:', error);
@@ -118,6 +125,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
       if (this.weatherInterval) {
         clearInterval(this.weatherInterval);
+      }
+      if (this.dashboardCollapseTimeout) {
+        clearTimeout(this.dashboardCollapseTimeout);
       }
     }
   }

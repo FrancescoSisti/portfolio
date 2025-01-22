@@ -45,45 +45,24 @@ export class CvGeneratorService {
 
     // Profile section with image handling
     try {
+      // Create circular clip path
+      doc.setFillColor(this.COLORS.white.r, this.COLORS.white.g, this.COLORS.white.b);
+      doc.circle(35, 45, 25, 'F');
+
+      // Load and add profile image if path is provided
       if (profileImagePath) {
         const img = new Image();
         img.crossOrigin = 'Anonymous';
         await new Promise((resolve, reject) => {
-          img.onload = () => {
-            // Calculate dimensions to maintain aspect ratio
-            const imageSize = 40;
-            const aspectRatio = img.width / img.height;
-            let drawWidth = imageSize;
-            let drawHeight = imageSize;
-            let offsetX = 15;
-            let offsetY = 25;
-
-            if (aspectRatio > 1) {
-              // Image is wider than tall
-              drawHeight = imageSize / aspectRatio;
-              offsetY = 25 + (imageSize - drawHeight) / 2;
-            } else if (aspectRatio < 1) {
-              // Image is taller than wide
-              drawWidth = imageSize * aspectRatio;
-              offsetX = 15 + (imageSize - drawWidth) / 2;
-            }
-
-            // Draw white circle background
-            doc.setFillColor(this.COLORS.white.r, this.COLORS.white.g, this.COLORS.white.b);
-            doc.circle(35, 45, 20, 'F');
-
-            // Add the image with calculated dimensions
-            doc.addImage(img, 'JPEG', offsetX, offsetY, drawWidth, drawHeight, undefined, 'MEDIUM');
-          };
+          img.onload = resolve;
           img.onerror = reject;
           img.src = profileImagePath;
         });
+        doc.addImage(img, 'JPEG', 15, 25, 40, 40, undefined, 'MEDIUM');
       }
     } catch (error) {
       console.error('Error loading profile image:', error);
       // Fallback: just show the white circle if image fails to load
-      doc.setFillColor(this.COLORS.white.r, this.COLORS.white.g, this.COLORS.white.b);
-      doc.circle(35, 45, 20, 'F');
     }
 
     // Name
