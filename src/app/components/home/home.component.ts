@@ -30,14 +30,6 @@ interface Skill {
   providers: [WeatherService]
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  currentTime: Date = new Date();
-  temperature: number | string = '--';
-  weatherDescription: string = 'Caricamento...';
-  greeting: string = '';
-  isDashboardCollapsed: boolean = false;
-  private timeInterval: any;
-  private weatherInterval: any;
-  private dashboardCollapseTimeout: any;
   private isHydrated = false;
 
   skills: Skill[] = [
@@ -91,11 +83,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private appRef: ApplicationRef,
-    private ngZone: NgZone,
-    private weatherService: WeatherService
-  ) {
-    this.setInitialValues();
-  }
+    private ngZone: NgZone
+  ) { }
 
   async ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
@@ -105,11 +94,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.ngZone.run(() => {
             this.isHydrated = true;
             this.initBrowserFeatures();
-            this.dashboardCollapseTimeout = setTimeout(() => {
-              this.ngZone.run(() => {
-                this.isDashboardCollapsed = true;
-              });
-            }, 5000);
           });
         } catch (error) {
           console.error('Error during hydration:', error);
@@ -118,19 +102,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    if (isPlatformBrowser(this.platformId)) {
-      if (this.timeInterval) {
-        clearInterval(this.timeInterval);
-      }
-      if (this.weatherInterval) {
-        clearInterval(this.weatherInterval);
-      }
-      if (this.dashboardCollapseTimeout) {
-        clearTimeout(this.dashboardCollapseTimeout);
-      }
-    }
-  }
+  ngOnDestroy() { }
 
   scrollToContent() {
     if (!this.isHydrated) return;
@@ -145,68 +117,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setInitialValues() {
-    const hour = new Date().getHours();
-    if (hour >= 5 && hour < 12) {
-      this.greeting = 'Buongiorno';
-    } else if (hour >= 12 && hour < 18) {
-      this.greeting = 'Buon pomeriggio';
-    } else {
-      this.greeting = 'Buonasera';
-    }
-    this.temperature = '18';
-    this.weatherDescription = 'Soleggiato';
-  }
-
   private initBrowserFeatures() {
     this.ngZone.runOutsideAngular(() => {
       this.initScrollAnimations();
-      this.initDashboard();
     });
-  }
-
-  private initDashboard() {
-    this.updateTime();
-    this.timeInterval = setInterval(() => {
-      this.ngZone.run(() => {
-        this.updateTime();
-      });
-    }, 1000);
-
-    this.updateWeather();
-    this.weatherInterval = setInterval(() => {
-      this.ngZone.run(() => {
-        this.updateWeather();
-      });
-    }, 30 * 60 * 1000);
-  }
-
-  private updateTime() {
-    this.currentTime = new Date();
-    this.updateGreeting();
-  }
-
-  private updateGreeting() {
-    const hour = new Date().getHours();
-    if (hour >= 5 && hour < 12) {
-      this.greeting = 'Buongiorno';
-    } else if (hour >= 12 && hour < 18) {
-      this.greeting = 'Buon pomeriggio';
-    } else {
-      this.greeting = 'Buonasera';
-    }
-  }
-
-  private async updateWeather() {
-    try {
-      const weatherData: WeatherData = await firstValueFrom(this.weatherService.getCurrentWeather());
-      this.temperature = weatherData.temperature;
-      this.weatherDescription = weatherData.description;
-    } catch (error) {
-      console.error('Error fetching weather:', error);
-      this.temperature = '--';
-      this.weatherDescription = 'Non disponibile';
-    }
   }
 
   private initScrollAnimations() {
