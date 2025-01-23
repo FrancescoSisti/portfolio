@@ -3,7 +3,7 @@
   <header class="header">
     <div class="name-title">
       <h1>Francesco Sisti</h1>
-      <h2>Junior Full Stack Developer</h2>
+      <h2>Full Stack Developer</h2>
     </div>
   </header>
 
@@ -25,11 +25,11 @@
           </li>
           <li>
             <i class="fab fa-github"></i>
-            <a href="https://github.com/FrancescoSisti" target="_blank">github.com/FrancescoSisti</a>
+            <a href="https://www.github.com/FrancescoSisti" target="_blank">github.com/FrancescoSisti</a>
           </li>
           <li>
             <i class="fab fa-linkedin"></i>
-            <a href="https://linkedin.com/in/francesco-sisti-21b88023a" target="_blank">LinkedIn</a>
+            <a href="https://www.linkedin.com/in/francesco-sisti-21b88023a" target="_blank">Francesco Sisti</a>
           </li>
         </ul>
       </section>
@@ -38,9 +38,9 @@
       <section class="skills">
         <h3>Competenze Tecniche</h3>
         <div class="skill-category">
-          <h4>Frontend</h4>
+          <h4>Frontend Development</h4>
           <div class="skill-item">
-            <span>HTML/CSS/SASS</span>
+            <span>HTML5/CSS3/SASS</span>
             <div class="skill-bar">
               <div class="skill-level" style="width: 90%"></div>
             </div>
@@ -66,7 +66,7 @@
         </div>
 
         <div class="skill-category">
-          <h4>Backend</h4>
+          <h4>Backend Development</h4>
           <div class="skill-item">
             <span>PHP</span>
             <div class="skill-bar">
@@ -74,13 +74,13 @@
             </div>
           </div>
           <div class="skill-item">
-            <span>Laravel</span>
+            <span>Laravel Framework</span>
             <div class="skill-bar">
               <div class="skill-level" style="width: 80%"></div>
             </div>
           </div>
           <div class="skill-item">
-            <span>MySQL</span>
+            <span>MySQL/Database Design</span>
             <div class="skill-bar">
               <div class="skill-level" style="width: 75%"></div>
             </div>
@@ -88,15 +88,15 @@
         </div>
 
         <div class="skill-category">
-          <h4>Tools & Altro</h4>
+          <h4>Strumenti & Metodologie</h4>
           <div class="skill-item">
-            <span>Git/GitHub</span>
+            <span>Git/GitHub/Version Control</span>
             <div class="skill-bar">
               <div class="skill-level" style="width: 85%"></div>
             </div>
           </div>
           <div class="skill-item">
-            <span>REST API</span>
+            <span>RESTful API Development</span>
             <div class="skill-bar">
               <div class="skill-level" style="width: 80%"></div>
             </div>
@@ -110,12 +110,11 @@
       <!-- About Me -->
       <section class="about">
         <h3>Profilo Professionale</h3>
-        <p>Junior Full Stack Developer con solida formazione in Boolean Careers. Appassionato di tecnologia e sviluppo
-          web,
-          mi distinguo per la capacità di apprendimento rapido e l'attenzione ai dettagli. Ho sviluppato una particolare
-          predilezione per lo sviluppo frontend e la creazione di interfacce utente intuitive. Cerco opportunità per
-          crescere
-          professionalmente in un ambiente dinamico.</p>
+        <p>Full Stack Developer con solida esperienza nello sviluppo web moderno. Specializzato nella creazione di
+          applicazioni web scalabili e performanti, con particolare focus sull'architettura software e le best practices
+          di sviluppo. Combino competenze tecniche approfondite con una spiccata capacità di problem-solving e
+          un approccio orientato ai risultati. Costantemente aggiornato sulle ultime tecnologie e tendenze del settore.
+        </p>
       </section>
 
       <!-- Experience -->
@@ -126,12 +125,12 @@
             <h4>Full Stack Developer</h4>
             <span class="period">2024 - Presente</span>
           </div>
-          <h5>Progetti Freelance</h5>
+          <h5>Sviluppo Progetti Web</h5>
           <ul>
-            <li>Sviluppo di applicazioni web con Vue.js e Laravel</li>
-            <li>Implementazione di interfacce responsive e intuitive</li>
-            <li>Gestione database MySQL e sviluppo API RESTful</li>
-            <li>Utilizzo di Git per il controllo versione</li>
+            <li>Progettazione e sviluppo di applicazioni web scalabili con Vue.js e Laravel</li>
+            <li>Implementazione di architetture frontend moderne e ottimizzazione delle performance</li>
+            <li>Sviluppo di API RESTful e gestione di database relazionali</li>
+            <li>Implementazione di workflow di continuous integration e deployment</li>
           </ul>
         </div>
       </section>
@@ -146,18 +145,18 @@
           </div>
           <h5>Master in Full Stack Web Development</h5>
           <ul>
-            <li>700 ore di formazione intensiva con focus su progetti pratici</li>
-            <li>Sviluppo frontend con HTML5, CSS3, SASS, JavaScript e Vue.js</li>
-            <li>Programmazione backend con PHP, Laravel e MySQL</li>
-            <li>Esperienza con metodologie Agile e lavoro in team</li>
+            <li>Programma intensivo di 700 ore con focus su progetti enterprise-level</li>
+            <li>Sviluppo frontend avanzato con HTML5, CSS3, SASS, JavaScript e framework moderni</li>
+            <li>Architettura backend con PHP, Laravel e progettazione database</li>
+            <li>Applicazione di metodologie Agile e best practices di team collaboration</li>
           </ul>
         </div>
       </section>
 
       <!-- Privacy Consent -->
       <section class="privacy-consent">
-        <p>Autorizzo il trattamento dei dati personali contenuti nel mio curriculum vitae in base all'art. 13 del D.
-          Lgs. 196/2003 e all'art. 13 del Regolamento UE 2016/679.</p>
+        <p>Autorizzo il trattamento dei dati personali contenuti nel mio curriculum vitae ai sensi del D.Lgs. 196/2003
+          e del GDPR (Regolamento UE 2016/679).</p>
       </section>
     </div>
   </div>
@@ -167,7 +166,7 @@
   <button (click)="generatePreview()" [disabled]="isGenerating" *ngIf="!previewUrl">
     <i class="fas" [class.fa-spinner]="isGenerating" [class.fa-spin]="isGenerating"
       [class.fa-file-pdf]="!isGenerating"></i>
-    {{ isGenerating ? 'Generazione in corso...' : 'Genera Anteprima PDF' }}
+    {{ isGenerating ? 'Generazione PDF in corso...' : 'Genera Anteprima PDF' }}
   </button>
 
   <div class="preview-container" *ngIf="previewUrl">
