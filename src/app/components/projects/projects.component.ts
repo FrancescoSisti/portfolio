@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 
 interface Project {
   title: string;
@@ -17,14 +18,19 @@ interface Project {
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, RouterModule]
 })
 export class ProjectsComponent {
-  constructor(private sanitizer: DomSanitizer) { }
+  @ViewChild('previewIframe') previewIframe!: ElementRef;
+
+  constructor(private sanitizer: DomSanitizer) {
+    this.opusPreviewUrl = this.getSafeUrl('https://opusagency.it');
+  }
 
   isModalOpen = false;
   showTimeoutMessage = false;
-  previewTimeoutId: any;
+  opusPreviewUrl: SafeResourceUrl;
+  private previewTimeoutId: any;
 
   featuredProjects: Project[] = [
     {
@@ -106,10 +112,10 @@ export class ProjectsComponent {
     this.isModalOpen = true;
     this.showTimeoutMessage = false;
 
-    // Set timeout for 20 seconds
+    // Set timeout for 10 seconds
     this.previewTimeoutId = setTimeout(() => {
       this.showTimeoutMessage = true;
-    }, 20000);
+    }, 10000);
   }
 
   closePreviewModal() {
