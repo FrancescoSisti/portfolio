@@ -163,17 +163,9 @@
 </div>
 
 <div class="actions">
-  <button (click)="generatePreview()" [disabled]="isGenerating" *ngIf="!previewUrl">
+  <button class="download-button" (click)="downloadPDF()" [disabled]="isGenerating">
     <i class="fas" [class.fa-spinner]="isGenerating" [class.fa-spin]="isGenerating"
-      [class.fa-file-pdf]="!isGenerating"></i>
-    {{ isGenerating ? 'Generazione PDF in corso...' : 'Genera Anteprima PDF' }}
+      [class.fa-download]="!isGenerating"></i>
+    {{ isGenerating ? 'Generazione CV in corso...' : 'Scarica il CV' }}
   </button>
-
-  <div class="preview-container" *ngIf="previewUrl">
-    <iframe [src]="previewUrl | safe:'resourceUrl'" class="pdf-preview"></iframe>
-    <button (click)="downloadPDF()" class="download-button">
-      <i class="fas fa-download"></i>
-      Scarica PDF
-    </button>
-  </div>
 </div>

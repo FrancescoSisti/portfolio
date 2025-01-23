@@ -12,30 +12,19 @@ import { SafePipe } from '../../pipes/safe.pipe';
 })
 export class CvTemplateComponent {
   isGenerating = false;
-  previewUrl: string | null = null;
 
   constructor(private cvGenerator: CvGeneratorService) { }
 
-  async generatePreview(): Promise<void> {
+  async downloadPDF(): Promise<void> {
     if (this.isGenerating) return;
 
     this.isGenerating = true;
     try {
-      this.previewUrl = await this.cvGenerator.generatePreview('cv-template');
-    } catch (error) {
-      console.error('Error generating preview:', error);
-    } finally {
-      this.isGenerating = false;
-    }
-  }
-
-  async downloadPDF(): Promise<void> {
-    if (!this.previewUrl) return;
-
-    try {
       await this.cvGenerator.downloadCV();
     } catch (error) {
       console.error('Error downloading PDF:', error);
+    } finally {
+      this.isGenerating = false;
     }
   }
 }

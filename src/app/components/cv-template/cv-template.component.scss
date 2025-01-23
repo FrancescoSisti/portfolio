@@ -2,10 +2,12 @@
   display: block;
   padding: 20px;
   background: #f5f5f5;
+  width: 100%;
 }
 
 .cv-container {
-  width: 210mm; // Fixed A4 width
+  width: 210mm;
+  min-width: 210mm;
   margin: 0 auto;
   background: white;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -228,69 +230,8 @@ h3 {
 
 .actions {
   display: flex;
-  gap: 10px;
   justify-content: center;
   margin-top: 25px;
-
-  button {
-    padding: 12px 24px;
-    background: #1a4f72;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    i {
-      font-size: 1.1em;
-    }
-
-    &:hover {
-      background: #2980b9;
-      transform: translateY(-1px);
-    }
-
-    &:disabled {
-      background: #95a5a6;
-      cursor: not-allowed;
-      transform: none;
-    }
-  }
-}
-
-.hidden-cv {
-  position: fixed;
-  left: -9999px;
-  top: -9999px;
-  visibility: hidden;
-  pointer-events: none;
-  opacity: 0;
-  height: auto;
-  overflow: visible;
-  width: 210mm; // A4 width
-  background: white;
-  z-index: -1;
-}
-
-.preview-container {
-  margin-top: 30px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-
-  .pdf-preview {
-    width: 100%;
-    height: 800px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
 
   .download-button {
     padding: 12px 24px;
@@ -313,5 +254,25 @@ h3 {
       background: #2ecc71;
       transform: translateY(-1px);
     }
+
+    &:disabled {
+      background: #95a5a6;
+      cursor: not-allowed;
+      transform: none;
+    }
   }
+}
+
+.hidden-cv {
+  position: fixed;
+  left: -9999px;
+  top: -9999px;
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+  height: auto;
+  overflow: visible;
+  width: 210mm;
+  background: white;
+  z-index: -1;
 }

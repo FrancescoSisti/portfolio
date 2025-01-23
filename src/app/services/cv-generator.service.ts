@@ -148,7 +148,26 @@ export class CvGeneratorService {
   downloadCV(): void {
     if (this.pdfDoc) {
       const timestamp = new Date().toISOString().split('T')[0];
-      this.pdfDoc.save(`Francesco_Sisti_CV_${timestamp}.pdf`);
+      const filename = `Francesco_Sisti_CV_${timestamp}.pdf`;
+
+      // Genera un data URL sicuro per il PDF
+      const pdfDataUrl = this.pdfDoc.output('dataurlstring', {
+        filename: filename
+      });
+
+      // Crea un link sicuro per il download
+      const link = document.createElement('a');
+      link.href = pdfDataUrl;
+      link.download = filename;
+      link.rel = 'noopener noreferrer';
+      link.type = 'application/pdf';
+
+      // Simula il click per il download
+      document.body.appendChild(link);
+      link.click();
+
+      // Rimuove l'elemento
+      document.body.removeChild(link);
     } else {
       console.error('No PDF document available. Generate it first.');
     }

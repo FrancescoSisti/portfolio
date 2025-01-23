@@ -255,6 +255,11 @@
             </div>
 
             <div class="preview-container" *ngIf="previewUrl">
+              <div class="mobile-message">
+                <i class="fas fa-desktop"></i>
+                <p>L'anteprima del CV è disponibile nella versione desktop del sito.<br>
+                  Puoi scaricare direttamente il PDF utilizzando il pulsante qui sotto.</p>
+              </div>
               <iframe [src]="previewUrl | safe:'resourceUrl'" class="pdf-preview"></iframe>
               <button class="download-button" (click)="downloadPDF()">
                 <i class="fas fa-download"></i>

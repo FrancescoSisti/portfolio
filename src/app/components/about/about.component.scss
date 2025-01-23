@@ -745,6 +745,42 @@
         border-radius: 0.75rem;
         box-shadow: var(--shadow-sm);
     }
+
+    .mobile-message {
+        display: none;
+        text-align: center;
+        color: var(--text-secondary);
+        background: var(--surface);
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        border: 1px solid var(--border-light);
+
+        i {
+            color: var(--primary);
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin: 0;
+            line-height: 1.5;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .preview-container {
+        .pdf-preview {
+            display: none;
+        }
+
+        .mobile-message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
 }
 
 .hidden-cv {
