@@ -20,7 +20,7 @@
       <div class="left-column">
         <div class="profile-card">
           <div class="profile-image">
-            <img src="assets/images/profile/profilo.jpg" alt="Il mio profilo professionale">
+            <img src="assets/images/profilo.jpg" alt="Il mio profilo professionale">
           </div>
           <div class="profile-info">
             <h2>Sviluppatore Full Stack</h2>
@@ -242,10 +242,25 @@
               Scarica il mio curriculum vitae in formato PDF, generato automaticamente con le informazioni più recenti
               del mio portfolio.
             </p>
-            <button class="cv-button" (click)="generateCV()">
-              <i class="fas fa-file-pdf"></i>
-              Genera CV
-            </button>
+            <div class="buttons-container">
+              <button class="generate-button" (click)="generatePreview()" [disabled]="isGenerating"
+                *ngIf="!isGenerating">
+                <i class="fas fa-file-pdf"></i>
+                Genera Anteprima PDF
+              </button>
+              <div class="generating-message" *ngIf="isGenerating">
+                <i class="fas fa-spinner fa-spin"></i>
+                Generazione del PDF in corso...
+              </div>
+            </div>
+
+            <div class="preview-container" *ngIf="previewUrl">
+              <iframe [src]="previewUrl | safe:'resourceUrl'" class="pdf-preview"></iframe>
+              <button class="download-button" (click)="downloadPDF()">
+                <i class="fas fa-download"></i>
+                Scarica PDF
+              </button>
+            </div>
           </div>
         </div>
 
@@ -253,3 +268,5 @@
     </div>
   </div>
 </div>
+
+<app-cv-template class="hidden-cv"></app-cv-template>

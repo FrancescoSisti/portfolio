@@ -1,0 +1,180 @@
+<div id="cv-template" class="cv-container">
+  <!-- Header Section -->
+  <header class="header">
+    <div class="name-title">
+      <h1>Francesco Sisti</h1>
+      <h2>Junior Full Stack Developer</h2>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Left Column -->
+    <div class="left-column">
+      <!-- Contact Info -->
+      <section class="contact-info">
+        <h3>Contatti</h3>
+        <ul>
+          <li>
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:francescosisti61&#64;gmail.com">francescosisti61&#64;gmail.com</a>
+          </li>
+          <li>
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Verona, Italia</span>
+          </li>
+          <li>
+            <i class="fab fa-github"></i>
+            <a href="https://github.com/FrancescoSisti" target="_blank">github.com/FrancescoSisti</a>
+          </li>
+          <li>
+            <i class="fab fa-linkedin"></i>
+            <a href="https://linkedin.com/in/francesco-sisti-21b88023a" target="_blank">LinkedIn</a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Skills -->
+      <section class="skills">
+        <h3>Competenze Tecniche</h3>
+        <div class="skill-category">
+          <h4>Frontend</h4>
+          <div class="skill-item">
+            <span>HTML/CSS/SASS</span>
+            <div class="skill-bar">
+              <div class="skill-level" style="width: 90%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span>JavaScript/TypeScript</span>
+            <div class="skill-bar">
+              <div class="skill-level" style="width: 85%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span>Vue.js</span>
+            <div class="skill-bar">
+              <div class="skill-level" style="width: 80%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span>Angular</span>
+            <div class="skill-bar">
+              <div class="skill-level" style="width: 75%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h4>Backend</h4>
+          <div class="skill-item">
+            <span>PHP</span>
+            <div class="skill-bar">
+              <div class="skill-level" style="width: 85%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span>Laravel</span>
+            <div class="skill-bar">
+              <div class="skill-level" style="width: 80%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span>MySQL</span>
+            <div class="skill-bar">
+              <div class="skill-level" style="width: 75%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h4>Tools & Altro</h4>
+          <div class="skill-item">
+            <span>Git/GitHub</span>
+            <div class="skill-bar">
+              <div class="skill-level" style="width: 85%"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <span>REST API</span>
+            <div class="skill-bar">
+              <div class="skill-level" style="width: 80%"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-column">
+      <!-- About Me -->
+      <section class="about">
+        <h3>Profilo Professionale</h3>
+        <p>Junior Full Stack Developer con solida formazione in Boolean Careers. Appassionato di tecnologia e sviluppo
+          web,
+          mi distinguo per la capacità di apprendimento rapido e l'attenzione ai dettagli. Ho sviluppato una particolare
+          predilezione per lo sviluppo frontend e la creazione di interfacce utente intuitive. Cerco opportunità per
+          crescere
+          professionalmente in un ambiente dinamico.</p>
+      </section>
+
+      <!-- Experience -->
+      <section class="experience">
+        <h3>Esperienza Professionale</h3>
+        <div class="experience-item">
+          <div class="experience-header">
+            <h4>Full Stack Developer</h4>
+            <span class="period">2024 - Presente</span>
+          </div>
+          <h5>Progetti Freelance</h5>
+          <ul>
+            <li>Sviluppo di applicazioni web con Vue.js e Laravel</li>
+            <li>Implementazione di interfacce responsive e intuitive</li>
+            <li>Gestione database MySQL e sviluppo API RESTful</li>
+            <li>Utilizzo di Git per il controllo versione</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Education -->
+      <section class="education">
+        <h3>Formazione</h3>
+        <div class="education-item">
+          <div class="education-header">
+            <h4>Boolean Careers</h4>
+            <span class="period">2024</span>
+          </div>
+          <h5>Master in Full Stack Web Development</h5>
+          <ul>
+            <li>700 ore di formazione intensiva con focus su progetti pratici</li>
+            <li>Sviluppo frontend con HTML5, CSS3, SASS, JavaScript e Vue.js</li>
+            <li>Programmazione backend con PHP, Laravel e MySQL</li>
+            <li>Esperienza con metodologie Agile e lavoro in team</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Privacy Consent -->
+      <section class="privacy-consent">
+        <p>Autorizzo il trattamento dei dati personali contenuti nel mio curriculum vitae in base all'art. 13 del D.
+          Lgs. 196/2003 e all'art. 13 del Regolamento UE 2016/679.</p>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="actions">
+  <button (click)="generatePreview()" [disabled]="isGenerating" *ngIf="!previewUrl">
+    <i class="fas" [class.fa-spinner]="isGenerating" [class.fa-spin]="isGenerating"
+      [class.fa-file-pdf]="!isGenerating"></i>
+    {{ isGenerating ? 'Generazione in corso...' : 'Genera Anteprima PDF' }}
+  </button>
+
+  <div class="preview-container" *ngIf="previewUrl">
+    <iframe [src]="previewUrl | safe:'resourceUrl'" class="pdf-preview"></iframe>
+    <button (click)="downloadPDF()" class="download-button">
+      <i class="fas fa-download"></i>
+      Scarica PDF
+    </button>
+  </div>
+</div>
