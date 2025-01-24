@@ -106,12 +106,14 @@ export class CvGeneratorService {
         orientation: 'portrait',
         unit: 'mm',
         format: 'a4',
-        compress: true
+        compress: true,
+        putOnlyUsedFonts: true,
+        floatPrecision: 16
       });
 
-      // Add the image
-      const imgData = canvas.toDataURL('image/jpeg', 1.0);
-      this.pdfDoc.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, '', 'FAST');
+      // Add the image with better quality
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      this.pdfDoc.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, '', 'MEDIUM');
 
       // Handle multiple pages if needed
       if (imgHeight > pageHeight) {
@@ -120,14 +122,16 @@ export class CvGeneratorService {
 
         while (heightLeft >= 0) {
           this.pdfDoc.addPage();
-          this.pdfDoc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, '', 'FAST');
+          this.pdfDoc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, '', 'MEDIUM');
           heightLeft -= pageHeight;
           position -= pageHeight;
         }
       }
 
-      // Generate preview URL
-      const previewUrl = this.pdfDoc.output('datauristring');
+      // Generate preview URL with better quality
+      const previewUrl = this.pdfDoc.output('datauristring', {
+        filename: 'preview.pdf'
+      });
       return previewUrl;
 
     } catch (error) {
@@ -150,24 +154,8 @@ export class CvGeneratorService {
       const timestamp = new Date().toISOString().split('T')[0];
       const filename = `Francesco_Sisti_CV_${timestamp}.pdf`;
 
-      // Genera un data URL sicuro per il PDF
-      const pdfDataUrl = this.pdfDoc.output('dataurlstring', {
-        filename: filename
-      });
-
-      // Crea un link sicuro per il download
-      const link = document.createElement('a');
-      link.href = pdfDataUrl;
-      link.download = filename;
-      link.rel = 'noopener noreferrer';
-      link.type = 'application/pdf';
-
-      // Simula il click per il download
-      document.body.appendChild(link);
-      link.click();
-
-      // Rimuove l'elemento
-      document.body.removeChild(link);
+      // Usa il metodo save() di jsPDF che gestisce meglio il download su diversi browser
+      this.pdfDoc.save(filename);
     } else {
       console.error('No PDF document available. Generate it first.');
     }
