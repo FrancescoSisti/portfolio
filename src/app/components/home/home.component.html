@@ -21,17 +21,29 @@
 
         <!-- Stats Container -->
         <div class="stats-container">
-          <div class="stat">
-            <div class="stat-value">2<span class="symbol">+</span></div>
-            <div class="stat-label">Anni di Esperienza</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value">15<span class="symbol">+</span></div>
-            <div class="stat-label">Progetti Completati</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value">5<span class="symbol">+</span></div>
-            <div class="stat-label">Tecnologie Utilizzate</div>
+          <div class="stat" *ngFor="let stat of stats; let i = index" (click)="toggleTooltip(i)"
+            (mouseenter)="showTooltip(i)" (mouseleave)="hideTooltip()">
+            <div class="stat-value">
+              {{stat.value}}<span class="symbol">{{stat.symbol}}</span>
+            </div>
+            <div class="stat-label">{{stat.label}}</div>
+
+            <!-- Tooltip -->
+            <div class="stat-tooltip" [class.active]="activeTooltip === i" [class.mobile]="isMobile">
+              <div class="tooltip-content">
+                <div class="tooltip-header" *ngIf="isMobile">
+                  <h4>{{stat.details.title}}</h4>
+                  <button class="close-btn" (click)="toggleTooltip(i)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+                <h4 *ngIf="!isMobile">{{stat.details.title}}</h4>
+                <p>{{stat.details.description}}</p>
+                <ul *ngIf="stat.details.items">
+                  <li *ngFor="let item of stat.details.items">{{item}}</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
 

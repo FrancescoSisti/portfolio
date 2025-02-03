@@ -21,6 +21,17 @@ interface Skill {
   icon: string;
 }
 
+interface Stat {
+  value: number;
+  symbol: string;
+  label: string;
+  details: {
+    title: string;
+    description: string;
+    items?: string[];
+  };
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -31,6 +42,8 @@ interface Skill {
 })
 export class HomeComponent implements OnInit, OnDestroy {
   private isHydrated = false;
+  activeTooltip: number | null = null;
+  isMobile = false;
 
   skills: Skill[] = [
     { name: 'HTML5', icon: 'fab fa-html5' },
@@ -80,11 +93,65 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   ];
 
+  stats: Stat[] = [
+    {
+      value: 2,
+      symbol: '+',
+      label: 'Anni di Esperienza',
+      details: {
+        title: 'Esperienza Professionale',
+        description: 'Due anni di esperienza nello sviluppo web, specializzandomi in:',
+        items: [
+          'Sviluppo Full Stack con Angular e Laravel',
+          'Progettazione UI/UX',
+          'Ottimizzazione delle performance',
+          'Gestione di progetti end-to-end'
+        ]
+      }
+    },
+    {
+      value: 15,
+      symbol: '+',
+      label: 'Progetti Completati',
+      details: {
+        title: 'Portfolio Progetti',
+        description: 'Progetti sviluppati in diversi settori:',
+        items: [
+          'Siti web aziendali',
+          'E-commerce',
+          'Applicazioni web',
+          'Dashboard amministrative',
+          'Integrazioni API'
+        ]
+      }
+    },
+    {
+      value: 5,
+      symbol: '+',
+      label: 'Tecnologie Utilizzate',
+      details: {
+        title: 'Stack Tecnologico',
+        description: 'Competenze principali in:',
+        items: [
+          'Frontend: Angular, Vue.js, HTML5, CSS3, JavaScript',
+          'Backend: PHP, Laravel, Node.js',
+          'Database: MySQL, MongoDB',
+          'Tools: Git, Docker, AWS',
+          'Design: Figma, Adobe XD'
+        ]
+      }
+    }
+  ];
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private appRef: ApplicationRef,
     private ngZone: NgZone
-  ) { }
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth < 768;
+    }
+  }
 
   async ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
@@ -162,6 +229,45 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
         }
       });
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth < 768;
+      if (this.isMobile) {
+        this.activeTooltip = null;
+      }
+    }
+  }
+
+  toggleTooltip(index: number) {
+    if (this.isMobile) {
+      this.activeTooltip = this.activeTooltip === index ? null : index;
+    }
+  }
+
+  showTooltip(index: number) {
+    if (!this.isMobile) {
+      this.activeTooltip = index;
+    }
+  }
+
+  hideTooltip() {
+    if (!this.isMobile) {
+      this.activeTooltip = null;
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (this.isMobile && this.activeTooltip !== null) {
+      const tooltip = document.querySelector('.stat-tooltip.active');
+      const stat = document.querySelector('.stat');
+      if (tooltip && stat && !stat.contains(event.target as Node)) {
+        this.activeTooltip = null;
+      }
     }
   }
 }

@@ -39,3 +39,10 @@ export const routes: Routes = [
     pathMatch: 'full'
   }
 ];
+
+export const routingConfiguration = {
+  useHash: true,
+  scrollPositionRestoration: 'enabled',
+  anchorScrolling: 'enabled',
+  onSameUrlNavigation: 'reload'
+};
