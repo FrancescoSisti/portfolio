@@ -3,7 +3,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { WeatherService, WeatherData } from '../../services/weather.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 interface Project {
   number: string;
@@ -38,7 +38,7 @@ interface Stat {
   styleUrls: ['./home.component.scss'],
   standalone: true,
   imports: [CommonModule, RouterModule, HttpClientModule],
-  providers: [WeatherService]
+  providers: [WeatherService, HttpClient]
 })
 export class HomeComponent implements OnInit, OnDestroy {
   private isHydrated = false;
