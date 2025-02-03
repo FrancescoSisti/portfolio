@@ -4,6 +4,7 @@ import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { CustomPreloadingStrategy } from './services/preload-strategy.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,6 +14,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideClientHydration(),
     provideAnimations(),
-    provideHttpClient(withFetch())
+    provideHttpClient(withFetch()),
+    CustomPreloadingStrategy
   ]
 };

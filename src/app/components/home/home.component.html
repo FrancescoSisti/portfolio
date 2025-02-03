@@ -112,7 +112,8 @@
             </div>
           </div>
           <div class="card-image">
-            <img [src]="project.imageUrl" [alt]="project.imageAlt">
+            <img *ngFor="let project of featuredProjects" [ngSrc]="project.imageUrl" [alt]="project.imageAlt"
+              loading="lazy" [width]="800" [height]="600" [priority]="false" />
             <div class="image-overlay"></div>
           </div>
         </div>

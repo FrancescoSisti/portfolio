@@ -1,9 +1,11 @@
 import { defineConfig } from 'vite';
 import angular from '@analogjs/vite-plugin-angular';
+import { splitVendorChunkPlugin } from 'vite';
 
 export default defineConfig({
   plugins: [
-    angular()
+    angular(),
+    splitVendorChunkPlugin()
   ],
   base: '/',
   server: {
@@ -17,9 +19,34 @@ export default defineConfig({
     host: true
   },
   build: {
-    sourcemap: false,
-    commonjsOptions: {
-      transformMixedEsModules: true
+    target: 'es2015',
+    cssCodeSplit: true,
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': [
+            '@angular/common',
+            '@angular/core',
+            '@angular/platform-browser',
+            '@angular/router'
+          ],
+          'features': [
+            './src/app/components/about/about.component',
+            './src/app/components/projects/projects.component',
+            './src/app/components/skills/skills.component',
+            './src/app/components/contact/contact.component'
+          ]
+        }
+      }
+    },
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log']
+      }
     }
   },
   resolve: {
@@ -27,6 +54,10 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: [
+      '@angular/common',
+      '@angular/core',
+      '@angular/platform-browser',
+      '@angular/router',
       'core-js/modules/es.promise.js',
       'core-js/modules/es.string.match.js',
       'core-js/modules/es.string.replace.js',

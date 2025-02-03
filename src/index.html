@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>Francesco Sisti • Full Stack Developer</title>
-  <base href="./">
+  <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description"
     content="Portfolio di Francesco Sisti - Full Stack Developer & UI Designer con base a Verona. Scopri i miei progetti e le mie competenze.">
@@ -24,6 +24,15 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    (function () {
+      var redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect != location.href) {
+        history.replaceState(null, null, redirect);
+      }
+    })();
+  </script>
 </head>
 
 <body>

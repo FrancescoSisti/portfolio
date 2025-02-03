@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { WeatherService, WeatherData } from '../../services/weather.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { NgOptimizedImage } from '@angular/common';
 
 interface Project {
   number: string;
@@ -37,7 +38,7 @@ interface Stat {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule],
+  imports: [CommonModule, RouterModule, HttpClientModule, NgOptimizedImage],
   providers: [WeatherService, HttpClient]
 })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -185,9 +186,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private initBrowserFeatures() {
-    this.ngZone.runOutsideAngular(() => {
-      this.initScrollAnimations();
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      this.ngZone.runOutsideAngular(() => {
+        this.initScrollAnimations();
+        this.lazyLoadImages();
+      });
+    }
   }
 
   private initScrollAnimations() {
@@ -212,6 +216,33 @@ export class HomeComponent implements OnInit, OnDestroy {
     document.querySelectorAll('section').forEach(section => {
       observer.observe(section);
     });
+  }
+
+  private lazyLoadImages() {
+    if ('loading' in HTMLImageElement.prototype) {
+      document.querySelectorAll('img[data-src]').forEach(img => {
+        if (img instanceof HTMLImageElement) {
+          img.src = img.dataset['src'] || '';
+          img.removeAttribute('data-src');
+        }
+      });
+    } else {
+      // Fallback per browser che non supportano lazy loading nativo
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target as HTMLImageElement;
+            img.src = img.dataset['src'] || '';
+            img.removeAttribute('data-src');
+            observer.unobserve(img);
+          }
+        });
+      });
+
+      document.querySelectorAll('img[data-src]').forEach(img => {
+        imageObserver.observe(img);
+      });
+    }
   }
 
   @HostListener('window:scroll', ['$event'])
