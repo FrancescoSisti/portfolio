@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       description: 'Sito web aziendale moderno con design personalizzato, ottimizzazione SEO e interfaccia utente reattiva. Realizzato completamente da zero con tecnologie all\'avanguardia.',
       technologies: ['Angular', 'TypeScript', 'SCSS', 'SEO'],
       previewUrl: 'https://opusagency.it/',
-      imageUrl: 'https://placehold.co/800x600/2a2a2a/e6e6e6?text=Opus+Agency',
+      imageUrl: '',
       imageAlt: 'Opus Agency Website Preview'
     },
     {
@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       description: 'Piattaforma per la gestione di profili medici con sistema di prenotazione e dashboard amministrativa.',
       technologies: ['Laravel', 'PHP', 'MySQL', 'Bootstrap'],
       githubUrl: 'https://github.com/FrancescoSisti/laravel-bdoctors',
-      imageUrl: 'https://placehold.co/800x600/2a2a2a/e6e6e6?text=BDoctors',
+      imageUrl: '',
       imageAlt: 'Laravel BDoctors Platform Preview'
     }
   ];

@@ -112,9 +112,50 @@
             </div>
           </div>
           <div class="card-image">
-            <img *ngFor="let project of featuredProjects" [ngSrc]="project.imageUrl" [alt]="project.imageAlt"
-              loading="lazy" [width]="800" [height]="600" [priority]="false" />
-            <div class="image-overlay"></div>
+            <div class="creative-preview"
+              [ngClass]="{'opus': project.number === '01', 'bdoctors': project.number === '02'}">
+              <div class="preview-content">
+                <div class="floating-elements">
+                  <!-- Elementi per Opus Agency -->
+                  <ng-container *ngIf="project.number === '01'">
+                    <div class="floating-card">
+                      <div class="card-header"></div>
+                      <div class="card-body">
+                        <div class="line"></div>
+                        <div class="line"></div>
+                        <div class="line short"></div>
+                      </div>
+                    </div>
+                    <div class="floating-circle"></div>
+                    <div class="floating-square"></div>
+                    <div class="floating-dots">
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                      <div class="dot"></div>
+                    </div>
+                  </ng-container>
+
+                  <!-- Elementi per BDoctors -->
+                  <ng-container *ngIf="project.number === '02'">
+                    <div class="medical-cross">
+                      <div class="cross-line"></div>
+                      <div class="cross-line"></div>
+                    </div>
+                    <div class="pulse-circle"></div>
+                    <div class="heartbeat-line">
+                      <svg viewBox="0 0 100 20">
+                        <path d="M0,10 L10,10 L15,0 L20,20 L25,10 L35,10" class="heartbeat-path" />
+                      </svg>
+                    </div>
+                    <div class="floating-pills">
+                      <div class="pill"></div>
+                      <div class="pill"></div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="gradient-overlay"></div>
+            </div>
           </div>
         </div>
       </div>

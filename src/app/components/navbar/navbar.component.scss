@@ -369,10 +369,13 @@
       .nav-content {
         grid-template-columns: 1fr;
         padding: 6rem 2rem;
+        height: calc(100vh - 4rem);
+        overflow-y: auto;
 
         .menu-items {
           padding-right: 0;
           margin-bottom: 2rem;
+          min-height: 0;
         }
 
         .preview-container {
@@ -444,14 +447,16 @@
       }
 
       .nav-content {
-        padding: 5rem 1.5rem 2rem;
-        align-items: center;
-        height: 100vh;
+        padding: 4.5rem 1rem 1rem;
+        height: 100%;
+        max-height: calc(100vh - 2rem);
         overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
 
         .menu-items {
           width: 100%;
           gap: 0.75rem;
+          padding-bottom: 1rem;
 
           .menu-item {
             opacity: 0;
@@ -484,7 +489,7 @@
             }
 
             a {
-              padding: 1rem;
+              padding: 0.875rem;
               background: var(--surface);
               border-radius: 1rem;
               border: 1px solid var(--border-light);
@@ -499,7 +504,7 @@
               }
 
               .item-text {
-                font-size: clamp(1.5rem, 4vw, 2rem);
+                font-size: clamp(1.25rem, 3.5vw, 1.75rem);
                 position: relative;
 
                 &::after {
@@ -563,92 +568,81 @@
       }
 
       .nav-footer {
-        position: relative;
-        left: 0;
-        right: 0;
+        position: sticky;
         bottom: 0;
-        padding: 1.5rem;
-        flex-direction: column;
-        gap: 1.5rem;
+        padding: 1rem;
+        margin-top: 1rem;
         background: var(--surface);
-        border-top: 1px solid var(--border-light);
-        margin-top: 2rem;
-        position: relative;
-        overflow: hidden;
-
-        &::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 1px;
-          background: var(--gradient-1);
-          opacity: 0.5;
-        }
+        z-index: 2;
 
         .social-links {
-          width: 100%;
-          justify-content: center;
-          gap: 1.5rem;
-
           .social-link {
-            width: 45px;
-            height: 45px;
-            font-size: 1.2rem;
-            background: var(--surface-alt);
-            position: relative;
-            overflow: hidden;
-
-            &::before {
-              content: '';
-              position: absolute;
-              inset: 0;
-              background: var(--gradient-1);
-              opacity: 0;
-              transition: opacity 0.3s ease;
-            }
-
-            i {
-              position: relative;
-              z-index: 1;
-              transition: all 0.3s ease;
-            }
-
-            &:hover {
-              transform: translateY(-5px);
-
-              &::before {
-                opacity: 1;
-              }
-
-              i {
-                color: white;
-              }
-            }
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
           }
         }
 
         .nav-info {
-          width: 100%;
-          justify-content: center;
-          text-align: center;
-          flex-wrap: wrap;
-          gap: 1rem;
+          font-size: 0.85rem;
 
           p {
-            width: 100%;
-            justify-content: center;
+            margin: 0;
           }
         }
       }
     }
-  }
 
-  .nav-controls {
-    top: 1rem;
-    right: 1rem;
-    gap: 1rem;
+    .nav-controls {
+      top: 1rem;
+      right: 1rem;
+      gap: 1rem;
+    }
+  }
+}
+
+@media (max-width: 380px) {
+  .nav-container {
+    .nav-experience {
+      .nav-content {
+        padding: 4rem 0.75rem 0.75rem;
+
+        .menu-items {
+          .menu-item {
+            a {
+              padding: 0.75rem;
+              gap: 1rem;
+
+              .item-number {
+                font-size: 0.8rem;
+              }
+
+              .item-text {
+                font-size: clamp(1.1rem, 3vw, 1.5rem);
+              }
+            }
+          }
+        }
+      }
+
+      .nav-footer {
+        padding: 0.75rem;
+
+        .social-links {
+          gap: 1rem;
+
+          .social-link {
+            width: 35px;
+            height: 35px;
+          }
+        }
+
+        .nav-info {
+          font-size: 0.8rem;
+          gap: 0.75rem;
+        }
+      }
+    }
   }
 }
 
