@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { WeatherService, WeatherData, WeatherForecast, AirQuality, CityAutocomplete } from '../../services/weather.service';
 import { firstValueFrom, Subject, debounceTime, distinctUntilChanged, takeUntil, Subscription } from 'rxjs';
+import { ResponsiveService } from '../../services/responsive.service';
+import { SkillsMobileComponent } from './skills-mobile/skills-mobile.component';
 
 interface Command {
   type: 'input' | 'output';
@@ -40,7 +42,7 @@ type WeatherTab = 'current' | 'forecast' | 'air';
   templateUrl: './skills.component.html',
   styleUrls: ['./skills.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, SkillsMobileComponent],
   providers: [WeatherService]
 })
 export class SkillsComponent implements OnInit, OnDestroy {
@@ -177,7 +179,8 @@ export class SkillsComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(PLATFORM_ID) platformId: Object,
-    private weatherService: WeatherService
+    private weatherService: WeatherService,
+    private responsiveService: ResponsiveService
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.currentTheme = this.defaultThemes[0];
@@ -203,6 +206,10 @@ export class SkillsComponent implements OnInit, OnDestroy {
           this.showSuggestions = false;
         }
       });
+  }
+
+  get isMobile$() {
+    return this.responsiveService.isMobile$;
   }
 
   ngOnInit() {

@@ -1,4 +1,8 @@
-<div class="skills-container">
+<!-- Mobile Version -->
+<app-skills-mobile *ngIf="isMobile$ | async"></app-skills-mobile>
+
+<!-- Desktop Version -->
+<div class="skills-container" *ngIf="!(isMobile$ | async)">
   <div class="background-shapes">
     <div class="shape shape-1"></div>
     <div class="shape shape-2"></div>
