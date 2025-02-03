@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CvGeneratorService } from '../../services/cv-generator.service';
-import { SafePipe } from '../../pipes/safe.pipe';
 
 @Component({
   selector: 'app-cv-template',
   standalone: true,
-  imports: [CommonModule, SafePipe],
+  imports: [CommonModule],
   templateUrl: './cv-template.component.html',
   styleUrls: ['./cv-template.component.scss']
 })

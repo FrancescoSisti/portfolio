@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChildren('menuItem') menuItems!: QueryList<ElementRef>;
 
   isMenuOpen = false;
-  currentRoute = '/';
+  currentRoute = '';
   hoveredIndex = -1;
   private routerSubscription?: Subscription;
   private isBrowser: boolean;
@@ -34,14 +34,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   menu: MenuItem[] = [
     {
       text: 'Home',
-      route: '/',
+      route: '',
       preview: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop',
       previewTitle: 'Benvenuto',
       previewDesc: 'Portfolio moderno e creativo'
     },
     {
       text: 'Chi Sono',
-      route: '/about',
+      route: 'about',
       preview: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=1000&auto=format&fit=crop',
       previewTitle: 'Chi Sono',
       previewDesc: 'Scopri il mio percorso e la mia esperienza'

@@ -5,6 +5,17 @@ export default defineConfig({
   plugins: [
     angular()
   ],
+  base: '/',
+  server: {
+    proxy: {},
+    fs: {
+      strict: true
+    }
+  },
+  preview: {
+    port: 4200,
+    host: true
+  },
   build: {
     sourcemap: false,
     commonjsOptions: {
