@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, ElementRef, ViewChildren, QueryList } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser, Location } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -8,6 +8,7 @@ interface MenuItem {
   text: string;
   route: string;
   icon: string;
+  title: string;
 }
 
 @Component({
@@ -18,10 +19,9 @@ interface MenuItem {
   imports: [CommonModule, RouterModule]
 })
 export class NavbarMobileComponent implements OnInit, OnDestroy {
-  @ViewChildren('menuItem') menuItems!: QueryList<ElementRef>;
-
-  isMenuOpen = false;
+  currentPageTitle = 'Home';
   currentRoute = '';
+  showBackButton = false;
   private routerSubscription?: Subscription;
   private isBrowser: boolean;
   private scrollThreshold = 50;
@@ -32,32 +32,38 @@ export class NavbarMobileComponent implements OnInit, OnDestroy {
     {
       text: 'Home',
       route: '',
-      icon: 'fas fa-home'
+      icon: 'fas fa-house',
+      title: 'Home'
     },
     {
       text: 'Chi Sono',
       route: 'about',
-      icon: 'fas fa-user'
+      icon: 'fas fa-user',
+      title: 'Chi Sono'
     },
     {
       text: 'Progetti',
-      route: '/projects',
-      icon: 'fas fa-code'
+      route: 'projects',
+      icon: 'fas fa-code',
+      title: 'Progetti'
     },
     {
-      text: 'Competenze',
-      route: '/skills',
-      icon: 'fas fa-laptop-code'
+      text: 'Skills',
+      route: 'skills',
+      icon: 'fas fa-laptop-code',
+      title: 'Competenze'
     },
     {
       text: 'Contatti',
-      route: '/contact',
-      icon: 'fas fa-envelope'
+      route: 'contact',
+      icon: 'fas fa-envelope',
+      title: 'Contatti'
     }
   ];
 
   constructor(
     private router: Router,
+    private location: Location,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -68,15 +74,17 @@ export class NavbarMobileComponent implements OnInit, OnDestroy {
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
       this.currentRoute = event.urlAfterRedirects;
-      this.closeMenu();
+      this.updatePageTitle();
+      this.updateBackButton();
     });
-
-    this.currentRoute = this.router.url;
 
     if (this.isBrowser) {
       window.addEventListener('scroll', this.handleScroll.bind(this));
-      window.addEventListener('keydown', this.handleKeyPress.bind(this));
     }
+
+    this.currentRoute = this.router.url;
+    this.updatePageTitle();
+    this.updateBackButton();
   }
 
   ngOnDestroy() {
@@ -86,7 +94,6 @@ export class NavbarMobileComponent implements OnInit, OnDestroy {
 
     if (this.isBrowser) {
       window.removeEventListener('scroll', this.handleScroll.bind(this));
-      window.removeEventListener('keydown', this.handleKeyPress.bind(this));
     }
   }
 
@@ -101,42 +108,20 @@ export class NavbarMobileComponent implements OnInit, OnDestroy {
     this.lastScrollTop = currentScrollTop;
   }
 
-  private handleKeyPress(event: KeyboardEvent): void {
-    if (event.key === 'Escape' && this.isMenuOpen) {
-      this.closeMenu();
-    }
+  private updatePageTitle(): void {
+    const currentMenuItem = this.menu.find(item =>
+      this.currentRoute === '/' + item.route ||
+      (item.route === '' && this.currentRoute === '/')
+    );
+    this.currentPageTitle = currentMenuItem?.title || 'Home';
   }
 
-  toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
-    if (this.isBrowser) {
-      document.body.style.overflow = this.isMenuOpen ? 'hidden' : '';
-
-      if (this.isMenuOpen) {
-        this.animateMenuItems();
-      }
-    }
+  private updateBackButton(): void {
+    // Mostra il pulsante indietro se non siamo nella home
+    this.showBackButton = this.currentRoute !== '/';
   }
 
-  private animateMenuItems(): void {
-    this.menuItems.forEach((item: ElementRef, index: number) => {
-      setTimeout(() => {
-        item.nativeElement.classList.add('show');
-      }, index * 100);
-    });
-  }
-
-  closeMenu() {
-    this.isMenuOpen = false;
-    if (this.isBrowser) {
-      document.body.style.overflow = '';
-      this.menuItems.forEach((item: ElementRef) => {
-        item.nativeElement.classList.remove('show');
-      });
-    }
-  }
-
-  onItemClick(route: string) {
-    this.closeMenu();
+  goBack(): void {
+    this.location.back();
   }
 }

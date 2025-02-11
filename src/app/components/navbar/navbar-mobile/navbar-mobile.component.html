@@ -1,41 +1,22 @@
-<nav class="mobile-nav" [class.nav-hidden]="!isNavbarVisible">
-    <!-- Menu Button -->
-    <button class="menu-button" (click)="toggleMenu()" [class.active]="isMenuOpen" aria-label="Toggle Menu">
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-    </button>
+<!-- iOS-style Navigation Bar -->
+<nav class="ios-navbar" [class.nav-hidden]="!isNavbarVisible">
+    <!-- Status Bar (for iOS safe area) -->
+    <div class="status-bar"></div>
 
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" [class.active]="isMenuOpen">
-        <!-- Menu Background -->
-        <div class="menu-background">
-            <div class="gradient-overlay"></div>
-        </div>
+    <!-- Main Navigation -->
+    <div class="nav-content" *ngIf="showBackButton">
+        <button class="back-button" (click)="goBack()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
 
-        <!-- Menu Items -->
-        <div class="menu-content">
-            <div class="menu-items">
-                <a *ngFor="let item of menu; let i = index" [routerLink]="item.route" [routerLinkActive]="'active'"
-                    [routerLinkActiveOptions]="{exact: item.route === ''}" (click)="onItemClick(item.route)" #menuItem
-                    class="menu-item">
-                    <i [class]="item.icon"></i>
-                    <span class="item-text">{{item.text}}</span>
-                </a>
-            </div>
-
-            <!-- Social Links -->
-            <div class="social-links">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                    <i class="fab fa-twitter"></i>
-                </a>
-            </div>
-        </div>
+    <!-- Bottom Tab Bar -->
+    <div class="tab-bar" [class.tab-bar-hidden]="!isNavbarVisible">
+        <a *ngFor="let item of menu" [routerLink]="item.route" [routerLinkActive]="'active'"
+            [routerLinkActiveOptions]="{exact: item.route === ''}" class="tab-item">
+            <i [class]="item.icon"></i>
+            <span class="label">{{item.text}}</span>
+            <div class="active-indicator"></div>
+        </a>
     </div>
 </nav>
