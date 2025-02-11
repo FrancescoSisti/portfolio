@@ -1,0 +1,30 @@
+<div class="changelog-container">
+  <h1>Changelog</h1>
+  <div class="version-list">
+    <div class="version-item" *ngFor="let version of versions">
+      <div class="version-header">
+        <div class="version-info">
+          <h2>v{{version.version}}</h2>
+          <span class="date">{{version.date}}</span>
+        </div>
+        <div class="version-badge" [ngClass]="version.version.startsWith('1') ? 'stable' : 'beta'">
+          {{version.version.startsWith('1') ? 'Stable' : 'Beta'}}
+        </div>
+      </div>
+      <div class="commits-list">
+        <div class="commit" *ngFor="let commit of version.commits">
+          <div class="commit-header">
+            <div class="commit-hash">
+              <i class="fas fa-code-branch"></i>
+              {{commit.hash}}
+            </div>
+            <span class="commit-date">{{commit.date}}</span>
+          </div>
+          <div class="commit-message">
+            {{commit.message}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

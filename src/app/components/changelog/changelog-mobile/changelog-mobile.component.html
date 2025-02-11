@@ -1,0 +1,32 @@
+<div class="changelog-container-mobile">
+    <h1>Changelog</h1>
+    <div class="version-list-mobile">
+        <div class="version-item-mobile" *ngFor="let version of versions">
+            <div class="version-header-mobile">
+                <div class="version-info">
+                    <div class="version-title">
+                        <h2>v{{version.version}}</h2>
+                        <div class="version-badge" [ngClass]="version.version.startsWith('1') ? 'stable' : 'beta'">
+                            {{version.version.startsWith('1') ? 'Stable' : 'Beta'}}
+                        </div>
+                    </div>
+                    <span class="date-mobile">{{version.date}}</span>
+                </div>
+            </div>
+            <div class="commits-list-mobile">
+                <div class="commit-mobile" *ngFor="let commit of version.commits">
+                    <div class="commit-header-mobile">
+                        <div class="commit-hash">
+                            <i class="fas fa-code-branch"></i>
+                            {{commit.hash}}
+                        </div>
+                        <span class="commit-date">{{commit.date}}</span>
+                    </div>
+                    <div class="commit-message">
+                        {{commit.message}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

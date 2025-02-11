@@ -50,6 +50,18 @@ export const routes: Routes = [
     data: { preload: true }
   },
   {
+    path: 'changelog',
+    loadComponent: () => {
+      if (isMobileDevice()) {
+        return import('./components/changelog/changelog-mobile/changelog-mobile.component')
+          .then(m => m.ChangelogMobileComponent);
+      }
+      return import('./components/changelog/changelog/changelog.component')
+        .then(m => m.ChangelogComponent);
+    },
+    title: 'Changelog'
+  },
+  {
     path: '**',
     redirectTo: '/home',
     pathMatch: 'full'

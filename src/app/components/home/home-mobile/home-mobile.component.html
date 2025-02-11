@@ -30,6 +30,57 @@
       </div>
     </section>
 
+    <!-- Version Info Section -->
+    <section class="version-info">
+      <div class="info-card">
+        <div class="header-content">
+          <span class="info-badge">
+            <i class="fas fa-stars"></i>
+            OTTIMIZZAZIONE
+          </span>
+          <h2>Due Versioni, Un'Esperienza Perfetta</h2>
+          <p>
+            Stai utilizzando la versione mobile ottimizzata del portfolio. Scopri i vantaggi di entrambe le versioni:
+          </p>
+        </div>
+
+        <div class="version-comparison">
+          <div class="version-block mobile-version">
+            <div class="version-header">
+              <i class="fas fa-mobile-alt"></i>
+              <h3>Versione Mobile</h3>
+              <span class="active-badge">Attiva</span>
+            </div>
+            <ul class="feature-list">
+              <li><i class="fas fa-check"></i>Caricamento ultra-veloce</li>
+              <li><i class="fas fa-check"></i>Interfaccia touch-optimized</li>
+              <li><i class="fas fa-check"></i>Navigazione semplificata</li>
+            </ul>
+          </div>
+
+          <div class="version-block desktop-version">
+            <div class="version-header">
+              <i class="fas fa-desktop"></i>
+              <h3>Versione Desktop</h3>
+            </div>
+            <ul class="feature-list">
+              <li><i class="fas fa-plus"></i>Animazioni avanzate</li>
+              <li><i class="fas fa-plus"></i>Effetti interattivi</li>
+              <li><i class="fas fa-plus"></i>Layout espanso</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="version-tip">
+          <i class="fas fa-lightbulb"></i>
+          <div class="tip-content">
+            <h4>Prova la versione desktop!</h4>
+            <p>Visita il sito da PC per un'esperienza ancora più coinvolgente con animazioni ed effetti esclusivi.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Projects Section -->
     <section class="projects">
       <h2>Progetti Recenti</h2>
@@ -97,6 +148,7 @@
     <!-- Footer -->
     <footer>
       <p>© 2024 Francesco Sisti — Fatto con <span class="heart">♥</span> a Verona</p>
+      <a routerLink="/changelog" class="changelog-link">Changelog</a>
       <div class="social-links">
         <a *ngFor="let social of socialLinks" [href]="social.url" target="_blank" rel="noopener"
           [attr.aria-label]="social.label">
