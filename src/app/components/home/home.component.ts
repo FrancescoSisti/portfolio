@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { WeatherService, WeatherData } from '../../services/weather.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { NgOptimizedImage } from '@angular/common';
 
 interface Project {
   number: string;
@@ -38,7 +37,7 @@ interface Stat {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule, NgOptimizedImage],
+  imports: [CommonModule, RouterModule, HttpClientModule],
   providers: [WeatherService, HttpClient]
 })
 export class HomeComponent implements OnInit, OnDestroy {
