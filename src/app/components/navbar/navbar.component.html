@@ -1,4 +1,8 @@
-<nav class="nav-container" [class.nav-open]="isMenuOpen" [class.nav-hidden]="!isNavbarVisible">
+<!-- Mobile Navbar -->
+<app-navbar-mobile *ngIf="isMobile"></app-navbar-mobile>
+
+<!-- Desktop Navbar -->
+<nav class="nav-container" [class.nav-open]="isMenuOpen" *ngIf="!isMobile">
   <!-- Menu Button -->
   <div class="nav-controls">
     <div class="menu-button">

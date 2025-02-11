@@ -1,8 +1,10 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { NavbarMobileComponent } from './navbar-mobile/navbar-mobile.component';
+import { ResponsiveService } from '../../services/responsive.service';
 
 interface MenuItem {
   text: string;
@@ -17,19 +19,16 @@ interface MenuItem {
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule, NavbarMobileComponent]
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-  @ViewChildren('menuItem') menuItems!: QueryList<ElementRef>;
-
   isMenuOpen = false;
   currentRoute = '';
   hoveredIndex = -1;
+  isMobile = false;
   private routerSubscription?: Subscription;
+  private responsiveSubscription?: Subscription;
   private isBrowser: boolean;
-  private scrollThreshold = 50;
-  private lastScrollTop = 0;
-  isNavbarVisible = true;
 
   menu: MenuItem[] = [
     {
@@ -71,6 +70,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
+    private responsiveService: ResponsiveService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -81,7 +81,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
       this.currentRoute = event.urlAfterRedirects;
-      if (this.isBrowser && window.innerWidth < 768) {
+      if (this.isBrowser) {
         this.closeMenu();
       }
     });
@@ -89,7 +89,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.currentRoute = this.router.url;
 
     if (this.isBrowser) {
-      window.addEventListener('scroll', this.handleScroll.bind(this));
+      this.responsiveSubscription = this.responsiveService.isMobile$.subscribe(
+        isMobile => this.isMobile = isMobile
+      );
       window.addEventListener('keydown', this.handleKeyPress.bind(this));
     }
   }
@@ -98,22 +100,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
-
+    if (this.responsiveSubscription) {
+      this.responsiveSubscription.unsubscribe();
+    }
     if (this.isBrowser) {
-      window.removeEventListener('scroll', this.handleScroll.bind(this));
       window.removeEventListener('keydown', this.handleKeyPress.bind(this));
     }
-  }
-
-  private handleScroll(): void {
-    const currentScrollTop = window.scrollY;
-
-    if (Math.abs(currentScrollTop - this.lastScrollTop) < this.scrollThreshold) {
-      return;
-    }
-
-    this.isNavbarVisible = currentScrollTop < this.lastScrollTop || currentScrollTop < this.scrollThreshold;
-    this.lastScrollTop = currentScrollTop;
   }
 
   private handleKeyPress(event: KeyboardEvent): void {
@@ -126,28 +118,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.isMenuOpen = !this.isMenuOpen;
     if (this.isBrowser) {
       document.body.style.overflow = this.isMenuOpen ? 'hidden' : '';
-
-      if (this.isMenuOpen) {
-        this.animateMenuItems();
-      }
     }
-  }
-
-  private animateMenuItems(): void {
-    this.menuItems.forEach((item: ElementRef, index: number) => {
-      setTimeout(() => {
-        item.nativeElement.classList.add('show');
-      }, index * 100);
-    });
   }
 
   closeMenu() {
     this.isMenuOpen = false;
     if (this.isBrowser) {
       document.body.style.overflow = '';
-      this.menuItems.forEach((item: ElementRef) => {
-        item.nativeElement.classList.remove('show');
-      });
     }
     this.hoveredIndex = -1;
   }
