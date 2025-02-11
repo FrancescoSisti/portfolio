@@ -34,14 +34,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   menu: MenuItem[] = [
     {
       text: 'Home',
-      route: '',
+      route: '/',
       icon: 'fas fa-home fa-fw',
       previewTitle: 'Benvenuto',
       previewDesc: 'Esplora il mio mondo digitale'
     },
     {
       text: 'Chi Sono',
-      route: 'about',
+      route: '/about',
       icon: 'fas fa-user fa-fw',
       previewTitle: 'Chi Sono',
       previewDesc: 'Un developer appassionato di design e tecnologia'
