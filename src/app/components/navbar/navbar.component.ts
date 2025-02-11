@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { ResponsiveService } from '../../services/responsive.service';
 interface MenuItem {
   text: string;
   route: string;
-  preview: string;
+  icon: string;
   previewTitle: string;
   previewDesc: string;
 }
@@ -22,6 +22,7 @@ interface MenuItem {
   imports: [CommonModule, RouterModule, NavbarMobileComponent]
 })
 export class NavbarComponent implements OnInit, OnDestroy {
+  @ViewChildren('menuItem') menuItems!: QueryList<ElementRef>;
   isMenuOpen = false;
   currentRoute = '';
   hoveredIndex = -1;
@@ -34,37 +35,37 @@ export class NavbarComponent implements OnInit, OnDestroy {
     {
       text: 'Home',
       route: '',
-      preview: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000&auto=format&fit=crop',
+      icon: 'fas fa-home fa-fw',
       previewTitle: 'Benvenuto',
-      previewDesc: 'Portfolio moderno e creativo'
+      previewDesc: 'Esplora il mio mondo digitale'
     },
     {
       text: 'Chi Sono',
       route: 'about',
-      preview: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=1000&auto=format&fit=crop',
+      icon: 'fas fa-user fa-fw',
       previewTitle: 'Chi Sono',
-      previewDesc: 'Scopri il mio percorso e la mia esperienza'
+      previewDesc: 'Un developer appassionato di design e tecnologia'
     },
     {
       text: 'Progetti',
       route: '/projects',
-      preview: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1000&auto=format&fit=crop',
+      icon: 'fas fa-code fa-fw',
       previewTitle: 'I Miei Lavori',
-      previewDesc: 'Esplora i miei ultimi progetti e esperimenti'
+      previewDesc: 'Una selezione dei miei migliori progetti web'
     },
     {
       text: 'Competenze',
       route: '/skills',
-      preview: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1000&auto=format&fit=crop',
+      icon: 'fas fa-laptop-code fa-fw',
       previewTitle: 'Le Mie Competenze',
-      previewDesc: 'Scopri le mie competenze tecniche'
+      previewDesc: 'Stack tecnologico e specializzazioni'
     },
     {
       text: 'Contatti',
       route: '/contact',
-      preview: 'https://images.unsplash.com/photo-1516387938699-a93567ec168e?q=80&w=1000&auto=format&fit=crop',
+      icon: 'fas fa-envelope fa-fw',
       previewTitle: 'Contattami',
-      previewDesc: 'Parliamo del tuo prossimo progetto'
+      previewDesc: 'Collaboriamo insieme sul tuo prossimo progetto'
     }
   ];
 
@@ -118,13 +119,29 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.isMenuOpen = !this.isMenuOpen;
     if (this.isBrowser) {
       document.body.style.overflow = this.isMenuOpen ? 'hidden' : '';
+      if (this.isMenuOpen) {
+        this.animateMenuItems();
+      }
     }
+  }
+
+  private animateMenuItems(): void {
+    setTimeout(() => {
+      this.menuItems.forEach((item: ElementRef, index: number) => {
+        setTimeout(() => {
+          item.nativeElement.classList.add('show');
+        }, index * 100);
+      });
+    }, 200);
   }
 
   closeMenu() {
     this.isMenuOpen = false;
     if (this.isBrowser) {
       document.body.style.overflow = '';
+      this.menuItems.forEach((item: ElementRef) => {
+        item.nativeElement.classList.remove('show');
+      });
     }
     this.hoveredIndex = -1;
   }

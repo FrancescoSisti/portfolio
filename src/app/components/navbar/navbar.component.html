@@ -16,11 +16,10 @@
     </div>
   </div>
 
-  <!-- Experimental Navigation -->
+  <!-- Navigation Experience -->
   <div class="nav-experience" [class.active]="isMenuOpen">
     <!-- Animated Background -->
     <div class="nav-background">
-      <div class="noise"></div>
       <div class="gradient-sphere"></div>
       <div class="gradient-sphere-2"></div>
     </div>
@@ -29,8 +28,8 @@
     <div class="nav-content">
       <!-- Left Side - Menu Items -->
       <div class="menu-items">
-        <div class="menu-item" *ngFor="let item of menu; let i = index" #menuItem (mouseenter)="onItemHover(i)"
-          [class.active]="currentRoute === item.route">
+        <div class="menu-item" *ngFor="let item of menu; let i = index" (mouseenter)="onItemHover(i)"
+          [class.active]="currentRoute === item.route" #menuItem>
           <a [routerLink]="item.route" (click)="onItemClick(item.route)" [routerLinkActive]="'active'">
             <span class="item-number">0{{i + 1}}</span>
             <span class="item-text">{{item.text}}</span>
@@ -41,10 +40,11 @@
       <!-- Right Side - Preview -->
       <div class="preview-container">
         <div class="preview-content">
-          <!-- Preview changes based on hovered menu item -->
           <div class="preview" *ngFor="let item of menu; let i = index" [class.active]="hoveredIndex === i"
             [attr.aria-hidden]="hoveredIndex !== i">
-            <div class="preview-image" [style.background-image]="'url(' + item.preview + ')'"></div>
+            <div class="preview-icon">
+              <i [class]="item.icon"></i>
+            </div>
             <div class="preview-text">
               <h3>{{item.previewTitle}}</h3>
               <p>{{item.previewDesc}}</p>
@@ -57,24 +57,31 @@
     <!-- Bottom Info -->
     <div class="nav-footer">
       <div class="social-links">
-        <a href="https://github.com" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <i class="fab fa-github"></i>
+        <a href="https://github.com/sisisisisisisi" target="_blank" rel="noopener noreferrer"
+          aria-label="Visita il mio profilo GitHub" class="social-link">
+          <i class="fab fa-github" aria-hidden="true"></i>
+          <span class="sr-only">GitHub</span>
         </a>
-        <a href="https://linkedin.com" class="social-link" target="_blank" rel="noopener noreferrer"
-          aria-label="LinkedIn">
-          <i class="fab fa-linkedin-in"></i>
+        <a href="https://www.linkedin.com/in/francesco-sisti-dev/" target="_blank" rel="noopener noreferrer"
+          aria-label="Connettiti con me su LinkedIn" class="social-link">
+          <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+          <span class="sr-only">LinkedIn</span>
         </a>
-        <a href="https://twitter.com" class="social-link" target="_blank" rel="noopener noreferrer"
-          aria-label="Twitter">
-          <i class="fab fa-twitter"></i>
+        <a href="https://www.instagram.com/sisisisisisisi.dev/" target="_blank" rel="noopener noreferrer"
+          aria-label="Seguimi su Instagram" class="social-link">
+          <i class="fab fa-instagram" aria-hidden="true"></i>
+          <span class="sr-only">Instagram</span>
         </a>
       </div>
       <div class="nav-info">
         <p class="location">
-          <i class="fas fa-map-marker-alt"></i>
-          Verona, Italia
+          <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+          <span>Verona, Italia</span>
         </p>
-        <p class="availability">Disponibile per progetti</p>
+        <p class="availability">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Disponibile per progetti</span>
+        </p>
       </div>
     </div>
   </div>
