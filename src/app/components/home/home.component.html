@@ -1,4 +1,8 @@
-<div class="home-container">
+<!-- Mobile Version -->
+<app-home-mobile *ngIf="isMobile"></app-home-mobile>
+
+<!-- Desktop Version -->
+<div class="home-container" *ngIf="!isMobile">
   <!-- Dynamic Background -->
   <div class="dynamic-bg">
     <div class="noise"></div>
