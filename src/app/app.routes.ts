@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { isMobileDevice } from './utils/device.utils';
 
 export const routes: Routes = [
   {
@@ -23,8 +24,14 @@ export const routes: Routes = [
   },
   {
     path: 'projects',
-    loadComponent: () => import('./components/projects/projects.component')
-      .then(m => m.ProjectsComponent),
+    loadComponent: () => {
+      if (isMobileDevice()) {
+        return import('./components/projects/projects-mobile/projects-mobile.component')
+          .then(m => m.ProjectsMobileComponent);
+      }
+      return import('./components/projects/projects.component')
+        .then(m => m.ProjectsComponent);
+    },
     title: 'Progetti',
     data: { preload: true }
   },

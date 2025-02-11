@@ -320,11 +320,11 @@
                     box-shadow: var(--shadow-xl);
                 }
 
-                .card-header {
+                .mini-card-header {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    margin-bottom: 1.5rem;
+                    margin-bottom: 1rem;
 
                     i {
                         font-size: 2rem;
@@ -565,14 +565,14 @@
                 display: inline-flex;
                 align-items: center;
                 gap: 0.75rem;
-                background: transparent;
-                color: var(--primary);
-                border: 1px solid var(--primary);
+                background: var(--primary);
+                color: white;
+                border: none;
                 padding: 0.75rem 1.5rem;
                 border-radius: 0.5rem;
                 font-size: 0.95rem;
                 font-weight: 500;
-                text-decoration: none;
+                cursor: pointer;
                 transition: all 0.2s ease;
 
                 i {
@@ -581,9 +581,8 @@
                 }
 
                 &:hover {
-                    background: var(--primary);
-                    color: white;
                     transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
 
                     i {
                         transform: translateX(4px);
