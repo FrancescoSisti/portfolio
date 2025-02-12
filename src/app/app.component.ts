@@ -53,7 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
       ) {
         setTimeout(() => {
           this.loaderService.hide();
-        }, 500); // Minimo mezzo secondo di loader per evitare flash
+        }, 500);
       }
     });
   }
