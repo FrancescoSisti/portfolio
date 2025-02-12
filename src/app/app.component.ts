@@ -8,6 +8,8 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { WeatherService, WeatherData } from './services/weather.service';
 import { DashboardService } from './services/dashboard.service';
+import { SeoService } from './services/seo.service';
+import { PerformanceService } from './services/performance.service';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +38,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private loaderService: LoaderService,
     private weatherService: WeatherService,
-    public dashboardService: DashboardService
+    public dashboardService: DashboardService,
+    private seoService: SeoService,
+    private performanceService: PerformanceService
   ) {
     this.setInitialValues();
     this.router.events.subscribe(event => {
@@ -73,6 +77,8 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
     }
+    this.seoService.setCanonicalUrl();
+    this.updateGreeting();
   }
 
   ngOnDestroy() {
@@ -130,7 +136,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private updateGreeting() {
-    const hour = new Date().getHours();
+    const hour = this.currentTime.getHours();
     if (hour >= 5 && hour < 12) {
       this.greeting = 'Buongiorno';
     } else if (hour >= 12 && hour < 18) {

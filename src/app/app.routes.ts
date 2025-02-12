@@ -7,20 +7,31 @@ export const routes: Routes = [
     pathMatch: 'full',
     loadComponent: () => import('./components/home/home.component')
       .then(m => m.HomeComponent),
-    title: 'Home'
+    title: 'Francesco Sisti • Full Stack Developer & UI Designer | Portfolio',
+    data: {
+      description: 'Portfolio professionale di Francesco Sisti - Full Stack Developer & UI Designer a Verona. Esperienza in sviluppo web, design UI/UX e ottimizzazione delle performance.',
+      preload: true
+    }
   },
   {
     path: 'home',
     loadComponent: () => import('./components/home/home.component')
       .then(m => m.HomeComponent),
-    title: 'Home'
+    title: 'Francesco Sisti • Full Stack Developer & UI Designer | Portfolio',
+    data: {
+      description: 'Portfolio professionale di Francesco Sisti - Full Stack Developer & UI Designer a Verona. Esperienza in sviluppo web, design UI/UX e ottimizzazione delle performance.',
+      preload: true
+    }
   },
   {
     path: 'about',
     loadComponent: () => import('./components/about/about.component')
       .then(m => m.AboutComponent),
-    title: 'Chi Sono',
-    data: { preload: true }
+    title: 'Chi Sono | Francesco Sisti - Full Stack Developer',
+    data: {
+      description: 'Scopri chi sono: Full Stack Developer con esperienza in sviluppo web, UI/UX design e ottimizzazione delle performance. Base a Verona, Italia.',
+      preload: true
+    }
   },
   {
     path: 'projects',
@@ -32,15 +43,21 @@ export const routes: Routes = [
       return import('./components/projects/projects.component')
         .then(m => m.ProjectsComponent);
     },
-    title: 'Progetti',
-    data: { preload: true }
+    title: 'Progetti | Francesco Sisti - Portfolio Developer',
+    data: {
+      description: 'Esplora i miei progetti di sviluppo web: applicazioni moderne, siti web responsive e soluzioni digitali innovative. Portfolio di Francesco Sisti.',
+      preload: true
+    }
   },
   {
     path: 'skills',
     loadComponent: () => import('./components/skills/skills.component')
       .then(m => m.SkillsComponent),
-    title: 'Competenze',
-    data: { preload: true }
+    title: 'Competenze | Francesco Sisti - Full Stack Developer',
+    data: {
+      description: 'Le mie competenze tecniche: sviluppo frontend e backend, UI/UX design, ottimizzazione delle performance e molto altro. Stack tecnologico completo.',
+      preload: true
+    }
   },
   {
     path: 'contact',
@@ -52,8 +69,11 @@ export const routes: Routes = [
       return import('./components/contact/contact.component')
         .then(m => m.ContactComponent);
     },
-    title: 'Contatti',
-    data: { preload: true }
+    title: 'Contatti | Francesco Sisti - Full Stack Developer',
+    data: {
+      description: 'Contattami per collaborazioni, progetti o informazioni. Full Stack Developer & UI Designer disponibile per nuove opportunità a Verona e da remoto.',
+      preload: true
+    }
   },
   {
     path: 'changelog',
@@ -65,7 +85,11 @@ export const routes: Routes = [
       return import('./components/changelog/changelog/changelog.component')
         .then(m => m.ChangelogComponent);
     },
-    title: 'Changelog'
+    title: 'Changelog | Francesco Sisti - Portfolio',
+    data: {
+      description: 'Scopri gli ultimi aggiornamenti e miglioramenti apportati al portfolio. Registro delle modifiche e novità implementate.',
+      preload: true
+    }
   },
   {
     path: '**',

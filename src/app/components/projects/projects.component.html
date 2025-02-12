@@ -14,103 +14,60 @@
       <p class="subtitle">Una raccolta dei miei migliori progetti e lavori personali</p>
     </div>
 
-    <!-- Opus Agency Preview -->
-    <div class="opus-preview">
-      <h2>Opus Agency Website</h2>
-      <p class="opus-description">Sito web aziendale moderno con design personalizzato, ottimizzazione SEO e
-        interfaccia utente reattiva.</p>
-      <div class="preview-actions">
-        <button class="preview-btn" (click)="openPreviewModal()">
-          <i class="fas fa-eye"></i>
-          Anteprima Sito
-        </button>
-        <a href="https://opusagency.it/" target="_blank" class="visit-btn">
-          <i class="fas fa-external-link-alt"></i>
-          Visita il Sito
-        </a>
+    <!-- Featured Project -->
+    <div class="featured-project" *ngIf="featuredProjects[0]">
+      <div class="project-image" [style.width.px]="featuredProjects[0].dimensions?.width"
+        [style.height.px]="featuredProjects[0].dimensions?.height">
+        <img *ngIf="featuredProjects[0].imageUrl" [src]="featuredProjects[0].imageUrl"
+          [alt]="featuredProjects[0].imageAlt || featuredProjects[0].title"
+          [width]="featuredProjects[0].dimensions?.width" [height]="featuredProjects[0].dimensions?.height"
+          loading="eager" fetchpriority="high">
       </div>
-    </div>
-
-    <!-- Preview Modal -->
-    <div class="preview-modal" *ngIf="isModalOpen">
-      <div class="modal-overlay" (click)="closePreviewModal()"></div>
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Anteprima Opus Agency</h3>
-          <button class="close-btn" (click)="closePreviewModal()">
-            <i class="fas fa-times"></i>
-          </button>
+      <div class="project-info">
+        <h2>{{ featuredProjects[0].title }}</h2>
+        <p>{{ featuredProjects[0].description }}</p>
+        <div class="tech-stack">
+          <span *ngFor="let tech of featuredProjects[0].technologies">{{ tech }}</span>
         </div>
-        <div class="modal-body">
-          <div class="iframe-container" [class.blurred]="showTimeoutMessage">
-            <iframe #previewIframe [src]="opusPreviewUrl" frameborder="0" allowfullscreen>
-            </iframe>
-          </div>
-          <div class="timeout-message" *ngIf="showTimeoutMessage">
-            <div class="message-content">
-              <div class="message-header">
-                <i class="fas fa-hourglass-end"></i>
-                <span>Anteprima Limitata</span>
-              </div>
-              <div class="message-body">
-                <p>Per esplorare tutte le funzionalità e i contenuti del sito, ti invito a visitare
-                  la versione completa.</p>
-                <a href="https://opusagency.it" target="_blank" class="cta-button">
-                  Visita il Sito
-                  <i class="fas fa-arrow-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
+        <div class="project-actions">
+          <a *ngIf="featuredProjects[0].liveUrl" [href]="featuredProjects[0].liveUrl" target="_blank"
+            class="btn primary">
+            Visita il Sito
+            <i class="fas fa-external-link-alt"></i>
+          </a>
+          <a *ngIf="featuredProjects[0].githubUrl" [href]="featuredProjects[0].githubUrl" target="_blank"
+            class="btn secondary">
+            GitHub
+            <i class="fab fa-github"></i>
+          </a>
         </div>
       </div>
     </div>
 
+    <!-- Other Projects Grid -->
     <div class="projects-grid">
-      <!-- Project Cards -->
-      <div class="project-card" *ngFor="let project of filteredFeaturedProjects">
-        <div class="project-header">
-          <div class="project-title">
-            <h3>{{ project.title }}</h3>
-            <span class="project-type">{{ project.type }}</span>
-            <span class="project-status" [class]="project.status">{{ project.status }}</span>
-          </div>
-          <div class="project-links">
-            <a *ngIf="project.githubUrl" [href]="project.githubUrl" class="project-link" target="_blank">
-              <i class="fab fa-github"></i>
-            </a>
-            <a *ngIf="project.liveUrl" [href]="project.liveUrl" class="project-link" target="_blank">
-              <i class="fas fa-external-link-alt"></i>
-            </a>
-          </div>
+      <div class="project-card" *ngFor="let project of otherProjects">
+        <div class="project-image" [style.width.px]="project.dimensions?.width"
+          [style.height.px]="project.dimensions?.height">
+          <img *ngIf="project.imageUrl" appLazyLoad [src]="''" [appLazyLoadSrc]="project.imageUrl"
+            [alt]="project.imageAlt || project.title" [width]="project.dimensions?.width"
+            [height]="project.dimensions?.height">
         </div>
         <div class="project-content">
-          <p class="project-description">{{ project.description }}</p>
-          <div class="tech-stack">
-            <span class="tech-tag" *ngFor="let tech of project.technologies">{{ tech }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Other Projects Section -->
-    <div class="other-projects">
-      <h2>Altri Progetti</h2>
-      <div class="projects-mini-grid">
-        <div class="mini-card" *ngFor="let project of otherProjects">
-          <div class="card-header">
-            <i class="fas fa-folder"></i>
-            <div class="card-links">
-              <a *ngIf="project.githubUrl" [href]="project.githubUrl" target="_blank">
-                <i class="fab fa-github"></i>
-              </a>
-              <span class="status-badge" [class]="project.status">{{ project.status }}</span>
-            </div>
-          </div>
           <h3>{{ project.title }}</h3>
           <p>{{ project.description }}</p>
           <div class="tech-stack">
             <span *ngFor="let tech of project.technologies">{{ tech }}</span>
+          </div>
+          <div class="project-links">
+            <a *ngIf="project.liveUrl" [href]="project.liveUrl" target="_blank" class="btn primary">
+              Visita il Sito
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+            <a *ngIf="project.githubUrl" [href]="project.githubUrl" target="_blank" class="btn secondary">
+              GitHub
+              <i class="fab fa-github"></i>
+            </a>
           </div>
         </div>
       </div>

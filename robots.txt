@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Sitemap: https://francescosisti.com/sitemap.xml
+
+# Prevent crawling of unnecessary files
+Disallow: /assets/icons/
+Disallow: /*.js$
+Disallow: /*.css$
