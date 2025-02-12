@@ -31,6 +31,13 @@
     --glass: rgba(255, 255, 255, 0.1);
     --glass-border: rgba(255, 255, 255, 0.2);
     --backdrop-blur: blur(10px);
+
+    // RGB Variables for gradients and opacity
+    --primary-rgb: 79, 70, 229;
+    --accent-rgb: 124, 58, 237;
+    --background-rgb: 248, 250, 252;
+    --surface-rgb: 255, 255, 255;
+    --text-primary-rgb: 30, 41, 59;
 }
 
 * {
