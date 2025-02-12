@@ -1,52 +1,72 @@
 <div class="skills-mobile">
     <!-- Header -->
     <header class="header">
-        <h1>Le Mie Competenze</h1>
-        <p>Esplora le mie competenze tecniche e i progetti realizzati</p>
+        <h1>Competenze & Progetti</h1>
+        <p>Scopri le mie competenze tecniche e i progetti realizzati</p>
     </header>
-
-    <!-- Search Bar -->
-    <div class="search-bar">
-        <i class="fas fa-search"></i>
-        <input type="text" [(ngModel)]="searchQuery" placeholder="Cerca competenze o progetti...">
-    </div>
 
     <!-- Navigation Tabs -->
     <nav class="tabs">
         <button [class.active]="activeTab === 'skills'" (click)="setActiveTab('skills')">
             <i class="fas fa-code"></i>
-            Competenze
+            <span>Competenze</span>
         </button>
         <button [class.active]="activeTab === 'projects'" (click)="setActiveTab('projects')">
-            <i class="fas fa-project-diagram"></i>
-            Progetti
-        </button>
-        <button [class.active]="activeTab === 'weather'" (click)="setActiveTab('weather')">
-            <i class="fas fa-cloud-sun"></i>
-            Meteo
+            <i class="fas fa-rocket"></i>
+            <span>Progetti</span>
         </button>
     </nav>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" [(ngModel)]="searchQuery"
+                [placeholder]="activeTab === 'skills' ? 'Cerca competenze...' : 'Cerca progetti...'">
+        </div>
+
+        <!-- Categories (only for skills) -->
+        <div *ngIf="activeTab === 'skills'" class="categories" @fadeInOut>
+            <div class="categories-scroll">
+                <button *ngFor="let category of categories" [class.active]="selectedCategory === category"
+                    (click)="setCategory(category)">
+                    {{category}}
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Content Area -->
     <main class="content">
         <!-- Skills Tab -->
-        <section *ngIf="activeTab === 'skills'" class="skills-section">
+        <section *ngIf="activeTab === 'skills'" class="skills-section" @fadeInOut>
             <div class="skills-grid">
-                <div *ngFor="let skill of filteredSkills" class="skill-card">
-                    <div class="skill-icon">
-                        <i [class]="skill.icon"></i>
+                <div *ngFor="let skill of filteredSkills" class="skill-card" @fadeInOut
+                    [style.--skill-color]="skill.color">
+                    <div class="skill-header">
+                        <div class="skill-icon">
+                            <i [class]="skill.icon"></i>
+                        </div>
+                        <div class="skill-title">
+                            <h3>{{skill.name}}</h3>
+                            <span class="category-tag">{{skill.category}}</span>
+                        </div>
                     </div>
-                    <div class="skill-info">
-                        <h3>{{skill.name}}</h3>
-                        <p>{{skill.description}}</p>
+
+                    <div class="skill-body">
+                        <p class="description">{{skill.description}}</p>
+                        <div class="experience">
+                            <i class="fas fa-clock"></i>
+                            <span>{{skill.experience}}</span>
+                        </div>
                         <div class="skill-level">
+                            <div class="level-label">
+                                <span>Livello</span>
+                                <span>{{skill.level}}%</span>
+                            </div>
                             <div class="level-bar">
                                 <div class="level-fill" [style.width.%]="skill.level"></div>
                             </div>
-                            <span>{{skill.level}}%</span>
-                        </div>
-                        <div class="skill-tags">
-                            <span *ngFor="let tag of skill.tags">{{tag}}</span>
                         </div>
                     </div>
                 </div>
@@ -54,31 +74,33 @@
         </section>
 
         <!-- Projects Tab -->
-        <section *ngIf="activeTab === 'projects'" class="projects-section">
+        <section *ngIf="activeTab === 'projects'" class="projects-section" @fadeInOut>
             <div class="projects-grid">
-                <div *ngFor="let project of filteredProjects" class="project-card">
-                    <div class="project-icon">
-                        <i [class]="project.icon"></i>
+                <div *ngFor="let project of filteredProjects" class="project-card" @fadeInOut>
+                    <div class="project-image" [style.background]="project.image">
+                        <div class="project-links">
+                            <a [href]="project.links.github" target="_blank" class="github-link">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                        <div class="coming-soon-badge">
+                            <span>Coming Soon</span>
+                        </div>
                     </div>
-                    <div class="project-info">
+
+                    <div class="project-content">
                         <h3>{{project.name}}</h3>
                         <p>{{project.description}}</p>
-                        <div class="project-tech">
-                            <span *ngFor="let tech of project.technologies">{{tech}}</span>
+
+                        <div class="project-technologies">
+                            <div *ngFor="let tech of project.technologies" class="tech-tag"
+                                [style.--tech-color]="tech.color">
+                                <i [class]="tech.icon"></i>
+                                <span>{{tech.name}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Weather Tab -->
-        <section *ngIf="activeTab === 'weather'" class="weather-section">
-            <div *ngIf="isLoadingWeather" class="loading">
-                <i class="fas fa-spinner fa-spin"></i>
-                Caricamento...
-            </div>
-            <div *ngIf="!isLoadingWeather && weatherData" class="weather-info">
-                <!-- Weather content -->
             </div>
         </section>
     </main>
