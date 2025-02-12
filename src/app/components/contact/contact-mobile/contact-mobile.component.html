@@ -1,0 +1,136 @@
+<div class="contact-container-mobile">
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
+
+    <div class="content-wrapper animate-in">
+        <div class="header-section">
+            <div class="section-badge">
+                <i class="fas fa-paper-plane"></i>
+                Contattami
+            </div>
+            <h1>Restiamo in <span class="gradient-text">Contatto</span></h1>
+            <p class="subtitle">Hai un progetto in mente? Parliamo di come possiamo collaborare insieme</p>
+        </div>
+
+        <!-- Share Button -->
+        <div class="share-section">
+            <button class="share-btn" (click)="toggleShareOptions()">
+                <i class="fas fa-share-alt"></i>
+                Condividi
+            </button>
+
+            <!-- Share Options Overlay -->
+            <div class="share-options" [class.show]="showShareOptions">
+                <div class="share-options-content">
+                    <div class="share-header">
+                        <h3>Condividi Portfolio</h3>
+                        <button class="close-btn" (click)="toggleShareOptions()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="share-grid">
+                        <button *ngFor="let option of shareOptions" class="share-option-btn" (click)="option.action()">
+                            <i [class]="option.icon"></i>
+                            <span>{{ option.name }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-form-mobile">
+            <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" name="name" [(ngModel)]="formData.name" required
+                        placeholder="Il tuo nome">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" [(ngModel)]="formData.email" required
+                        placeholder="tua.email@esempio.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Oggetto</label>
+                    <input type="text" id="subject" name="subject" [(ngModel)]="formData.subject" required
+                        placeholder="Richiesta Progetto">
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Messaggio</label>
+                    <textarea id="message" name="message" [(ngModel)]="formData.message" required rows="5"
+                        placeholder="Parlami del tuo progetto..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" [disabled]="!contactForm.form.valid || isSubmitting">
+                    {{ isSubmitting ? 'Invio in corso...' : 'Invia Messaggio' }}
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+
+                <div *ngIf="submitSuccess" class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    Grazie per il tuo messaggio! Ti risponderò il prima possibile.
+                </div>
+
+                <div *ngIf="submitError" class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Si è verificato un errore durante l'invio. Per favore riprova più tardi.
+                </div>
+            </form>
+        </div>
+
+        <div class="contact-info-mobile">
+            <div class="info-card">
+                <div class="icon-wrapper">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3>Email</h3>
+                <p>francescosisti61&#64;gmail.com</p>
+                <a href="mailto:francescosisti61@gmail.com" class="action-link">
+                    Invia Email
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="info-card">
+                <div class="icon-wrapper">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Posizione</h3>
+                <p>Corso Venezia 83, Verona</p>
+                <a (click)="scrollToMap()" class="action-link">
+                    Visualizza sulla Mappa
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="social-links">
+                <h3>Seguimi</h3>
+                <div class="links">
+                    <a href="https://github.com/FrancescoSisti" class="social-link github" target="_blank"
+                        title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/francesco-sisti-21b88023a/" class="social-link linkedin"
+                        target="_blank" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://www.instagram.com/_francescosisti_/" class="social-link instagram" target="_blank"
+                        title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-section" id="map-section-mobile">
+            <div class="map-container">
+                <div id="map-mobile"></div>
+            </div>
+        </div>
+    </div>
+</div>
