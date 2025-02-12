@@ -44,8 +44,14 @@ export const routes: Routes = [
   },
   {
     path: 'contact',
-    loadComponent: () => import('./components/contact/contact.component')
-      .then(m => m.ContactComponent),
+    loadComponent: () => {
+      if (isMobileDevice()) {
+        return import('./components/contact/contact-mobile/contact-mobile.component')
+          .then(m => m.ContactMobileComponent);
+      }
+      return import('./components/contact/contact.component')
+        .then(m => m.ContactComponent);
+    },
     title: 'Contatti',
     data: { preload: true }
   },
