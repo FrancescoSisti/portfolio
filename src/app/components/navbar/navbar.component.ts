@@ -30,6 +30,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private routerSubscription?: Subscription;
   private responsiveSubscription?: Subscription;
   private isBrowser: boolean;
+  private isAnimating = false;
 
   menu: MenuItem[] = [
     {
@@ -125,14 +126,25 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
+  private blockMouseDuringAnimation(): void {
+    this.isAnimating = true;
+    document.body.style.pointerEvents = 'none';
+    // Calcola il tempo totale di animazione basato sul numero di elementi
+    const totalAnimationTime = (this.menu.length * 50) + 200; // Ridotto da 100ms a 50ms per item e da 400ms a 200ms di buffer
+    setTimeout(() => {
+      this.isAnimating = false;
+      document.body.style.pointerEvents = '';
+    }, totalAnimationTime);
+  }
+
   private animateMenuItems(): void {
     setTimeout(() => {
       this.menuItems.forEach((item: ElementRef, index: number) => {
         setTimeout(() => {
           item.nativeElement.classList.add('show');
-        }, index * 100);
+        }, index * 50); // Ridotto da 100ms a 50ms
       });
-    }, 200);
+    }, 100); // Ridotto da 200ms a 100ms
   }
 
   closeMenu() {
