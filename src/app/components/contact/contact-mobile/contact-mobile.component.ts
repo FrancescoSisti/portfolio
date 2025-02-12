@@ -108,8 +108,7 @@ export class ContactMobileComponent implements OnInit, AfterViewInit {
         zoom: 15,
         scrollWheelZoom: false,
         zoomControl: true,
-        dragging: true,
-        tap: true
+        dragging: true
       });
 
       L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
