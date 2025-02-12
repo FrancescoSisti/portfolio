@@ -66,6 +66,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private scrollSubscription: Subscription = new Subscription();
   private clickSubscription: Subscription = new Subscription();
   private initialTimeout: any;
+  private map: any;
 
   skills: Skill[] = [
     { name: 'HTML5', icon: 'fab fa-html5' },
@@ -178,7 +179,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.isMobile = this.responsiveService.isMobile;
 
     if (!this.isMobile) {
@@ -208,6 +209,25 @@ export class HomeComponent implements OnInit, OnDestroy {
             clearTimeout(this.initialTimeout);
           }
         });
+    }
+
+    // Lazy load Leaflet only when needed
+    const mapElement = document.getElementById('map');
+    if (!mapElement) return;
+
+    if (this.isElementInViewport(mapElement)) {
+      await this.initializeMap();
+    } else {
+      const observer = new IntersectionObserver(
+        async (entries) => {
+          if (entries[0].isIntersecting) {
+            await this.initializeMap();
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(mapElement);
     }
   }
 
@@ -322,6 +342,33 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.activeTooltip = null;
       }
     }
+  }
+
+  private async initializeMap() {
+    try {
+      const L = await import('leaflet');
+      this.map = L.map('map').setView([45.4384, 10.9916], 13); // Verona coordinates
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(this.map);
+
+      L.marker([45.4384, 10.9916]).addTo(this.map)
+        .bindPopup('Verona, Italy')
+        .openPopup();
+    } catch (error) {
+      console.error('Error loading map:', error);
+    }
+  }
+
+  private isElementInViewport(el: Element): boolean {
+    const rect = el.getBoundingClientRect();
+    return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
   }
 }
 
