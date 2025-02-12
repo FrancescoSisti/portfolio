@@ -5,6 +5,10 @@ import { firstValueFrom } from 'rxjs';
 import { WeatherService, WeatherData } from '../../services/weather.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HomeMobileComponent } from './home-mobile/home-mobile.component';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { ResponsiveService } from '../../services/responsive.service';
+import { Subscription, fromEvent } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 interface Project {
   number: string;
@@ -23,14 +27,15 @@ interface Skill {
 }
 
 interface Stat {
-  value: number;
-  symbol: string;
-  label: string;
-  details: {
-    title: string;
-    description: string;
-    items?: string[];
+  title: string;
+  subtitle: string;
+  icon: string;
+  color: string;
+  link: {
+    text: string;
+    route: string;
   };
+  contextIcons: string[];
 }
 
 @Component({
@@ -39,12 +44,27 @@ interface Stat {
   styleUrls: ['./home.component.scss'],
   standalone: true,
   imports: [CommonModule, RouterModule, HttpClientModule, HomeMobileComponent],
-  providers: [WeatherService, HttpClient]
+  providers: [WeatherService, HttpClient],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms ease-in-out', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms ease-in-out', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class HomeComponent implements OnInit, OnDestroy {
   private isHydrated = false;
   activeTooltip: number | null = null;
   isMobile = false;
+  showScrollMessage: boolean = false;
+  private scrollTimeout: any;
+  private scrollSubscription: Subscription = new Subscription();
+  private initialTimeout: any;
 
   skills: Skill[] = [
     { name: 'HTML5', icon: 'fab fa-html5' },
@@ -96,81 +116,98 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   stats: Stat[] = [
     {
-      value: 2,
-      symbol: '+',
-      label: 'Anni di Esperienza',
-      details: {
-        title: 'Esperienza Professionale',
-        description: 'Due anni di esperienza nello sviluppo web, specializzandomi in:',
-        items: [
-          'Sviluppo Full Stack con Angular e Laravel',
-          'Progettazione UI/UX',
-          'Ottimizzazione delle performance',
-          'Gestione di progetti end-to-end'
-        ]
-      }
+      title: 'Sviluppo Web',
+      subtitle: 'Full Stack',
+      icon: 'fas fa-code',
+      color: '#6366f1',
+      link: {
+        text: 'Le mie competenze',
+        route: '/about'
+      },
+      contextIcons: ['fas fa-code-branch', 'fas fa-sitemap', 'fas fa-diagram-project', 'fas fa-database', 'fas fa-server']
     },
     {
-      value: 15,
-      symbol: '+',
-      label: 'Progetti Completati',
-      details: {
-        title: 'Portfolio Progetti',
-        description: 'Progetti sviluppati in diversi settori:',
-        items: [
-          'Siti web aziendali',
-          'E-commerce',
-          'Applicazioni web',
-          'Dashboard amministrative',
-          'Integrazioni API'
-        ]
-      }
+      title: 'UI/UX Design',
+      subtitle: 'Design Moderno',
+      icon: 'fas fa-wand-magic-sparkles',
+      color: '#ec4899',
+      link: {
+        text: 'I miei progetti',
+        route: '/projects'
+      },
+      contextIcons: ['fas fa-palette', 'fas fa-pen-ruler', 'fas fa-swatchbook', 'fas fa-vector-square', 'fas fa-bezier-curve']
     },
     {
-      value: 5,
-      symbol: '+',
-      label: 'Tecnologie Utilizzate',
-      details: {
-        title: 'Stack Tecnologico',
-        description: 'Competenze principali in:',
-        items: [
-          'Frontend: Angular, Vue.js, HTML5, CSS3, JavaScript',
-          'Backend: PHP, Laravel, Node.js',
-          'Database: MySQL, MongoDB',
-          'Tools: Git, Docker, AWS',
-          'Design: Figma, Adobe XD'
-        ]
-      }
+      title: 'Performance',
+      subtitle: 'Ottimizzazione',
+      icon: 'fas fa-gauge-high',
+      color: '#14b8a6',
+      link: {
+        text: 'Scopri di più',
+        route: '/about#skills'
+      },
+      contextIcons: ['fas fa-bolt', 'fas fa-rocket', 'fas fa-tachometer-alt', 'fas fa-chart-line', 'fas fa-code-branch']
     }
   ];
 
   constructor(
+    private weatherService: WeatherService,
+    private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object,
     private appRef: ApplicationRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private responsiveService: ResponsiveService
   ) {
     if (isPlatformBrowser(this.platformId)) {
-      this.isMobile = window.innerWidth < 768;
+      this.checkHydration();
     }
   }
 
-  async ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.ngZone.runOutsideAngular(async () => {
-        try {
-          await firstValueFrom(this.appRef.isStable);
-          this.ngZone.run(() => {
-            this.isHydrated = true;
-            this.initBrowserFeatures();
-          });
-        } catch (error) {
-          console.error('Error during hydration:', error);
+  private async checkHydration() {
+    this.ngZone.runOutsideAngular(async () => {
+      try {
+        await firstValueFrom(this.appRef.isStable);
+        this.ngZone.run(() => {
+          this.isHydrated = true;
+          this.initBrowserFeatures();
+        });
+      } catch (error) {
+        console.error('Error during hydration:', error);
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.isMobile = this.responsiveService.isMobile;
+
+    if (!this.isMobile) {
+      // Mostra il messaggio dopo 12 secondi se l'utente non ha scrollato
+      this.initialTimeout = setTimeout(() => {
+        if (window.scrollY === 0) {
+          this.showScrollMessage = true;
         }
-      });
+      }, 12000);
+
+      // Gestisce lo scroll
+      this.scrollSubscription = fromEvent(window, 'scroll')
+        .pipe(debounceTime(50))
+        .subscribe(() => {
+          this.showScrollMessage = false;
+          if (this.initialTimeout) {
+            clearTimeout(this.initialTimeout);
+          }
+        });
     }
   }
 
-  ngOnDestroy() { }
+  ngOnDestroy() {
+    if (this.scrollSubscription) {
+      this.scrollSubscription.unsubscribe();
+    }
+    if (this.initialTimeout) {
+      clearTimeout(this.initialTimeout);
+    }
+  }
 
   scrollToContent() {
     if (!this.isHydrated) return;
@@ -272,33 +309,5 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     }
   }
-
-  toggleTooltip(index: number) {
-    if (this.isMobile) {
-      this.activeTooltip = this.activeTooltip === index ? null : index;
-    }
-  }
-
-  showTooltip(index: number) {
-    if (!this.isMobile) {
-      this.activeTooltip = index;
-    }
-  }
-
-  hideTooltip() {
-    if (!this.isMobile) {
-      this.activeTooltip = null;
-    }
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
-    if (this.isMobile && this.activeTooltip !== null) {
-      const tooltip = document.querySelector('.stat-tooltip.active');
-      const stat = document.querySelector('.stat');
-      if (tooltip && stat && !stat.contains(event.target as Node)) {
-        this.activeTooltip = null;
-      }
-    }
-  }
 }
+
