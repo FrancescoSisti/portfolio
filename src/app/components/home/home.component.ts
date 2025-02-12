@@ -64,6 +64,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   showScrollMessage: boolean = false;
   private scrollTimeout: any;
   private scrollSubscription: Subscription = new Subscription();
+  private clickSubscription: Subscription = new Subscription();
   private initialTimeout: any;
 
   skills: Skill[] = [
@@ -181,7 +182,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.isMobile = this.responsiveService.isMobile;
 
     if (!this.isMobile) {
-      // Mostra il messaggio dopo 12 secondi se l'utente non ha scrollato
+      // Mostra il messaggio dopo 12 secondi se l'utente non ha scrollato o cliccato
       this.initialTimeout = setTimeout(() => {
         if (window.scrollY === 0) {
           this.showScrollMessage = true;
@@ -197,12 +198,25 @@ export class HomeComponent implements OnInit, OnDestroy {
             clearTimeout(this.initialTimeout);
           }
         });
+
+      // Gestisce i click
+      this.clickSubscription = fromEvent(document, 'click')
+        .pipe(debounceTime(50))
+        .subscribe(() => {
+          this.showScrollMessage = false;
+          if (this.initialTimeout) {
+            clearTimeout(this.initialTimeout);
+          }
+        });
     }
   }
 
   ngOnDestroy() {
     if (this.scrollSubscription) {
       this.scrollSubscription.unsubscribe();
+    }
+    if (this.clickSubscription) {
+      this.clickSubscription.unsubscribe();
     }
     if (this.initialTimeout) {
       clearTimeout(this.initialTimeout);

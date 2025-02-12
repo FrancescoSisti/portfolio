@@ -235,6 +235,15 @@
               color: var(--primary);
             }
 
+            &:hover .item-text {
+              color: var(--primary);
+
+              &::before {
+                opacity: 0;
+                transform: scaleX(0);
+              }
+            }
+
             &::after {
               content: '← Sei qui';
               position: absolute;
