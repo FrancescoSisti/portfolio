@@ -10,13 +10,14 @@ import { WeatherService, WeatherData } from './services/weather.service';
 import { DashboardService } from './services/dashboard.service';
 import { SeoService } from './services/seo.service';
 import { PerformanceService } from './services/performance.service';
+import { CookieConsentComponent } from './components/cookie-consent/cookie-consent.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NavbarComponent, LoaderComponent],
+  imports: [CommonModule, RouterOutlet, NavbarComponent, LoaderComponent, CookieConsentComponent],
   providers: [WeatherService]
 })
 export class AppComponent implements OnInit, OnDestroy {

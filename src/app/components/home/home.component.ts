@@ -100,17 +100,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   socialLinks = [
     {
-      url: 'https://github.com/FrancescoSisti',
+      url: 'https://github.com/sisisisisisisi',
       icon: 'fab fa-github',
       label: 'GitHub'
     },
     {
-      url: 'https://www.linkedin.com/in/francesco-sisti-21b88023a/',
+      url: 'https://www.linkedin.com/in/francesco-sisti-dev/',
       icon: 'fab fa-linkedin-in',
       label: 'LinkedIn'
     },
     {
-      url: 'https://www.instagram.com/_francescosisti_/',
+      url: 'https://www.instagram.com/sisisisisisisi.dev/',
       icon: 'fab fa-instagram',
       label: 'Instagram'
     }

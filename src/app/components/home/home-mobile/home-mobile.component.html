@@ -148,7 +148,13 @@
     <!-- Footer -->
     <footer>
       <p>© 2024 Francesco Sisti — Fatto con <span class="heart">♥</span> a Verona</p>
-      <a routerLink="/changelog" class="changelog-link">Changelog</a>
+      <div class="legal-links">
+        <a routerLink="/privacy-policy">Privacy Policy</a>
+        <span class="separator">•</span>
+        <a routerLink="/terms-of-service">Termini e Condizioni</a>
+        <span class="separator">•</span>
+        <a routerLink="/changelog">Changelog</a>
+      </div>
       <div class="social-links">
         <a *ngFor="let social of socialLinks" [href]="social.url" target="_blank" rel="noopener"
           [attr.aria-label]="social.label">

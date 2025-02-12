@@ -1,0 +1,56 @@
+<div class="cookie-consent" *ngIf="showBanner">
+    <div class="cookie-banner" [class.preferences-open]="showPreferences">
+        <div class="main-content" *ngIf="!showPreferences">
+            <h2>Cookie Settings</h2>
+            <p>
+                Utilizziamo i cookie per migliorare la tua esperienza sul nostro sito. Alcuni cookie sono necessari per
+                il funzionamento del sito, mentre altri ci aiutano a migliorare le prestazioni e l'esperienza utente.
+            </p>
+            <div class="actions">
+                <button class="btn-secondary" (click)="togglePreferences()">Personalizza</button>
+                <button class="btn-outline" (click)="acceptNecessary()">Solo necessari</button>
+                <button class="btn-primary" (click)="acceptAll()">Accetta tutti</button>
+            </div>
+        </div>
+
+        <div class="preferences" *ngIf="showPreferences">
+            <h2>Preferenze Cookie</h2>
+
+            <div class="cookie-option">
+                <div class="option-header">
+                    <label>
+                        <input type="checkbox" [(ngModel)]="preferences.necessary" disabled>
+                        Cookie necessari
+                    </label>
+                </div>
+                <p>Questi cookie sono essenziali per il funzionamento del sito web e non possono essere disattivati.</p>
+            </div>
+
+            <div class="cookie-option">
+                <div class="option-header">
+                    <label>
+                        <input type="checkbox" [(ngModel)]="preferences.analytics">
+                        Cookie analitici
+                    </label>
+                </div>
+                <p>Ci aiutano a capire come gli utenti interagiscono con il sito, per migliorare l'esperienza utente.
+                </p>
+            </div>
+
+            <div class="cookie-option">
+                <div class="option-header">
+                    <label>
+                        <input type="checkbox" [(ngModel)]="preferences.marketing">
+                        Cookie di marketing
+                    </label>
+                </div>
+                <p>Utilizzati per mostrare annunci pubblicitari pertinenti in base ai tuoi interessi.</p>
+            </div>
+
+            <div class="actions">
+                <button class="btn-secondary" (click)="togglePreferences()">Indietro</button>
+                <button class="btn-primary" (click)="savePreferences()">Salva preferenze</button>
+            </div>
+        </div>
+    </div>
+</div>
