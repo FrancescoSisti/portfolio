@@ -1,8 +1,13 @@
+# Allow all crawlers
 User-agent: *
 Allow: /
-Sitemap: https://francescosisti.com/sitemap.xml
 
-# Prevent crawling of unnecessary files
+# Prevent crawling of unnecessary files and directories
 Disallow: /assets/icons/
 Disallow: /*.js$
 Disallow: /*.css$
+Disallow: /_vercel/
+Disallow: /node_modules/
+
+# Sitemap location
+Sitemap: https://francescosisti.com/sitemap.xml
