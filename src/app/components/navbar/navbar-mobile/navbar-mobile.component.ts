@@ -24,9 +24,11 @@ export class NavbarMobileComponent implements OnInit, OnDestroy {
   showBackButton = false;
   private routerSubscription?: Subscription;
   private isBrowser: boolean;
-  private scrollThreshold = 50;
+  private scrollThreshold = 20;
   private lastScrollTop = 0;
+  private scrollTimer: any;
   isNavbarVisible = true;
+  isAtTop = true;
 
   menu: MenuItem[] = [
     {
@@ -98,14 +100,42 @@ export class NavbarMobileComponent implements OnInit, OnDestroy {
   }
 
   private handleScroll(): void {
-    const currentScrollTop = window.scrollY;
+    if (this.scrollTimer) {
+      clearTimeout(this.scrollTimer);
+    }
 
+    const currentScrollTop = window.scrollY;
+    this.isAtTop = currentScrollTop < 10;
+
+    // Se siamo all'inizio della pagina, mostra sempre la navbar
+    if (this.isAtTop) {
+      this.isNavbarVisible = true;
+      return;
+    }
+
+    // Ignora piccoli movimenti di scroll
     if (Math.abs(currentScrollTop - this.lastScrollTop) < this.scrollThreshold) {
       return;
     }
 
-    this.isNavbarVisible = currentScrollTop < this.lastScrollTop || currentScrollTop < this.scrollThreshold;
+    // Scroll verso il basso
+    if (currentScrollTop > this.lastScrollTop) {
+      this.isNavbarVisible = false;
+    }
+    // Scroll verso l'alto
+    else {
+      this.isNavbarVisible = true;
+    }
+
+    // Aggiorna l'ultima posizione di scroll
     this.lastScrollTop = currentScrollTop;
+
+    // Imposta un timer per mostrare la navbar dopo che lo scroll si è fermato
+    this.scrollTimer = setTimeout(() => {
+      if (currentScrollTop > 100) {
+        this.isNavbarVisible = false;
+      }
+    }, 2000);
   }
 
   private updatePageTitle(): void {
