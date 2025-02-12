@@ -139,4 +139,9 @@ export class ContactComponent implements OnInit, AfterViewInit {
       this.isSubmitting = false;
     }
   }
+
+  getDirections() {
+    const address = encodeURIComponent('Corso Venezia 83, Verona');
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${address}`, '_blank');
+  }
 }

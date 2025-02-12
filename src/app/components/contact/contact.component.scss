@@ -450,6 +450,65 @@
             z-index: 1;
         }
 
+        .map-overlay {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0.75rem;
+            padding: 1rem 1.5rem;
+            z-index: 2;
+
+            .location-info {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                p {
+                    color: var(--primary);
+                    font-size: 1rem;
+                    font-weight: 500;
+                    margin: 0;
+
+                    &::before {
+                        content: '📍';
+                        margin-right: 0.5rem;
+                    }
+                }
+
+                .directions-btn {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    padding: 0.5rem 1rem;
+                    background: var(--primary);
+                    color: white;
+                    border: none;
+                    border-radius: 1.5rem;
+                    font-size: 0.9rem;
+                    font-weight: 500;
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+
+                    i {
+                        font-size: 1rem;
+                    }
+
+                    &:hover {
+                        background: var(--primary-dark);
+                        transform: translateY(-2px);
+                    }
+
+                    &:active {
+                        transform: scale(0.98);
+                    }
+                }
+            }
+        }
+
         &::before {
             content: '';
             position: absolute;
