@@ -1,21 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { WeatherService } from '../../../services/weather.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 interface Skill {
   name: string;
   icon: string;
-  description: string;
+  category: string;
   level: number;
-  tags: string[];
+  color: string;
+  description: string;
+  experience: string;
 }
 
 interface Project {
   name: string;
   description: string;
-  technologies: string[];
+  image: string;
+  technologies: Technology[];
+  links: {
+    github?: string;
+    live?: string;
+  };
+}
+
+interface Technology {
+  name: string;
   icon: string;
+  color: string;
 }
 
 @Component({
@@ -23,105 +35,144 @@ interface Project {
   templateUrl: './skills-mobile.component.html',
   styleUrls: ['./skills-mobile.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
-export class SkillsMobileComponent implements OnInit {
-  activeTab: 'skills' | 'projects' | 'weather' = 'skills';
+export class SkillsMobileComponent {
+  activeTab: 'skills' | 'projects' = 'skills';
   searchQuery: string = '';
+  selectedCategory: string = 'Tutti';
 
   skills: Skill[] = [
     {
-      name: 'Frontend Development',
-      icon: 'fas fa-code',
-      description: 'Sviluppo di interfacce web moderne e responsive',
+      name: 'Angular',
+      icon: 'devicon-angularjs-plain',
+      category: 'Frontend',
       level: 90,
-      tags: ['Angular', 'React', 'Vue.js', 'TypeScript', 'SCSS']
+      color: '#dd0031',
+      description: 'Framework per lo sviluppo di applicazioni web moderne',
+      experience: '3+ anni di esperienza'
     },
     {
-      name: 'Backend Development',
-      icon: 'fas fa-server',
-      description: 'Sviluppo di API RESTful e architetture scalabili',
+      name: 'React',
+      icon: 'devicon-react-original',
+      category: 'Frontend',
       level: 85,
-      tags: ['Node.js', 'PHP', 'Python', 'MongoDB', 'MySQL']
+      color: '#61dafb',
+      description: 'Libreria per la creazione di interfacce utente dinamiche',
+      experience: '2+ anni di esperienza'
     },
     {
-      name: 'Mobile Development',
-      icon: 'fas fa-mobile-alt',
-      description: 'Sviluppo di applicazioni mobile native e cross-platform',
-      level: 80,
-      tags: ['React Native', 'Flutter', 'iOS', 'Android']
+      name: 'Node.js',
+      icon: 'devicon-nodejs-plain',
+      category: 'Backend',
+      level: 88,
+      color: '#68a063',
+      description: 'Runtime JavaScript per lo sviluppo backend',
+      experience: '3+ anni di esperienza'
     },
     {
-      name: 'DevOps',
-      icon: 'fas fa-cloud',
-      description: 'Gestione dell\'infrastruttura e deployment automatizzato',
-      level: 75,
-      tags: ['Docker', 'AWS', 'CI/CD', 'Kubernetes']
+      name: 'Python',
+      icon: 'devicon-python-plain',
+      category: 'Backend',
+      level: 82,
+      color: '#3776ab',
+      description: 'Linguaggio versatile per backend e data science',
+      experience: '2+ anni di esperienza'
+    },
+    {
+      name: 'TypeScript',
+      icon: 'devicon-typescript-plain',
+      category: 'Linguaggi',
+      level: 92,
+      color: '#007acc',
+      description: 'Superset tipizzato di JavaScript',
+      experience: '3+ anni di esperienza'
+    },
+    {
+      name: 'Docker',
+      icon: 'devicon-docker-plain',
+      category: 'DevOps',
+      level: 78,
+      color: '#2496ed',
+      description: 'Containerizzazione e orchestrazione di applicazioni',
+      experience: '2+ anni di esperienza'
     }
   ];
 
   projects: Project[] = [
     {
-      name: 'Portfolio Interattivo',
-      description: 'Portfolio personale con widgets interattivi e design moderno',
-      technologies: ['Angular', 'TypeScript', 'SCSS'],
-      icon: 'fas fa-briefcase'
+      name: 'Portfolio Personale',
+      description: 'Portfolio interattivo sviluppato con Angular e TypeScript, con animazioni fluide e design responsive.',
+      image: 'assets/images/projects/portfolio.jpg',
+      technologies: [
+        { name: 'Angular', icon: 'devicon-angularjs-plain', color: '#dd0031' },
+        { name: 'TypeScript', icon: 'devicon-typescript-plain', color: '#007acc' },
+        { name: 'SCSS', icon: 'devicon-sass-original', color: '#cc6699' }
+      ],
+      links: {
+        github: 'https://github.com/tuouser/portfolio',
+        live: 'https://tuodominio.com'
+      }
     },
     {
-      name: 'E-commerce Platform',
-      description: 'Piattaforma e-commerce completa con gestione ordini e pagamenti',
-      technologies: ['React', 'Node.js', 'MongoDB'],
-      icon: 'fas fa-shopping-cart'
-    },
-    {
-      name: 'CMS Headless',
-      description: 'Sistema di gestione contenuti headless con API GraphQL',
-      technologies: ['Node.js', 'GraphQL', 'PostgreSQL'],
-      icon: 'fas fa-newspaper'
-    },
-    {
-      name: 'Weather App',
-      description: 'Applicazione meteo con previsioni in tempo reale',
-      technologies: ['Angular', 'OpenWeather API'],
-      icon: 'fas fa-cloud-sun'
+      name: 'E-commerce Dashboard',
+      description: 'Dashboard amministrativa per la gestione di un e-commerce, con analisi dati in tempo reale.',
+      image: 'assets/images/projects/dashboard.jpg',
+      technologies: [
+        { name: 'React', icon: 'devicon-react-original', color: '#61dafb' },
+        { name: 'Node.js', icon: 'devicon-nodejs-plain', color: '#68a063' },
+        { name: 'MongoDB', icon: 'devicon-mongodb-plain', color: '#47a248' }
+      ],
+      links: {
+        github: 'https://github.com/tuouser/dashboard'
+      }
     }
   ];
 
-  weatherData: any = null;
-  isLoadingWeather: boolean = false;
-
-  constructor(private weatherService: WeatherService) { }
-
-  ngOnInit(): void {
-    this.loadDefaultWeather();
-  }
-
-  private async loadDefaultWeather(): Promise<void> {
-    try {
-      this.isLoadingWeather = true;
-      // Implementazione del caricamento meteo
-      this.isLoadingWeather = false;
-    } catch (error) {
-      console.error('Error loading weather:', error);
-      this.isLoadingWeather = false;
-    }
+  get categories(): string[] {
+    return ['Tutti', ...new Set(this.skills.map(skill => skill.category))];
   }
 
   get filteredSkills(): Skill[] {
-    return this.skills.filter(skill =>
-      skill.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-      skill.tags.some(tag => tag.toLowerCase().includes(this.searchQuery.toLowerCase()))
-    );
+    let filtered = this.skills;
+    if (this.selectedCategory !== 'Tutti') {
+      filtered = filtered.filter(skill => skill.category === this.selectedCategory);
+    }
+    if (this.searchQuery) {
+      const query = this.searchQuery.toLowerCase();
+      filtered = filtered.filter(skill =>
+        skill.name.toLowerCase().includes(query) ||
+        skill.description.toLowerCase().includes(query)
+      );
+    }
+    return filtered;
   }
 
   get filteredProjects(): Project[] {
+    if (!this.searchQuery) return this.projects;
+    const query = this.searchQuery.toLowerCase();
     return this.projects.filter(project =>
-      project.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-      project.technologies.some(tech => tech.toLowerCase().includes(this.searchQuery.toLowerCase()))
+      project.name.toLowerCase().includes(query) ||
+      project.description.toLowerCase().includes(query) ||
+      project.technologies.some(tech => tech.name.toLowerCase().includes(query))
     );
   }
 
-  setActiveTab(tab: 'skills' | 'projects' | 'weather'): void {
+  setActiveTab(tab: 'skills' | 'projects'): void {
     this.activeTab = tab;
+    this.searchQuery = '';
+    this.selectedCategory = 'Tutti';
+  }
+
+  setCategory(category: string): void {
+    this.selectedCategory = category;
   }
 }
