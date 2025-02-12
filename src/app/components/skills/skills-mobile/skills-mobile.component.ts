@@ -110,7 +110,7 @@ export class SkillsMobileComponent {
   projects: Project[] = [
     {
       name: 'Portfolio Personale',
-      description: 'Portfolio interattivo sviluppato con Angular e TypeScript, con animazioni fluide e design responsive.',
+      description: 'Portfolio interattivo sviluppato con Angular e TypeScript. Esplora il codice sorgente su GitHub per vedere come è stato realizzato. Coming Soon!',
       image: 'linear-gradient(45deg, #2563eb, #4f46e5)',
       technologies: [
         { name: 'Angular', icon: 'devicon-angularjs-plain', color: '#dd0031' },
@@ -118,13 +118,12 @@ export class SkillsMobileComponent {
         { name: 'SCSS', icon: 'devicon-sass-original', color: '#cc6699' }
       ],
       links: {
-        github: 'https://github.com/tuouser/portfolio',
-        live: 'https://tuodominio.com'
+        github: 'https://github.com/sisisisisisisi'
       }
     },
     {
       name: 'E-commerce Dashboard',
-      description: 'Dashboard amministrativa per la gestione di un e-commerce, con analisi dati in tempo reale.',
+      description: 'Dashboard amministrativa per la gestione di un e-commerce. Progetto in fase di sviluppo, segui gli aggiornamenti su GitHub. Coming Soon!',
       image: 'linear-gradient(45deg, #0891b2, #0d9488)',
       technologies: [
         { name: 'React', icon: 'devicon-react-original', color: '#61dafb' },
@@ -132,7 +131,7 @@ export class SkillsMobileComponent {
         { name: 'MongoDB', icon: 'devicon-mongodb-plain', color: '#47a248' }
       ],
       links: {
-        github: 'https://github.com/tuouser/dashboard'
+        github: 'https://github.com/sisisisisisisi'
       }
     }
   ];

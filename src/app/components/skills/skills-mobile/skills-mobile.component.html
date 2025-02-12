@@ -79,12 +79,12 @@
                 <div *ngFor="let project of filteredProjects" class="project-card" @fadeInOut>
                     <div class="project-image" [style.background]="project.image">
                         <div class="project-links">
-                            <a *ngIf="project.links.github" [href]="project.links.github" target="_blank">
+                            <a [href]="project.links.github" target="_blank" class="github-link">
                                 <i class="fab fa-github"></i>
                             </a>
-                            <a *ngIf="project.links.live" [href]="project.links.live" target="_blank">
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
+                        </div>
+                        <div class="coming-soon-badge">
+                            <span>Coming Soon</span>
                         </div>
                     </div>
 
