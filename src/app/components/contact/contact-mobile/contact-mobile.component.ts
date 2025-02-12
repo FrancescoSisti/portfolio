@@ -139,7 +139,7 @@ export class ContactMobileComponent implements OnInit, AfterViewInit {
   }
 
   private getShareText(): string {
-    return 'Dai un\'occhiata al portfolio di Francesco Sisti!';
+    return 'Ciao! Sono Francesco Sisti, sviluppatore web. Ti invito a dare un\'occhiata al mio portfolio per scoprire come posso aiutarti a realizzare il tuo progetto digitale.';
   }
 
   private getShareUrl(): string {
@@ -207,5 +207,10 @@ export class ContactMobileComponent implements OnInit, AfterViewInit {
     } finally {
       this.isSubmitting = false;
     }
+  }
+
+  getDirections() {
+    const address = encodeURIComponent('Corso Venezia 83, Verona');
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${address}`, '_blank');
   }
 }
