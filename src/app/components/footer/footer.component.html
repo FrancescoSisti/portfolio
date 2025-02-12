@@ -1,0 +1,22 @@
+<footer class="minimal-footer">
+  <div class="footer-content">
+    <div class="footer-left">
+      <p class="copyright">© 2025 Francesco Sisti — Fatto con <span class="accent">♥</span> a Verona</p>
+      <div class="legal-links">
+        <a [routerLink]="['/about']">Chi sono</a>
+        <span class="separator">•</span>
+        <a [routerLink]="['/projects']">Progetti</a>
+        <span class="separator">•</span>
+        <a [routerLink]="['/contact']">Contatti</a>
+      </div>
+    </div>
+    <div class="footer-right">
+      <div class="social-links">
+        <a *ngFor="let social of socialLinks" [href]="social.url" target="_blank" rel="noopener" class="social-link"
+          [attr.aria-label]="social.label">
+          <i [class]="social.icon"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

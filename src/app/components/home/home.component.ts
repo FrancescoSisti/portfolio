@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { WeatherService, WeatherData } from '../../services/weather.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HomeMobileComponent } from './home-mobile/home-mobile.component';
+import { FooterComponent } from '../footer/footer.component';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ResponsiveService } from '../../services/responsive.service';
 import { Subscription, fromEvent } from 'rxjs';
@@ -43,7 +44,7 @@ interface Stat {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, HttpClientModule, HomeMobileComponent],
+  imports: [CommonModule, RouterModule, HttpClientModule, HomeMobileComponent, FooterComponent],
   providers: [WeatherService, HttpClient],
   animations: [
     trigger('fadeInOut', [
@@ -61,10 +62,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   private isHydrated = false;
   activeTooltip: number | null = null;
   isMobile = false;
-  showScrollMessage: boolean = false;
+  showScrollMessage = false;
   private scrollTimeout: any;
-  private scrollSubscription: Subscription = new Subscription();
-  private clickSubscription: Subscription = new Subscription();
+  private scrollSubscription = new Subscription();
+  private clickSubscription = new Subscription();
   private initialTimeout: any;
   private map: any;
 
@@ -232,12 +233,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.scrollSubscription) {
-      this.scrollSubscription.unsubscribe();
-    }
-    if (this.clickSubscription) {
-      this.clickSubscription.unsubscribe();
-    }
+    this.scrollSubscription.unsubscribe();
+    this.clickSubscription.unsubscribe();
     if (this.initialTimeout) {
       clearTimeout(this.initialTimeout);
     }
@@ -316,7 +313,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('window:scroll', ['$event'])
+  @HostListener('window:scroll')
   onScroll() {
     if (!this.isHydrated) return;
 
@@ -334,7 +331,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize')
   onResize() {
     if (isPlatformBrowser(this.platformId)) {
       this.isMobile = window.innerWidth < 768;
@@ -371,4 +368,3 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
   }
 }
-
