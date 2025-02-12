@@ -118,7 +118,7 @@ export class SkillsMobileComponent {
         { name: 'SCSS', icon: 'devicon-sass-original', color: '#cc6699' }
       ],
       links: {
-        github: 'https://github.com/sisisisisisisi'
+        github: 'https://github.com/FrancescoSisti'
       }
     },
     {
