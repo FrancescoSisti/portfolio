@@ -1,0 +1,297 @@
+<div class="terms-of-service">
+  <div class="quick-nav" [class.sticky]="activeSection !== ''">
+    <h2>Indice dei Contenuti</h2>
+    <ul>
+      <li [class.active]="activeSection === 'intro'">
+        <a (click)="scrollToSection('intro')">1. Premessa e Definizioni</a>
+      </li>
+      <li [class.active]="activeSection === 'acceptance'">
+        <a (click)="scrollToSection('acceptance')">2. Accettazione dei Termini</a>
+      </li>
+      <li [class.active]="activeSection === 'access'">
+        <a (click)="scrollToSection('access')">3. Accesso al Sito</a>
+        <ul>
+          <li [class.active]="activeSection === 'access-req'">
+            <a (click)="scrollToSection('access-req')">3.1 Requisiti di Accesso</a>
+          </li>
+          <li [class.active]="activeSection === 'access-rest'">
+            <a (click)="scrollToSection('access-rest')">3.2 Restrizioni d'Uso</a>
+          </li>
+        </ul>
+      </li>
+      <li [class.active]="activeSection === 'ip'">
+        <a (click)="scrollToSection('ip')">4. Proprietà Intellettuale</a>
+        <ul>
+          <li [class.active]="activeSection === 'ip-copyright'">
+            <a (click)="scrollToSection('ip-copyright')">4.1 Diritti d'Autore</a>
+          </li>
+          <li [class.active]="activeSection === 'ip-license'">
+            <a (click)="scrollToSection('ip-license')">4.2 Licenza d'Uso</a>
+          </li>
+        </ul>
+      </li>
+      <li [class.active]="activeSection === 'privacy'">
+        <a (click)="scrollToSection('privacy')">5. Privacy e Protezione dei Dati</a>
+      </li>
+      <li [class.active]="activeSection === 'content'">
+        <a (click)="scrollToSection('content')">6. Contenuti Generati dagli Utenti</a>
+        <ul>
+          <li [class.active]="activeSection === 'content-resp'">
+            <a (click)="scrollToSection('content-resp')">6.1 Responsabilità</a>
+          </li>
+          <li [class.active]="activeSection === 'content-mod'">
+            <a (click)="scrollToSection('content-mod')">6.2 Moderazione</a>
+          </li>
+        </ul>
+      </li>
+      <li [class.active]="activeSection === 'liability'">
+        <a (click)="scrollToSection('liability')">7. Limitazioni di Responsabilità</a>
+        <ul>
+          <li [class.active]="activeSection === 'liability-excl'">
+            <a (click)="scrollToSection('liability-excl')">7.1 Esclusioni</a>
+          </li>
+          <li [class.active]="activeSection === 'liability-force'">
+            <a (click)="scrollToSection('liability-force')">7.2 Forza Maggiore</a>
+          </li>
+        </ul>
+      </li>
+      <li [class.active]="activeSection === 'changes'">
+        <a (click)="scrollToSection('changes')">8. Modifiche ai Termini</a>
+      </li>
+      <li [class.active]="activeSection === 'law'">
+        <a (click)="scrollToSection('law')">9. Legge Applicabile</a>
+      </li>
+      <li [class.active]="activeSection === 'cookies'">
+        <a (click)="scrollToSection('cookies')">10. Cookie e Tracciamento</a>
+      </li>
+      <li [class.active]="activeSection === 'termination'">
+        <a (click)="scrollToSection('termination')">11. Risoluzione del Contratto</a>
+        <ul>
+          <li [class.active]="activeSection === 'termination-effects'">
+            <a (click)="scrollToSection('termination-effects')">11.1 Effetti della Risoluzione</a>
+          </li>
+        </ul>
+      </li>
+      <li [class.active]="activeSection === 'severability'">
+        <a (click)="scrollToSection('severability')">12. Separabilità delle Clausole</a>
+      </li>
+      <li [class.active]="activeSection === 'third-party'">
+        <a (click)="scrollToSection('third-party')">13. Proprietà Intellettuale di Terze Parti</a>
+      </li>
+      <li [class.active]="activeSection === 'contacts'">
+        <a (click)="scrollToSection('contacts')">14. Contatti</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="content">
+    <div class="header">
+      <h1>Termini e Condizioni d'Uso</h1>
+      <p class="last-updated">Ultimo aggiornamento: {{ lastUpdated | date:'longDate' }}</p>
+    </div>
+
+    <div class="sections">
+      <section id="intro">
+        <h2>1. Premessa e Definizioni</h2>
+        <p>I presenti Termini e Condizioni d'Uso ("Termini") regolano l'utilizzo del sito web di Francesco Sisti
+          ("Sito") e costituiscono un accordo legalmente vincolante tra l'utente e Francesco Sisti.</p>
+
+        <h3>1.1 Definizioni</h3>
+        <ul>
+          <li><strong>Sito:</strong> il sito web accessibile all'indirizzo www.sistiwebdevelopment.tech</li>
+          <li><strong>Utente:</strong> qualsiasi persona che accede o utilizza il Sito</li>
+          <li><strong>Contenuti:</strong> testi, immagini, video, software e altri materiali presenti sul Sito
+          </li>
+          <li><strong>Servizi:</strong> funzionalità e servizi offerti attraverso il Sito</li>
+        </ul>
+      </section>
+
+      <section id="acceptance">
+        <h2>2. Accettazione dei Termini</h2>
+        <p>Utilizzando il Sito, l'Utente dichiara di:</p>
+        <ul>
+          <li>Aver letto e compreso i presenti Termini</li>
+          <li>Accettare integralmente quanto in essi contenuto</li>
+          <li>Avere la capacità giuridica di accettare questi Termini</li>
+          <li>Utilizzare il Sito in conformità con le leggi applicabili</li>
+        </ul>
+      </section>
+
+      <section id="access">
+        <h2>3. Accesso al Sito</h2>
+        <h3 id="access-req">3.1 Requisiti di Accesso</h3>
+        <p>L'Utente è responsabile di:</p>
+        <ul>
+          <li>Disporre delle apparecchiature e connessioni necessarie</li>
+          <li>Mantenere sicuro l'accesso al proprio account</li>
+          <li>Fornire informazioni accurate e aggiornate</li>
+        </ul>
+
+        <h3 id="access-rest">3.2 Restrizioni d'Uso</h3>
+        <p>È vietato:</p>
+        <ul>
+          <li>Utilizzare il Sito per scopi illegali o non autorizzati</li>
+          <li>Interferire con il funzionamento del Sito</li>
+          <li>Tentare di accedere a aree riservate senza autorizzazione</li>
+          <li>Diffondere malware o codice dannoso</li>
+        </ul>
+      </section>
+
+      <section id="ip">
+        <h2>4. Proprietà Intellettuale</h2>
+        <h3 id="ip-copyright">4.1 Diritti d'Autore</h3>
+        <p>Tutti i Contenuti del Sito sono protetti da diritti d'autore e altre leggi sulla proprietà intellettuale.
+          In particolare:</p>
+        <ul>
+          <li>Il codice sorgente e il design sono di proprietà esclusiva di Francesco Sisti</li>
+          <li>I marchi, loghi e nomi commerciali sono protetti</li>
+          <li>Le immagini e i contenuti multimediali sono soggetti a copyright</li>
+        </ul>
+
+        <h3 id="ip-license">4.2 Licenza d'Uso</h3>
+        <p>L'Utente riceve una licenza limitata, non esclusiva e non trasferibile per:</p>
+        <ul>
+          <li>Visualizzare i Contenuti per uso personale</li>
+          <li>Utilizzare le funzionalità del Sito come previsto</li>
+          <li>Scaricare materiali espressamente resi disponibili</li>
+        </ul>
+      </section>
+
+      <section id="privacy">
+        <h2>5. Privacy e Protezione dei Dati</h2>
+        <p>Il trattamento dei dati personali è regolato dalla nostra Informativa sulla Privacy, che costituisce
+          parte integrante dei presenti Termini.</p>
+        <ul>
+          <li>L'Utente accetta le modalità di trattamento descritte nell'Informativa</li>
+          <li>I cookie sono gestiti secondo la Cookie Policy</li>
+          <li>L'Utente può esercitare i propri diritti come indicato nell'Informativa</li>
+        </ul>
+      </section>
+
+      <section id="content">
+        <h2>6. Contenuti Generati dagli Utenti</h2>
+        <h3 id="content-resp">6.1 Responsabilità</h3>
+        <p>Per i contenuti inviati attraverso il modulo di contatto o altre funzionalità, l'Utente:</p>
+        <ul>
+          <li>Garantisce di avere i diritti necessari</li>
+          <li>Si assume la responsabilità della legalità dei contenuti</li>
+          <li>Concede una licenza d'uso non esclusiva a Francesco Sisti</li>
+        </ul>
+
+        <h3 id="content-mod">6.2 Moderazione</h3>
+        <p>Francesco Sisti si riserva il diritto di:</p>
+        <ul>
+          <li>Rimuovere contenuti inappropriati</li>
+          <li>Sospendere account che violano i Termini</li>
+          <li>Segnalare attività illegali alle autorità</li>
+        </ul>
+      </section>
+
+      <section id="liability">
+        <h2>7. Limitazioni di Responsabilità</h2>
+        <h3 id="liability-excl">7.1 Esclusioni</h3>
+        <p>Francesco Sisti non è responsabile per:</p>
+        <ul>
+          <li>Interruzioni del servizio o malfunzionamenti</li>
+          <li>Danni diretti o indiretti derivanti dall'uso del Sito</li>
+          <li>Contenuti di siti web di terze parti collegati</li>
+          <li>Azioni degli utenti o violazioni dei Termini</li>
+        </ul>
+
+        <h3 id="liability-force">7.2 Forza Maggiore</h3>
+        <p>Non si assume responsabilità per inadempimenti dovuti a:</p>
+        <ul>
+          <li>Eventi naturali straordinari</li>
+          <li>Azioni governative o restrizioni legali</li>
+          <li>Problemi tecnici fuori dal nostro controllo</li>
+        </ul>
+      </section>
+
+      <section id="changes">
+        <h2>8. Modifiche ai Termini</h2>
+        <p>Francesco Sisti si riserva il diritto di modificare questi Termini in qualsiasi momento. Le modifiche saranno
+          efficaci dopo la pubblicazione sul Sito.</p>
+        <ul>
+          <li>Le modifiche sostanziali saranno notificate agli utenti tramite avviso sul Sito</li>
+          <li>L'uso continuato del Sito dopo le modifiche costituisce accettazione dei nuovi Termini</li>
+          <li>È responsabilità dell'Utente controllare periodicamente eventuali aggiornamenti</li>
+        </ul>
+      </section>
+
+      <section id="law">
+        <h2>9. Legge Applicabile e Foro Competente</h2>
+        <p>Questi Termini sono regolati dalla legge italiana.</p>
+        <ul>
+          <li>Per qualsiasi controversia sarà competente il Foro di Verona</li>
+          <li>Per i consumatori, sarà competente il foro del luogo di residenza o domicilio del consumatore</li>
+          <li>È fatto salvo il diritto di ricorrere a procedure di mediazione o altri metodi di risoluzione alternativa
+            delle controversie</li>
+        </ul>
+      </section>
+
+      <section id="cookies">
+        <h2>10. Cookie e Tecnologie di Tracciamento</h2>
+        <p>L'utilizzo del Sito comporta l'uso di cookie e altre tecnologie di tracciamento come descritto nella nostra
+          Informativa sui Cookie.</p>
+        <ul>
+          <li>L'Utente può gestire le preferenze sui cookie attraverso le impostazioni del browser</li>
+          <li>Alcuni cookie sono essenziali per il funzionamento del Sito</li>
+          <li>Per maggiori informazioni, consultare la nostra Informativa sulla Privacy</li>
+        </ul>
+      </section>
+
+      <section id="termination">
+        <h2>11. Risoluzione del Contratto</h2>
+        <p>Ci riserviamo il diritto di:</p>
+        <ul>
+          <li>Sospendere o terminare l'accesso al Sito in caso di violazione dei Termini</li>
+          <li>Modificare o interrompere il Servizio in qualsiasi momento</li>
+          <li>Bloccare l'accesso in caso di attività sospette o illegali</li>
+        </ul>
+
+        <h3 id="termination-effects">11.1 Effetti della Risoluzione</h3>
+        <ul>
+          <li>Cessazione immediata del diritto di utilizzo del Sito</li>
+          <li>Mantenimento delle disposizioni che per loro natura sopravvivono alla risoluzione</li>
+          <li>Cancellazione o conservazione dei dati secondo quanto previsto dalla Privacy Policy</li>
+        </ul>
+      </section>
+
+      <section id="severability">
+        <h2>12. Separabilità delle Clausole</h2>
+        <p>Se una qualsiasi disposizione di questi Termini dovesse essere dichiarata invalida o inapplicabile:</p>
+        <ul>
+          <li>Le restanti disposizioni rimarranno pienamente valide ed efficaci</li>
+          <li>La disposizione invalida sarà sostituita da una valida che si avvicini il più possibile all'intento
+            originale</li>
+          <li>La nullità di una clausola non pregiudica la validità dell'intero accordo</li>
+        </ul>
+      </section>
+
+      <section id="third-party">
+        <h2>13. Proprietà Intellettuale di Terze Parti</h2>
+        <p>Il Sito può contenere materiali di terze parti protetti da diritti di proprietà intellettuale.</p>
+        <ul>
+          <li>Tutti i marchi e loghi di terze parti appartengono ai rispettivi proprietari</li>
+          <li>L'uso di tali materiali è soggetto alle licenze e ai termini stabiliti dai rispettivi titolari</li>
+          <li>Non ci assumiamo responsabilità per violazioni di diritti di terzi da parte degli Utenti</li>
+        </ul>
+      </section>
+
+      <section id="contacts">
+        <h2>14. Contatti</h2>
+        <p>Per qualsiasi domanda sui presenti Termini:</p>
+        <ul>
+          <li><strong>Email:</strong> francescosisti61&#64;gmail.com</li>
+          <li><strong>PEC:</strong> francesco.sisti&#64;pec.it</li>
+          <li><strong>Indirizzo:</strong> Corso Venezia 83, Verona, Italia</li>
+          <li><strong>Telefono:</strong> +39 333 500 0662</li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="back-to-top" [class.visible]="activeSection !== ''" (click)="scrollToSection('top')">
+      <i class="fas fa-arrow-up"></i>
+    </div>
+  </div>
+</div>

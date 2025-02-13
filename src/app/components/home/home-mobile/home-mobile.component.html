@@ -146,15 +146,6 @@
     </section>
 
     <!-- Footer -->
-    <footer>
-      <p>© 2024 Francesco Sisti — Fatto con <span class="heart">♥</span> a Verona</p>
-      <a routerLink="/changelog" class="changelog-link">Changelog</a>
-      <div class="social-links">
-        <a *ngFor="let social of socialLinks" [href]="social.url" target="_blank" rel="noopener"
-          [attr.aria-label]="social.label">
-          <i [class]="social.icon"></i>
-        </a>
-      </div>
-    </footer>
+    <app-footer></app-footer>
   </div>
 </div>

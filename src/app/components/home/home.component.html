@@ -164,7 +164,7 @@
     <section class="version-info">
       <div class="info-content">
         <div class="info-badge">
-          <i class="fas fa-stars"></i>
+          <i class="fas fa-star"></i>
           OTTIMIZZAZIONE
         </div>
         <h2>Due Versioni, Un'Esperienza Perfetta</h2>
@@ -214,7 +214,7 @@
           PDF!
           Un modo rapido e conveniente per avere sempre a portata di mano le mie competenze ed esperienze professionali.
         </p>
-        <a routerLink="about" class="news-cta">
+        <a routerLink="/about" class="news-cta">
           Vai alla sezione About
           <i class="fas fa-arrow-right"></i>
         </a>
@@ -292,8 +292,9 @@
           </div>
         </div>
       </div>
+
       <div class="section-cta">
-        <a routerLink="projects" class="btn secondary">
+        <a routerLink="/projects" class="btn secondary">
           Esplora tutti i progetti
           <i class="fas fa-arrow-right"></i>
         </a>
@@ -312,7 +313,7 @@
         </div>
       </div>
       <div class="section-cta">
-        <a routerLink="about" class="explore-link">
+        <a routerLink="/about" class="explore-link">
           Scopri tutte le competenze
           <i class="fas fa-arrow-right"></i>
         </a>
@@ -326,7 +327,7 @@
         <h2>Hai un progetto in mente?</h2>
         <p>Sono sempre alla ricerca di nuove sfide e opportunità di collaborazione</p>
         <div class="cta-buttons">
-          <a routerLink="contact" class="btn primary">
+          <a routerLink="/contact" class="btn primary">
             Parliamone
             <i class="fas fa-paper-plane"></i>
           </a>
@@ -337,23 +338,8 @@
         </div>
       </div>
     </section>
-
-    <!-- Minimal Footer -->
-    <footer class="minimal-footer">
-      <div class="footer-content">
-        <div class="footer-left">
-          <p class="copyright">© 2024 Francesco Sisti — Fatto con <span class="accent">♥</span> a Verona</p>
-          <a routerLink="/changelog" class="changelog-link">Changelog</a>
-        </div>
-        <div class="footer-right">
-          <div class="social-links">
-            <a *ngFor="let social of socialLinks" [href]="social.url" target="_blank" rel="noopener" class="social-link"
-              [attr.aria-label]="social.label">
-              <i [class]="social.icon"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
   </div>
+
+  <!-- Footer -->
+  <app-footer></app-footer>
 </div>

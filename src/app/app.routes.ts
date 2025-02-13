@@ -92,6 +92,26 @@ export const routes: Routes = [
     }
   },
   {
+    path: 'privacy-policy',
+    loadComponent: () => import('./components/privacy-policy/privacy-policy.component')
+      .then(m => m.PrivacyPolicyComponent),
+    title: 'Informativa sulla Privacy | Francesco Sisti',
+    data: {
+      description: 'Informativa sulla Privacy del sito web di Francesco Sisti. Scopri come trattiamo i tuoi dati personali e utilizziamo i cookie.',
+      preload: false
+    }
+  },
+  {
+    path: 'terms-of-service',
+    loadComponent: () => import('./components/terms-of-service/terms-of-service.component')
+      .then(m => m.TermsOfServiceComponent),
+    title: 'Termini e Condizioni | Francesco Sisti',
+    data: {
+      description: 'Termini e condizioni di utilizzo del sito web di Francesco Sisti. Informazioni legali e regolamenti.',
+      preload: true
+    }
+  },
+  {
     path: '**',
     redirectTo: '/home',
     pathMatch: 'full'

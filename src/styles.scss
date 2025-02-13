@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
+    // Light Theme (default)
     --primary: #4f46e5;
     --primary-dark: #4338ca;
     --secondary: #64748b;
@@ -31,6 +32,36 @@
     --glass: rgba(255, 255, 255, 0.1);
     --glass-border: rgba(255, 255, 255, 0.2);
     --backdrop-blur: blur(10px);
+
+    // RGB Variables for gradients and opacity
+    --primary-rgb: 79, 70, 229;
+    --accent-rgb: 124, 58, 237;
+    --background-rgb: 248, 250, 252;
+    --surface-rgb: 255, 255, 255;
+    --text-primary-rgb: 30, 41, 59;
+}
+
+// Dark Theme
+.dark-theme {
+    --background: #0f172a;
+    --background-alt: #1e293b;
+    --surface: #1e293b;
+    --surface-alt: rgba(30, 41, 59, 0.8);
+    --text-primary: #f8fafc;
+    --text-secondary: #e2e8f0;
+    --text-tertiary: #94a3b8;
+    --border: #334155;
+    --border-light: #1e293b;
+    --glass: rgba(0, 0, 0, 0.2);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+
+    // RGB Variables for dark theme
+    --background-rgb: 15, 23, 42;
+    --surface-rgb: 30, 41, 59;
+    --text-primary-rgb: 248, 250, 252;
 }
 
 * {

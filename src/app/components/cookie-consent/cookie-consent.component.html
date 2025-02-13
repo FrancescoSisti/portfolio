@@ -1,0 +1,65 @@
+<div class="cookie-consent" *ngIf="showBanner">
+    <div class="cookie-banner">
+        <div class="main-content" *ngIf="!showPreferences">
+            <h2>Impostazioni Cookie</h2>
+            <p>
+                Utilizziamo i cookie per migliorare la tua esperienza sul sito.
+                Scegli quali cookie accettare.
+            </p>
+            <div class="actions">
+                <button class="btn-outline" (click)="togglePreferences()">
+                    Personalizza
+                </button>
+                <button class="btn-secondary" (click)="acceptNecessary()">
+                    Solo essenziali
+                </button>
+                <button class="btn-primary" (click)="acceptAll()">
+                    Accetta tutti
+                </button>
+            </div>
+        </div>
+
+        <div class="preferences" *ngIf="showPreferences">
+            <h2>Preferenze Cookie</h2>
+
+            <div class="cookie-option">
+                <div class="option-header">
+                    <label>
+                        <input type="checkbox" [(ngModel)]="preferences.necessary" disabled>
+                        Cookie Essenziali
+                    </label>
+                </div>
+                <p>Necessari per il funzionamento del sito</p>
+            </div>
+
+            <div class="cookie-option">
+                <div class="option-header">
+                    <label>
+                        <input type="checkbox" [(ngModel)]="preferences.analytics">
+                        Cookie Analitici
+                    </label>
+                </div>
+                <p>Per analizzare l'utilizzo e migliorare il sito</p>
+            </div>
+
+            <div class="cookie-option">
+                <div class="option-header">
+                    <label>
+                        <input type="checkbox" [(ngModel)]="preferences.marketing">
+                        Cookie Marketing
+                    </label>
+                </div>
+                <p>Per personalizzare gli annunci</p>
+            </div>
+
+            <div class="actions">
+                <button class="btn-outline" (click)="togglePreferences()">
+                    Indietro
+                </button>
+                <button class="btn-primary" (click)="savePreferences()">
+                    Salva
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

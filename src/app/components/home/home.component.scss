@@ -77,6 +77,19 @@
     position: relative;
     z-index: 1;
     padding: 0 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    >section {
+      width: 100%;
+    }
+  }
+
+  app-footer {
+    position: relative;
+    z-index: 2;
+    width: 100%;
   }
 
   // Hero Section
@@ -675,6 +688,8 @@
   padding: 8rem 0;
   max-width: 1400px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 
   .section-title {
     font-size: clamp(2rem, 5vw, 3.5rem);
@@ -1091,6 +1106,8 @@
   text-align: center;
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 
   .section-title {
     font-size: clamp(2rem, 5vw, 3.5rem);
@@ -1201,6 +1218,7 @@
   overflow: hidden;
   margin: 4rem auto;
   max-width: 1200px;
+  z-index: 1;
 
   .cta-content {
     position: relative;
@@ -1273,65 +1291,6 @@
     height: 100%;
     background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
     opacity: 0.2;
-  }
-}
-
-// Minimal Footer
-.minimal-footer {
-  padding: 2rem 0;
-  margin-top: 4rem;
-  border-top: 1px solid var(--border);
-
-  .footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-
-    .footer-left {
-      .copyright {
-        color: var(--text-secondary);
-        font-size: 0.9rem;
-
-        .accent {
-          color: var(--primary);
-        }
-      }
-
-      .changelog-link {
-        color: var(--secondary-text-color);
-        text-decoration: none;
-        font-size: 0.8rem;
-        margin-top: 0.5rem;
-        display: inline-block;
-        transition: color 0.3s ease;
-
-        &:hover {
-          color: var(--primary-color);
-        }
-      }
-    }
-
-    .footer-right {
-      .social-links {
-        display: flex;
-        gap: 1.5rem;
-
-        .social-link {
-          color: var(--text-secondary);
-          font-size: 1.2rem;
-          transition: all 0.3s ease;
-          text-decoration: none;
-
-          &:hover {
-            color: var(--primary);
-            transform: translateY(-3px);
-          }
-        }
-      }
-    }
   }
 }
 
@@ -1700,20 +1659,6 @@
         }
       }
     }
-
-    .minimal-footer {
-      padding: 2rem 1.5rem;
-
-      .footer-content {
-        flex-direction: column;
-        gap: 1.5rem;
-        text-align: center;
-
-        .social-links {
-          justify-content: center;
-        }
-      }
-    }
   }
 }
 
@@ -2032,5 +1977,104 @@
 
   50% {
     transform: translateY(-20px);
+  }
+}
+
+// Aggiungo stili globali per i link nelle sezioni
+.section-cta {
+
+  .explore-link,
+  .btn,
+  a {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    i {
+      transition: transform 0.3s ease;
+    }
+
+    &:hover i {
+      transform: translateX(5px);
+    }
+  }
+}
+
+.news-section {
+  .news-cta {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    i {
+      transition: transform 0.3s ease;
+    }
+
+    &:hover i {
+      transform: translateX(5px);
+    }
+  }
+}
+
+// Common link styles
+a {
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+
+  &.btn {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+
+    i {
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      transform: translateY(-3px);
+
+      i {
+        transform: translateX(5px);
+      }
+    }
+
+    &.primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 14px rgba(var(--primary-rgb), 0.25);
+
+      &:hover {
+        box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.35);
+      }
+    }
+
+    &.secondary {
+      background: var(--surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+
+      &:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        background: rgba(var(--primary-rgb), 0.1);
+      }
+    }
   }
 }

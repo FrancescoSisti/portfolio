@@ -192,21 +192,32 @@ export class ContactMobileComponent implements OnInit, AfterViewInit {
     this.submitSuccess = false;
     this.submitError = false;
 
-    try {
-      await this.http.post(this.FORMSPREE_ENDPOINT, this.formData).toPromise();
-      this.submitSuccess = true;
-      this.formData = {
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-      };
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      this.submitError = true;
-    } finally {
-      this.isSubmitting = false;
-    }
+    const formspreeData = {
+      _subject: this.formData.subject,
+      name: this.formData.name,
+      email: this.formData.email,
+      message: this.formData.message
+    };
+
+    this.http.post(this.FORMSPREE_ENDPOINT, formspreeData)
+      .subscribe({
+        next: () => {
+          this.submitSuccess = true;
+          this.formData = {
+            name: '',
+            email: '',
+            subject: '',
+            message: ''
+          };
+        },
+        error: (error) => {
+          console.error('Error submitting form:', error);
+          this.submitError = true;
+        },
+        complete: () => {
+          this.isSubmitting = false;
+        }
+      });
   }
 
   getDirections() {

@@ -1,76 +1,83 @@
-<div class="projects-container">
+<section class="projects">
+  <!-- Background Shapes -->
   <div class="background-shapes">
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
   </div>
 
-  <div class="content-wrapper animate-in">
-    <div class="header-section">
-      <div class="section-badge">
-        <i class="fas fa-code"></i>
-        I Miei Lavori
+  <!-- Hero Section -->
+  <div class="hero" @fadeInUp>
+    <div class="hero-content">
+      <span class="overline">Portfolio</span>
+      <h1>I Miei<br><span class="accent">Progetti</span></h1>
+      <p>Qui è dove la magia si compie. Dove il codice si trasforma in un qualcosa di tangibile, dove le idee si
+        concretizzano e dove la tecnologia si unisce alla creatività.</p>
+      <div class="category-nav">
+        <button [class.active]="activeCategory === 'all'" (click)="setCategory('all')">
+          Tutti
+        </button>
+        <button [class.active]="activeCategory === 'web'" (click)="setCategory('web')">
+          Web
+        </button>
+        <button [class.active]="activeCategory === 'app'" (click)="setCategory('app')">
+          App
+        </button>
+        <button [class.active]="activeCategory === 'ai'" (click)="setCategory('ai')">
+          AI
+        </button>
       </div>
-      <h1>Progetti <span class="gradient-text">in Evidenza</span></h1>
-      <p class="subtitle">Una raccolta dei miei migliori progetti e lavori personali</p>
     </div>
-
-    <!-- Featured Project -->
-    <div class="featured-project" *ngIf="featuredProjects[0]">
-      <div class="project-image" [style.width.px]="featuredProjects[0].dimensions?.width"
-        [style.height.px]="featuredProjects[0].dimensions?.height">
-        <img *ngIf="featuredProjects[0].imageUrl" [src]="featuredProjects[0].imageUrl"
-          [alt]="featuredProjects[0].imageAlt || featuredProjects[0].title"
-          [width]="featuredProjects[0].dimensions?.width" [height]="featuredProjects[0].dimensions?.height"
-          loading="eager" fetchpriority="high">
-      </div>
-      <div class="project-info">
-        <h2>{{ featuredProjects[0].title }}</h2>
-        <p>{{ featuredProjects[0].description }}</p>
-        <div class="tech-stack">
-          <span *ngFor="let tech of featuredProjects[0].technologies">{{ tech }}</span>
+    <div class="hero-visual">
+      <div class="floating-cards">
+        <div class="card-preview" *ngFor="let project of projects.slice(0, 3)">
+          <div class="card-content">
+            <div class="tech-preview">
+              <i [class]="getTechIcon(project.stack[0].name)"></i>
+            </div>
+            <h4>{{ project.title }}</h4>
+          </div>
         </div>
-        <div class="project-actions">
-          <a *ngIf="featuredProjects[0].liveUrl" [href]="featuredProjects[0].liveUrl" target="_blank"
-            class="btn primary">
-            Visita il Sito
+      </div>
+    </div>
+  </div>
+
+  <!-- Projects Grid -->
+  <div class="projects-grid" @staggerFade>
+    <article *ngFor="let project of filteredProjects" class="project-card" [ngClass]="project.status">
+      <div class="status-badge" *ngIf="project.status === 'coming-soon'">
+        <i class="fas fa-clock"></i>
+        <span>Coming Soon</span>
+      </div>
+      <div class="project-preview">
+        <i [class]="getTechIcon(project.stack[0].name)" class="main-icon"></i>
+        <div class="tech-stack">
+          <div class="tech-icon" *ngFor="let tech of project.stack.slice(1, 4)">
+            <i [class]="getTechIcon(tech.name)"></i>
+          </div>
+        </div>
+      </div>
+      <div class="project-content">
+        <span class="year">{{ project.year }}</span>
+        <h3>{{ project.title }}</h3>
+        <p class="subtitle">{{ project.subtitle }}</p>
+        <p>{{ project.description }}</p>
+        <div class="tech-tags">
+          <span *ngFor="let tech of project.stack" class="tech-tag" [style.--tag-color]="tech.color">
+            {{ tech.name }}
+          </span>
+        </div>
+        <div class="project-actions" *ngIf="project.status === 'completed'">
+          <a *ngIf="project.links?.live" [href]="project.links.live" target="_blank" class="btn-live">
+            <span>Prova ora</span>
             <i class="fas fa-external-link-alt"></i>
           </a>
-          <a *ngIf="featuredProjects[0].githubUrl" [href]="featuredProjects[0].githubUrl" target="_blank"
-            class="btn secondary">
-            GitHub
+          <a *ngIf="project.links?.github" [href]="project.links.github" target="_blank" class="btn-github">
+            <span>Code</span>
             <i class="fab fa-github"></i>
           </a>
         </div>
       </div>
-    </div>
-
-    <!-- Other Projects Grid -->
-    <div class="projects-grid">
-      <div class="project-card" *ngFor="let project of otherProjects">
-        <div class="project-image" [style.width.px]="project.dimensions?.width"
-          [style.height.px]="project.dimensions?.height">
-          <img *ngIf="project.imageUrl" appLazyLoad [src]="''" [appLazyLoadSrc]="project.imageUrl"
-            [alt]="project.imageAlt || project.title" [width]="project.dimensions?.width"
-            [height]="project.dimensions?.height">
-        </div>
-        <div class="project-content">
-          <h3>{{ project.title }}</h3>
-          <p>{{ project.description }}</p>
-          <div class="tech-stack">
-            <span *ngFor="let tech of project.technologies">{{ tech }}</span>
-          </div>
-          <div class="project-links">
-            <a *ngIf="project.liveUrl" [href]="project.liveUrl" target="_blank" class="btn primary">
-              Visita il Sito
-              <i class="fas fa-external-link-alt"></i>
-            </a>
-            <a *ngIf="project.githubUrl" [href]="project.githubUrl" target="_blank" class="btn secondary">
-              GitHub
-              <i class="fab fa-github"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
+    </article>
   </div>
-</div>
+</section>

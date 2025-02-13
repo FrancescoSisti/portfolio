@@ -10,13 +10,25 @@ import { WeatherService, WeatherData } from './services/weather.service';
 import { DashboardService } from './services/dashboard.service';
 import { SeoService } from './services/seo.service';
 import { PerformanceService } from './services/performance.service';
+import { CookieConsentComponent } from './components/cookie-consent/cookie-consent.component';
+import { CookieBannerMobileComponent } from './components/cookie-banner/cookie-banner-mobile/cookie-banner-mobile.component';
+import { ResponsiveService } from './services/responsive.service';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NavbarComponent, LoaderComponent],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    NavbarComponent,
+    LoaderComponent,
+    CookieConsentComponent,
+    CookieBannerMobileComponent,
+    DashboardComponent
+  ],
   providers: [WeatherService]
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -25,6 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
   temperature: number | string = '--';
   weatherDescription: string = 'Caricamento...';
   greeting: string = '';
+  isMobile = false;
   private timeInterval: any;
   private weatherInterval: any;
   private dashboardCollapseTimeout: any;
@@ -40,7 +53,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private weatherService: WeatherService,
     public dashboardService: DashboardService,
     private seoService: SeoService,
-    private performanceService: PerformanceService
+    private performanceService: PerformanceService,
+    private responsiveService: ResponsiveService
   ) {
     this.setInitialValues();
     this.router.events.subscribe(event => {
@@ -56,6 +70,10 @@ export class AppComponent implements OnInit, OnDestroy {
         }, 500);
       }
     });
+
+    this.responsiveService.isMobile$.subscribe(
+      mobile => this.isMobile = mobile
+    );
   }
 
   async ngOnInit() {
