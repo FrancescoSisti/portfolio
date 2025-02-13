@@ -1,30 +1,6 @@
 <app-navbar></app-navbar>
 <app-loader></app-loader>
-
-<!-- Verona Dashboard -->
-<div class="verona-dashboard" [class.collapsed]="(dashboardService.isDashboardCollapsed$ | async)">
-    <div class="dashboard-toggle">
-        <i class="fas fa-compass"></i>
-    </div>
-    <div class="dashboard-card">
-        <div class="time-section">
-            <i class="far fa-clock"></i>
-            <span class="time">{{currentTime | date:'HH:mm:ss'}}</span>
-            <span class="date">{{currentTime | date:'dd MMM yyyy'}}</span>
-        </div>
-        <div class="weather-section">
-            <i class="fas fa-cloud-sun"></i>
-            <span class="temperature">{{temperature}}°C</span>
-            <span class="weather-desc">{{weatherDescription}}</span>
-        </div>
-        <div class="greeting-section">
-            <i class="far fa-smile"></i>
-            <span class="greeting">{{greeting}}</span>
-            <span class="location">Verona, Italia</span>
-        </div>
-    </div>
-</div>
-
+<app-dashboard></app-dashboard>
 <router-outlet></router-outlet>
 
 <app-cookie-consent *ngIf="!isMobile"></app-cookie-consent>

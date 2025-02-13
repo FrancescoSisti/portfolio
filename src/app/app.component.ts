@@ -13,13 +13,22 @@ import { PerformanceService } from './services/performance.service';
 import { CookieConsentComponent } from './components/cookie-consent/cookie-consent.component';
 import { CookieBannerMobileComponent } from './components/cookie-banner/cookie-banner-mobile/cookie-banner-mobile.component';
 import { ResponsiveService } from './services/responsive.service';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NavbarComponent, LoaderComponent, CookieConsentComponent, CookieBannerMobileComponent],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    NavbarComponent,
+    LoaderComponent,
+    CookieConsentComponent,
+    CookieBannerMobileComponent,
+    DashboardComponent
+  ],
   providers: [WeatherService]
 })
 export class AppComponent implements OnInit, OnDestroy {
