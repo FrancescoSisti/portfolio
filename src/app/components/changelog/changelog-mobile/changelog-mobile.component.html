@@ -1,7 +1,7 @@
 <div class="changelog-container-mobile">
     <h1>Changelog</h1>
     <div class="version-list-mobile">
-        <div class="version-item-mobile" *ngFor="let version of versions">
+        <div class="version-item-mobile" *ngFor="let version of versions; trackBy: trackByVersion">
             <div class="version-header-mobile">
                 <div class="version-info">
                     <div class="version-title">
@@ -10,23 +10,58 @@
                             {{version.version.startsWith('1') ? 'Stable' : 'Beta'}}
                         </div>
                     </div>
-                    <span class="date-mobile">{{version.date}}</span>
+                    <span class="date-mobile">{{version.date | date:'longDate':'':'it'}}</span>
+                    <p class="description-mobile" *ngIf="version.description">{{version.description}}</p>
                 </div>
             </div>
             <div class="commits-list-mobile">
-                <div class="commit-mobile" *ngFor="let commit of version.commits">
+                <div class="commit-mobile" *ngFor="let commit of version.commits; trackBy: trackByCommit">
                     <div class="commit-header-mobile">
-                        <div class="commit-hash">
-                            <i class="fas fa-code-branch"></i>
-                            {{commit.hash}}
+                        <div class="commit-info">
+                            <div class="commit-hash">
+                                <i class="fas fa-code-branch"></i>
+                                {{commit.hash}}
+                            </div>
+                            <span class="commit-date">{{commit.date | date:'shortDate':'':'it'}}</span>
                         </div>
-                        <span class="commit-date">{{commit.date}}</span>
+                        <div class="commit-type" [ngClass]="commit.type">
+                            {{commit.type}}
+                            <i class="fas" [ngClass]="{
+                                'fa-star': commit.type === 'feature',
+                                'fa-wrench': commit.type === 'fix',
+                                'fa-arrow-up': commit.type === 'improvement',
+                                'fa-file-alt': commit.type === 'docs',
+                                'fa-code': commit.type === 'refactor',
+                                'fa-paint-brush': commit.type === 'style',
+                                'fa-vial': commit.type === 'test',
+                                'fa-cog': commit.type === 'chore'
+                            }"></i>
+                        </div>
                     </div>
-                    <div class="commit-message">
-                        {{commit.message}}
+                    <div class="commit-content">
+                        <div class="commit-message">{{commit.message}}</div>
+                        <p class="commit-description" *ngIf="commit.description">{{commit.description}}</p>
+                        <span class="breaking-change" *ngIf="commit.breaking">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Breaking Change
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="load-more-mobile" *ngIf="hasMore">
+        <button (click)="loadMore()" [disabled]="loading | async" class="load-more-button">
+            <span *ngIf="!(loading | async)">Carica altre versioni</span>
+            <span *ngIf="loading | async" class="loading">
+                <i class="fas fa-circle-notch fa-spin"></i>
+                Caricamento...
+            </span>
+        </button>
+    </div>
+
+    <div class="version-counter-mobile" *ngIf="versions.length > 0">
+        Mostrate {{versions.length}} di {{total}} versioni
     </div>
 </div>

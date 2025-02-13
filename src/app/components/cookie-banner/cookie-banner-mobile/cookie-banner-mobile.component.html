@@ -1,5 +1,5 @@
-<div class="cookie-consent" *ngIf="showBanner">
-    <div class="cookie-banner">
+<div class="cookie-consent-mobile" *ngIf="showBanner">
+    <div class="cookie-banner-mobile">
         <div class="main-content" *ngIf="!showPreferences">
             <h2>Impostazioni Cookie</h2>
             <p>
@@ -7,14 +7,14 @@
                 Scegli quali cookie accettare.
             </p>
             <div class="actions">
-                <button class="btn-outline" (click)="togglePreferences()">
-                    Personalizza
+                <button class="btn-primary" (click)="acceptAll()">
+                    Accetta tutti
                 </button>
                 <button class="btn-secondary" (click)="acceptNecessary()">
                     Solo essenziali
                 </button>
-                <button class="btn-primary" (click)="acceptAll()">
-                    Accetta tutti
+                <button class="btn-outline" (click)="togglePreferences()">
+                    Personalizza
                 </button>
             </div>
         </div>
@@ -53,11 +53,11 @@
             </div>
 
             <div class="actions">
-                <button class="btn-outline" (click)="togglePreferences()">
-                    Indietro
-                </button>
                 <button class="btn-primary" (click)="savePreferences()">
                     Salva
+                </button>
+                <button class="btn-outline" (click)="togglePreferences()">
+                    Indietro
                 </button>
             </div>
         </div>

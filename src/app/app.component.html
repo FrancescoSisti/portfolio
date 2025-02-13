@@ -27,4 +27,5 @@
 
 <router-outlet></router-outlet>
 
-<app-cookie-consent></app-cookie-consent>
+<app-cookie-consent *ngIf="!isMobile"></app-cookie-consent>
+<app-cookie-banner-mobile *ngIf="isMobile"></app-cookie-banner-mobile>

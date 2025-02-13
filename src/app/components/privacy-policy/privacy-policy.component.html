@@ -1,74 +1,382 @@
 <div class="privacy-policy">
-    <div class="container">
-        <h1>Informativa sulla Privacy</h1>
-        <p class="last-updated">Ultimo aggiornamento: {{ lastUpdated | date:'longDate' }}</p>
+  <div class="quick-nav" [class.sticky]="activeSection !== ''">
+    <h2>Indice dei Contenuti</h2>
+    <ul>
+      <li [class.active]="activeSection === 'intro'">
+        <a (click)="scrollToSection('intro')">1. Introduzione e Definizioni</a>
+      </li>
+      <li [class.active]="activeSection === 'data'">
+        <a (click)="scrollToSection('data')">2. Dati Raccolti e Finalità</a>
+        <ul>
+          <li [class.active]="activeSection === 'data-nav'">
+            <a (click)="scrollToSection('data-nav')">2.1 Dati di Navigazione</a>
+          </li>
+          <li [class.active]="activeSection === 'data-vol'">
+            <a (click)="scrollToSection('data-vol')">2.2 Dati Forniti Volontariamente</a>
+          </li>
+        </ul>
+      </li>
+      <li [class.active]="activeSection === 'legal'">
+        <a (click)="scrollToSection('legal')">3. Base Giuridica del Trattamento</a>
+      </li>
+      <li [class.active]="activeSection === 'cookies'">
+        <a (click)="scrollToSection('cookies')">4. Cookie e Tracciamento</a>
+        <ul>
+          <li [class.active]="activeSection === 'cookie-types'">
+            <a (click)="scrollToSection('cookie-types')">4.1 Tipologie di Cookie</a>
+          </li>
+          <li [class.active]="activeSection === 'cookie-manage'">
+            <a (click)="scrollToSection('cookie-manage')">4.2 Gestione Cookie</a>
+          </li>
+        </ul>
+      </li>
+      <li [class.active]="activeSection === 'rights'">
+        <a (click)="scrollToSection('rights')">5. Diritti dell'Interessato</a>
+      </li>
+      <li [class.active]="activeSection === 'security'">
+        <a (click)="scrollToSection('security')">6. Misure di Sicurezza</a>
+      </li>
+      <li [class.active]="activeSection === 'transfer'">
+        <a (click)="scrollToSection('transfer')">7. Trasferimento dei Dati</a>
+      </li>
+      <li [class.active]="activeSection === 'retention'">
+        <a (click)="scrollToSection('retention')">8. Periodo di Conservazione</a>
+      </li>
+      <li [class.active]="activeSection === 'dpo'">
+        <a (click)="scrollToSection('dpo')">9. DPO</a>
+      </li>
+      <li [class.active]="activeSection === 'changes'">
+        <a (click)="scrollToSection('changes')">10. Modifiche</a>
+      </li>
+      <li [class.active]="activeSection === 'contacts'">
+        <a (click)="scrollToSection('contacts')">11. Contatti</a>
+      </li>
+      <li [class.active]="activeSection === 'providers'">
+        <a (click)="scrollToSection('providers')">12. Fornitori di Servizi</a>
+      </li>
+      <li [class.active]="activeSection === 'marketing'">
+        <a (click)="scrollToSection('marketing')">13. Marketing Diretto</a>
+      </li>
+      <li [class.active]="activeSection === 'register'">
+        <a (click)="scrollToSection('register')">14. Registro Trattamenti</a>
+      </li>
+      <li [class.active]="activeSection === 'portability'">
+        <a (click)="scrollToSection('portability')">15. Portabilità dei Dati</a>
+      </li>
+    </ul>
+  </div>
 
-        <section>
-            <h2>1. Introduzione</h2>
-            <p>La presente Informativa sulla Privacy descrive come raccogliamo, utilizziamo e proteggiamo i tuoi dati
-                personali quando visiti il nostro sito web.</p>
-        </section>
-
-        <section>
-            <h2>2. Dati raccolti</h2>
-            <p>Raccogliamo i seguenti tipi di informazioni:</p>
-            <ul>
-                <li>Informazioni fornite volontariamente attraverso il modulo di contatto</li>
-                <li>Dati di utilizzo del sito web</li>
-                <li>Cookie e tecnologie simili</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>3. Utilizzo dei dati</h2>
-            <p>Utilizziamo i tuoi dati personali per:</p>
-            <ul>
-                <li>Rispondere alle tue richieste di contatto</li>
-                <li>Migliorare l'esperienza utente del sito</li>
-                <li>Analizzare l'utilizzo del sito</li>
-                <li>Personalizzare i contenuti</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>4. Cookie</h2>
-            <p>Utilizziamo i seguenti tipi di cookie:</p>
-            <ul>
-                <li><strong>Cookie necessari:</strong> Essenziali per il funzionamento del sito</li>
-                <li><strong>Cookie analitici:</strong> Per analizzare l'utilizzo del sito</li>
-                <li><strong>Cookie di marketing:</strong> Per personalizzare la pubblicità</li>
-            </ul>
-            <p>Puoi gestire le tue preferenze sui cookie attraverso il banner dei cookie presente sul sito.</p>
-        </section>
-
-        <section>
-            <h2>5. I tuoi diritti</h2>
-            <p>Hai il diritto di:</p>
-            <ul>
-                <li>Accedere ai tuoi dati personali</li>
-                <li>Richiedere la rettifica dei dati inesatti</li>
-                <li>Richiedere la cancellazione dei dati</li>
-                <li>Opporti al trattamento dei dati</li>
-                <li>Richiedere la limitazione del trattamento</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>6. Sicurezza dei dati</h2>
-            <p>Adottiamo misure di sicurezza tecniche e organizzative appropriate per proteggere i tuoi dati personali
-                da accessi non autorizzati, perdite o alterazioni.</p>
-        </section>
-
-        <section>
-            <h2>7. Contatti</h2>
-            <p>Per qualsiasi domanda riguardante questa Informativa sulla Privacy o il trattamento dei tuoi dati
-                personali, puoi contattarci attraverso il modulo di contatto presente sul sito.</p>
-        </section>
-
-        <section>
-            <h2>8. Modifiche all'informativa</h2>
-            <p>Ci riserviamo il diritto di modificare questa Informativa sulla Privacy in qualsiasi momento. Le
-                modifiche saranno pubblicate su questa pagina con la data di ultimo aggiornamento.</p>
-        </section>
+  <div class="content">
+    <div class="header">
+      <h1>Informativa sulla Privacy</h1>
+      <p class="last-updated">Ultimo aggiornamento: {{ lastUpdated | date:'longDate' }}</p>
     </div>
+
+    <div class="sections">
+      <section id="intro">
+        <h2>1. Introduzione e Definizioni</h2>
+        <p>La presente Informativa sulla Privacy descrive le modalità di raccolta, utilizzo, condivisione e protezione
+          dei
+          dati personali degli utenti che visitano il sito web di Francesco Sisti ("noi", "nostro", o "il Sito").</p>
+
+        <h3>1.1 Definizioni</h3>
+        <ul>
+          <li><strong>Dati Personali:</strong> qualsiasi informazione riguardante una persona fisica identificata o
+            identificabile.</li>
+          <li><strong>Trattamento:</strong> qualsiasi operazione effettuata sui dati personali.</li>
+          <li><strong>Interessato:</strong> la persona fisica cui si riferiscono i dati personali.</li>
+          <li><strong>Titolare del Trattamento:</strong> Francesco Sisti, che determina le finalità e i mezzi del
+            trattamento.</li>
+        </ul>
+      </section>
+
+      <section id="data">
+        <h2>2. Dati Raccolti e Finalità del Trattamento</h2>
+
+        <h3 id="data-nav">2.1 Dati di Navigazione</h3>
+        <p>I sistemi informatici e le procedure software preposte al funzionamento di questo sito web acquisiscono, nel
+          corso del loro normale esercizio, alcuni dati personali la cui trasmissione è implicita nell'uso dei
+          protocolli
+          di comunicazione di Internet.</p>
+        <ul>
+          <li>Indirizzi IP</li>
+          <li>Nomi a dominio dei computer utilizzati</li>
+          <li>Indirizzi URI/URL delle risorse richieste</li>
+          <li>Orario della richiesta</li>
+          <li>Metodo utilizzato per sottoporre la richiesta al server</li>
+          <li>Dimensione del file ottenuto in risposta</li>
+          <li>Codice numerico indicante lo stato della risposta del server</li>
+          <li>Altri parametri relativi al sistema operativo e all'ambiente informatico dell'utente</li>
+        </ul>
+
+        <h3 id="data-vol">2.2 Dati Forniti Volontariamente</h3>
+        <p>Raccogliamo i seguenti dati quando vengono forniti volontariamente dall'utente:</p>
+        <ul>
+          <li>Nome e cognome</li>
+          <li>Indirizzo email</li>
+          <li>Numero di telefono (se fornito)</li>
+          <li>Contenuto delle comunicazioni inviate attraverso il modulo di contatto</li>
+          <li>Curriculum Vitae (se inviato)</li>
+        </ul>
+      </section>
+
+      <section id="legal">
+        <h2>3. Base Giuridica del Trattamento</h2>
+        <p>Il trattamento dei dati personali si basa su una o più delle seguenti basi giuridiche:</p>
+        <ul>
+          <li><strong>Consenso (Art. 6.1.a GDPR):</strong> per specifiche finalità previa manifestazione del consenso.
+          </li>
+          <li><strong>Contratto (Art. 6.1.b GDPR):</strong> per l'esecuzione di un contratto o misure precontrattuali.
+          </li>
+          <li><strong>Obbligo Legale (Art. 6.1.c GDPR):</strong> per adempiere a obblighi legali.</li>
+          <li><strong>Legittimo Interesse (Art. 6.1.f GDPR):</strong> per il perseguimento di legittimi interessi del
+            titolare.</li>
+        </ul>
+      </section>
+
+      <section id="cookies">
+        <h2>4. Cookie e Tecnologie di Tracciamento</h2>
+
+        <h3 id="cookie-types">4.1 Tipologie di Cookie Utilizzati</h3>
+        <ul>
+          <li><strong>Cookie Tecnici Necessari:</strong>
+            <ul>
+              <li>Essenziali per il funzionamento del sito</li>
+              <li>Non possono essere disattivati</li>
+              <li>Non raccolgono informazioni per scopi di marketing</li>
+            </ul>
+          </li>
+          <li><strong>Cookie Analitici:</strong>
+            <ul>
+              <li>Google Analytics (con IP anonimizzato)</li>
+              <li>Statistiche aggregate sull'utilizzo del sito</li>
+              <li>Durata: 2 anni</li>
+            </ul>
+          </li>
+          <li><strong>Cookie di Marketing:</strong>
+            <ul>
+              <li>Attivi solo previo consenso esplicito</li>
+              <li>Utilizzati per pubblicità personalizzata</li>
+              <li>Durata: 1 anno</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3 id="cookie-manage">4.2 Gestione dei Cookie</h3>
+        <p>È possibile gestire le preferenze sui cookie attraverso:</p>
+        <ul>
+          <li>Il banner dei cookie presente sul sito</li>
+          <li>Le impostazioni del browser</li>
+          <li>La pagina delle preferenze cookie</li>
+        </ul>
+      </section>
+
+      <section id="rights">
+        <h2>5. Diritti dell'Interessato</h2>
+        <p>Ai sensi degli articoli 15-22 del GDPR, l'interessato ha diritto di:</p>
+        <ul>
+          <li><strong>Accesso (Art. 15):</strong> ottenere conferma del trattamento e accesso ai dati personali.</li>
+          <li><strong>Rettifica (Art. 16):</strong> ottenere la correzione dei dati inesatti o l'integrazione dei dati
+            incompleti.</li>
+          <li><strong>Cancellazione (Art. 17):</strong> ottenere la cancellazione dei dati personali.</li>
+          <li><strong>Limitazione (Art. 18):</strong> ottenere la limitazione del trattamento.</li>
+          <li><strong>Portabilità (Art. 20):</strong> ricevere i dati in formato strutturato e trasmetterli ad altro
+            titolare.</li>
+          <li><strong>Opposizione (Art. 21):</strong> opporsi al trattamento dei dati personali.</li>
+          <li><strong>Revoca del Consenso (Art. 7):</strong> revocare il consenso precedentemente prestato.</li>
+          <li><strong>Reclamo (Art. 77):</strong> proporre reclamo all'Autorità Garante per la protezione dei dati
+            personali.</li>
+        </ul>
+      </section>
+
+      <section id="security">
+        <h2>6. Misure di Sicurezza</h2>
+        <p>Adottiamo adeguate misure di sicurezza per proteggere i dati personali:</p>
+        <ul>
+          <li><strong>Misure Tecniche:</strong>
+            <ul>
+              <li>Crittografia SSL/TLS per la trasmissione dei dati</li>
+              <li>Firewall e sistemi di protezione da malware</li>
+              <li>Backup periodici dei dati</li>
+              <li>Accesso protetto ai server</li>
+            </ul>
+          </li>
+          <li><strong>Misure Organizzative:</strong>
+            <ul>
+              <li>Formazione del personale sulla protezione dei dati</li>
+              <li>Politiche di accesso basate sul principio del minimo privilegio</li>
+              <li>Procedure di gestione delle violazioni dei dati</li>
+              <li>Registri delle attività di trattamento</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section id="transfer">
+        <h2>7. Trasferimento dei Dati</h2>
+        <p>I dati personali potrebbero essere trasferiti verso:</p>
+        <ul>
+          <li><strong>Paesi UE/SEE:</strong> garantendo lo stesso livello di protezione del GDPR.</li>
+          <li><strong>Paesi Extra UE/SEE:</strong> solo in presenza di:
+            <ul>
+              <li>Decisione di adeguatezza della Commissione Europea</li>
+              <li>Clausole Contrattuali Standard (SCC)</li>
+              <li>Norme Vincolanti d'Impresa (BCR)</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section id="retention">
+        <h2>8. Periodo di Conservazione</h2>
+        <p>I dati personali sono conservati per il tempo necessario a:</p>
+        <ul>
+          <li>Raggiungere le finalità per cui sono stati raccolti</li>
+          <li>Adempiere agli obblighi legali e fiscali</li>
+          <li>Tutelare i diritti del titolare in caso di controversie</li>
+        </ul>
+        <p>Periodi specifici di conservazione:</p>
+        <ul>
+          <li>Dati di navigazione: 90 giorni</li>
+          <li>Dati per finalità di marketing: 24 mesi dal consenso</li>
+          <li>Dati contrattuali: 10 anni dalla conclusione del contratto</li>
+          <li>Curriculum Vitae: 12 mesi dall'invio</li>
+        </ul>
+      </section>
+
+      <section id="dpo">
+        <h2>9. Responsabile della Protezione dei Dati (DPO)</h2>
+        <p>Il Responsabile della Protezione dei Dati può essere contattato per questioni relative al trattamento dei
+          dati
+          personali:</p>
+        <ul>
+          <li>Email: francescosisti61&#64;gmail.com</li>
+          <li>Telefono: +39 333 500 0662</li>
+          <li>Indirizzo: Corso Venezia 83, Verona, Italia</li>
+        </ul>
+      </section>
+
+      <section id="changes">
+        <h2>10. Modifiche all'Informativa</h2>
+        <p>Ci riserviamo il diritto di modificare questa Informativa sulla Privacy in qualsiasi momento. Le modifiche
+          saranno pubblicate su questa pagina con la nuova data di ultimo aggiornamento.</p>
+        <p>In caso di modifiche sostanziali, forniremo un avviso visibile sul sito e, se richiesto dalla legge,
+          richiederemo un nuovo consenso.</p>
+      </section>
+
+      <section id="contacts">
+        <h2>11. Contatti</h2>
+        <p>Per qualsiasi domanda relativa a questa Informativa sulla Privacy o al trattamento dei dati personali:</p>
+        <ul>
+          <li><strong>Titolare del Trattamento:</strong> Francesco Sisti</li>
+          <li><strong>Indirizzo:</strong>Corso Venezia 83, Verona, Italia</li>
+          <li><strong>Email:</strong> francescosisti61&#64;gmail.com</li>
+          <li><strong>PEC:</strong> francesco.sisti&#64;pec.it</li>
+          <li><strong>Telefono:</strong> +39 333 500 0662</li>
+        </ul>
+      </section>
+
+      <section id="providers">
+        <h2>12. Fornitori di Servizi Terzi</h2>
+        <p>Utilizziamo i seguenti fornitori di servizi terzi per il funzionamento del Sito:</p>
+        <ul>
+          <li><strong>Google Analytics:</strong>
+            <ul>
+              <li>Finalità: analisi del traffico e comportamento degli utenti</li>
+              <li>Dati trattati: cookie, dati di utilizzo, identificatori anonimi</li>
+              <li>Paese: Stati Uniti (con garanzie adeguate)</li>
+              <li>Privacy Policy: <a href="https://policies.google.com/privacy"
+                  target="_blank">policies.google.com/privacy</a></li>
+            </ul>
+          </li>
+          <li><strong>Cloudflare:</strong>
+            <ul>
+              <li>Finalità: CDN e protezione da attacchi DDoS</li>
+              <li>Dati trattati: IP, dati di connessione</li>
+              <li>Paese: Stati Uniti (con garanzie adeguate)</li>
+              <li>Privacy Policy: <a href="https://www.cloudflare.com/privacypolicy"
+                  target="_blank">cloudflare.com/privacypolicy</a></li>
+            </ul>
+          </li>
+          <li><strong>GitHub Pages:</strong>
+            <ul>
+              <li>Finalità: hosting del sito web</li>
+              <li>Dati trattati: log di sistema, dati di utilizzo</li>
+              <li>Paese: Stati Uniti (con garanzie adeguate)</li>
+              <li>Privacy Policy: <a
+                  href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement"
+                  target="_blank">docs.github.com/privacy-statement</a></li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section id="marketing">
+        <h2>13. Marketing Diretto</h2>
+        <p>Il trattamento dei dati per finalità di marketing diretto si basa su:</p>
+        <ul>
+          <li><strong>Consenso (Art. 6.1.a GDPR):</strong>
+            <ul>
+              <li>Richiesto per l'invio di newsletter</li>
+              <li>Revocabile in qualsiasi momento</li>
+              <li>Non condizionato alla fornitura di altri servizi</li>
+            </ul>
+          </li>
+          <li><strong>Legittimo Interesse (Art. 6.1.f GDPR):</strong>
+            <ul>
+              <li>Per comunicazioni a clienti esistenti</li>
+              <li>Limitato a prodotti/servizi analoghi</li>
+              <li>Con possibilità di opposizione in ogni momento</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      <section id="register">
+        <h2>14. Registro dei Trattamenti</h2>
+        <p>In conformità all'Art. 30 del GDPR, manteniamo un registro delle attività di trattamento che include:</p>
+        <ul>
+          <li>Finalità del trattamento</li>
+          <li>Categorie di interessati e dati personali</li>
+          <li>Categorie di destinatari</li>
+          <li>Trasferimenti verso paesi terzi</li>
+          <li>Termini per la cancellazione</li>
+          <li>Misure di sicurezza tecniche e organizzative</li>
+        </ul>
+        <p>Il registro è disponibile su richiesta all'autorità di controllo.</p>
+      </section>
+
+      <section id="portability">
+        <h2>15. Portabilità dei Dati</h2>
+        <p>In conformità all'Art. 20 del GDPR, garantiamo il diritto alla portabilità dei dati:</p>
+        <ul>
+          <li><strong>Formato dei Dati:</strong>
+            <ul>
+              <li>File CSV per dati strutturati</li>
+              <li>File ZIP per raccolte di documenti</li>
+              <li>Formati aperti e interoperabili</li>
+            </ul>
+          </li>
+          <li><strong>Modalità di Richiesta:</strong>
+            <ul>
+              <li>Tramite email al DPO</li>
+              <li>Attraverso l'area personale (se disponibile)</li>
+              <li>Con verifica dell'identità</li>
+            </ul>
+          </li>
+          <li><strong>Tempistiche:</strong>
+            <ul>
+              <li>Risposta entro 30 giorni</li>
+              <li>Possibile estensione di 60 giorni per richieste complesse</li>
+              <li>Notifica in caso di ritardo</li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="back-to-top" [class.visible]="activeSection !== ''" (click)="scrollToSection('top')">
+      <i class="fas fa-arrow-up"></i>
+    </div>
+  </div>
 </div>
