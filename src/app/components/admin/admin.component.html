@@ -1,0 +1,50 @@
+<div class="admin-container">
+    <header class="admin-header">
+        <div class="header-left">
+            <h1>Area Amministrazione</h1>
+            <p>Benvenuto, {{ username }}</p>
+        </div>
+        <div class="header-right">
+            <button class="btn btn-outline-danger" (click)="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <div class="admin-body">
+        <nav class="admin-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a [routerLink]="['/admin/dashboard']" routerLinkActive="active" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/admin/projects']" routerLinkActive="active" class="nav-link">
+                        <i class="fas fa-project-diagram"></i> Gestione Progetti
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/admin/skills']" routerLinkActive="active" class="nav-link">
+                        <i class="fas fa-code"></i> Gestione Skills
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/admin/profile']" routerLinkActive="active" class="nav-link">
+                        <i class="fas fa-user-circle"></i> Gestione Profilo
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/admin/statistics']" routerLinkActive="active" class="nav-link">
+                        <i class="fas fa-chart-bar"></i> Statistiche
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="admin-content">
+            <!-- Il contenuto verrà caricato qui in base alla rotta -->
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>
