@@ -15,9 +15,15 @@
         <div class="projects-list">
             <div class="list-header">
                 <h3>I tuoi progetti</h3>
-                <button class="btn btn-sm btn-outline-primary" (click)="resetForm()" *ngIf="!isEditing">
-                    <i class="fas fa-plus"></i> Aggiungi
-                </button>
+                <div class="list-actions">
+                    <button class="btn btn-sm btn-outline-secondary" (click)="resetToDefaultProjects()"
+                        title="Ripristina progetti predefiniti">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary" (click)="resetForm()" *ngIf="!isEditing">
+                        <i class="fas fa-plus"></i> Aggiungi
+                    </button>
+                </div>
             </div>
 
             <div class="empty-state" *ngIf="projects.length === 0">

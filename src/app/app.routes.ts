@@ -135,14 +135,8 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'projects',
         pathMatch: 'full'
-      },
-      {
-        path: 'dashboard',
-        loadComponent: () => import('./components/admin/dashboard/dashboard.component')
-          .then(m => m.DashboardComponent),
-        title: 'Dashboard | Area Amministrazione',
       },
       {
         path: 'projects',

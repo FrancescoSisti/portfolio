@@ -212,6 +212,27 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.subscription.add(sub);
   }
 
+  resetToDefaultProjects(): void {
+    if (confirm('Sei sicuro di voler ripristinare i progetti predefiniti? Questa azione cancellerà tutte le modifiche apportate.')) {
+      this.isLoading = true;
+
+      const sub = this.projectsService.resetToDefaultProjects()
+        .subscribe({
+          next: () => {
+            this.loadProjects();
+            this.resetForm();
+            this.isLoading = false;
+          },
+          error: (error) => {
+            console.error('Errore nel ripristino dei progetti predefiniti', error);
+            this.isLoading = false;
+          }
+        });
+
+      this.subscription.add(sub);
+    }
+  }
+
   // Getters per controlli di validazione del form
   get titleControl() { return this.projectForm.get('title'); }
   get descriptionControl() { return this.projectForm.get('description'); }

@@ -29,6 +29,7 @@ export class NavbarMobileComponent implements OnInit, OnDestroy {
   private scrollTimer: any;
   isNavbarVisible = true;
   isAtTop = true;
+  hideInAdmin = false;
 
   menu: MenuItem[] = [
     {
@@ -72,20 +73,23 @@ export class NavbarMobileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.routerSubscription = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      this.currentRoute = event.urlAfterRedirects;
-      this.updatePageTitle();
-      this.updateBackButton();
-    });
-
     if (this.isBrowser) {
+      this.routerSubscription = this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe((event: any) => {
+        this.currentRoute = event.urlAfterRedirects;
+
+        // Verifica se l'URL contiene '/admin' e nascondi la navbar
+        this.hideInAdmin = this.currentRoute.includes('/admin');
+
+        this.currentPageTitle = this.getPageTitle(this.currentRoute);
+        this.updateBackButton();
+      });
+
       window.addEventListener('scroll', this.handleScroll.bind(this));
     }
 
     this.currentRoute = this.router.url;
-    this.updatePageTitle();
     this.updateBackButton();
   }
 
@@ -138,14 +142,6 @@ export class NavbarMobileComponent implements OnInit, OnDestroy {
     }, 2000);
   }
 
-  private updatePageTitle(): void {
-    const currentMenuItem = this.menu.find(item =>
-      this.currentRoute === '/' + item.route ||
-      (item.route === '' && this.currentRoute === '/')
-    );
-    this.currentPageTitle = currentMenuItem?.title || 'Home';
-  }
-
   private updateBackButton(): void {
     // Mostra il pulsante indietro se non siamo nella home
     this.showBackButton = this.currentRoute !== '/';
@@ -153,5 +149,13 @@ export class NavbarMobileComponent implements OnInit, OnDestroy {
 
   goBack(): void {
     this.location.back();
+  }
+
+  private getPageTitle(route: string): string {
+    const currentMenuItem = this.menu.find(item =>
+      route === '/' + item.route ||
+      (item.route === '' && route === '/')
+    );
+    return currentMenuItem?.title || 'Home';
   }
 }

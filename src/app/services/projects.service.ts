@@ -13,6 +13,8 @@ export interface Project {
   featured: boolean;
   createdAt: Date;
   updatedAt: Date;
+  category?: string; // Web, App, AI, etc.
+  status?: string; // completed, in-progress, planned
 }
 
 @Injectable({
@@ -23,14 +25,52 @@ export class ProjectsService {
   public projects$ = this.projectsSubject.asObservable();
 
   private nextId = 1;
+  private readonly STORAGE_KEY = 'portfolio_projects';
 
   constructor() {
-    // Carica progetti simulati all'inizializzazione
-    this.loadMockProjects();
+    // Prova a caricare i progetti dal localStorage
+    this.loadProjects();
   }
 
-  private loadMockProjects(): void {
-    const mockProjects: Project[] = [
+  private loadProjects(): void {
+    try {
+      const storedProjects = localStorage.getItem(this.STORAGE_KEY);
+
+      if (storedProjects) {
+        // Converte le date da stringhe a oggetti Date
+        const projects = JSON.parse(storedProjects, (key, value) => {
+          if (key === 'createdAt' || key === 'updatedAt') {
+            return new Date(value);
+          }
+          return value;
+        });
+
+        this.projectsSubject.next(projects);
+
+        // Imposta nextId al valore massimo + 1
+        if (projects.length > 0) {
+          this.nextId = Math.max(...projects.map((p: Project) => p.id)) + 1;
+        }
+      } else {
+        // Se non ci sono progetti salvati, carica quelli predefiniti
+        this.loadRealProjects();
+      }
+    } catch (error) {
+      console.error('Errore nel caricamento dei progetti:', error);
+      this.loadRealProjects(); // Fallback ai progetti predefiniti
+    }
+  }
+
+  private saveProjects(projects: Project[]): void {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(projects));
+    } catch (error) {
+      console.error('Errore nel salvataggio dei progetti:', error);
+    }
+  }
+
+  private loadRealProjects(): void {
+    const realProjects: Project[] = [
       {
         id: this.nextId++,
         title: 'Portfolio personale',
@@ -40,34 +80,67 @@ export class ProjectsService {
         githubUrl: 'https://github.com/FrancescoSisti/portfolio',
         liveUrl: 'https://francescosisti.com',
         featured: true,
+        category: 'web',
+        status: 'completed',
         createdAt: new Date('2023-09-15'),
         updatedAt: new Date()
       },
       {
         id: this.nextId++,
-        title: 'E-commerce Store',
-        description: 'Piattaforma e-commerce con funzionalità di carrello e pagamento.',
-        technologies: ['React', 'Node.js', 'Express', 'MongoDB'],
-        imageUrl: 'assets/images/projects/ecommerce.jpg',
-        githubUrl: 'https://github.com/FrancescoSisti/ecommerce',
+        title: 'Opus Agency Website',
+        description: 'Sito web aziendale con design moderno, animazioni fluide e ottimizzazione SEO. Focus sulla user experience e performance.',
+        technologies: ['Angular', 'TypeScript', 'SCSS', 'Gsap'],
+        imageUrl: '/assets/images/projects/opus.png',
+        liveUrl: 'https://opusagency.it',
+        featured: true,
+        category: 'web',
+        status: 'completed',
+        createdAt: new Date('2024-01-10'),
+        updatedAt: new Date('2024-02-15')
+      },
+      {
+        id: this.nextId++,
+        title: 'Studio Lory Website',
+        description: 'Piattaforma moderna creata per la professionista della salute Loredana Vincenti con interfaccia reattiva, prenotazioni online e gestione contenuti.',
+        technologies: ['React', 'Node.js', 'MongoDB', 'TailwindCSS'],
+        imageUrl: '/assets/images/projects/wellness.png',
+        githubUrl: 'https://github.com/FrancescoSisti/wellness-website-2.0',
         featured: false,
+        category: 'web',
+        status: 'completed',
+        createdAt: new Date('2024-02-01'),
+        updatedAt: new Date('2024-03-10')
+      },
+      {
+        id: this.nextId++,
+        title: 'Laravel BDoctors',
+        description: 'Piattaforma per la gestione di profili medici con sistema di prenotazione e dashboard amministrativa.',
+        technologies: ['Laravel', 'PHP', 'MySQL', 'Bootstrap', 'API'],
+        imageUrl: 'assets/images/projects/bdoctors.jpg',
+        githubUrl: 'https://github.com/FrancescoSisti/laravel-bdoctors',
+        featured: false,
+        category: 'web',
+        status: 'completed',
         createdAt: new Date('2023-06-10'),
         updatedAt: new Date('2023-08-22')
       },
       {
         id: this.nextId++,
-        title: 'Weather App',
-        description: 'Applicazione meteo che utilizza API esterne per mostrare le previsioni.',
-        technologies: ['JavaScript', 'HTML', 'CSS', 'OpenWeatherAPI'],
-        imageUrl: 'assets/images/projects/weather.jpg',
-        liveUrl: 'https://weatherapp.francescosisti.com',
+        title: 'Oracle Chatbot',
+        description: 'Chatbot intelligente basato su AI per l\'assistenza clienti e automazione delle risposte.',
+        technologies: ['PHP', 'AI', 'API Integration', 'NLP'],
+        imageUrl: 'assets/images/projects/chatbot.jpg',
+        githubUrl: 'https://github.com/FrancescoSisti/oracle-chatbot',
         featured: false,
+        category: 'ai',
+        status: 'completed',
         createdAt: new Date('2022-12-05'),
         updatedAt: new Date('2023-03-18')
       }
     ];
 
-    this.projectsSubject.next(mockProjects);
+    this.projectsSubject.next(realProjects);
+    this.saveProjects(realProjects); // Salva i progetti predefiniti nel localStorage
   }
 
   // CRUD Operations
@@ -88,6 +161,14 @@ export class ProjectsService {
     return of(featuredProjects).pipe(delay(300));
   }
 
+  getProjectsByCategory(category: string): Observable<Project[]> {
+    const projects = this.projectsSubject.value;
+    const categoryProjects = category === 'all'
+      ? projects
+      : projects.filter(p => p.category === category);
+    return of(categoryProjects).pipe(delay(300));
+  }
+
   addProject(project: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>): Observable<Project> {
     const projects = this.projectsSubject.value;
 
@@ -99,11 +180,10 @@ export class ProjectsService {
     };
 
     const updatedProjects = [...projects, newProject];
+    this.projectsSubject.next(updatedProjects);
+    this.saveProjects(updatedProjects);
 
-    return of(newProject).pipe(
-      delay(500),
-      tap(() => this.projectsSubject.next(updatedProjects))
-    );
+    return of(newProject).pipe(delay(500));
   }
 
   updateProject(updatedProject: Project): Observable<Project> {
@@ -128,20 +208,20 @@ export class ProjectsService {
       ...projects.slice(index + 1)
     ];
 
-    return of(newProject).pipe(
-      delay(500),
-      tap(() => this.projectsSubject.next(updatedProjects))
-    );
+    this.projectsSubject.next(updatedProjects);
+    this.saveProjects(updatedProjects);
+
+    return of(newProject).pipe(delay(500));
   }
 
   deleteProject(id: number): Observable<boolean> {
     const projects = this.projectsSubject.value;
     const updatedProjects = projects.filter(p => p.id !== id);
 
-    return of(true).pipe(
-      delay(500),
-      tap(() => this.projectsSubject.next(updatedProjects))
-    );
+    this.projectsSubject.next(updatedProjects);
+    this.saveProjects(updatedProjects);
+
+    return of(true).pipe(delay(500));
   }
 
   toggleFeatured(id: number): Observable<Project | undefined> {
@@ -165,9 +245,15 @@ export class ProjectsService {
       ...projects.slice(index + 1)
     ];
 
-    return of(updatedProject).pipe(
-      delay(300),
-      tap(() => this.projectsSubject.next(updatedProjects))
-    );
+    this.projectsSubject.next(updatedProjects);
+    this.saveProjects(updatedProjects);
+
+    return of(updatedProject).pipe(delay(300));
+  }
+
+  // Metodo per ripristinare i progetti predefiniti
+  resetToDefaultProjects(): Observable<boolean> {
+    this.loadRealProjects();
+    return of(true).pipe(delay(500));
   }
 }

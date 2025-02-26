@@ -48,7 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private appRef: ApplicationRef,
     private ngZone: NgZone,
     private scrollService: ScrollService,
-    private router: Router,
+    public router: Router,
     private loaderService: LoaderService,
     private weatherService: WeatherService,
     public dashboardService: DashboardService,

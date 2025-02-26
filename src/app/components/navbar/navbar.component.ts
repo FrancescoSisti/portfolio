@@ -31,6 +31,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private responsiveSubscription?: Subscription;
   private isBrowser: boolean;
   private isAnimating = false;
+  hideInAdmin = false;
 
   menu: MenuItem[] = [
     {
@@ -79,18 +80,19 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.routerSubscription = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      this.currentRoute = event.urlAfterRedirects;
-      if (this.isBrowser) {
-        this.closeMenu();
-      }
-    });
-
-    this.currentRoute = this.router.url;
-
     if (this.isBrowser) {
+      this.routerSubscription = this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe((event: any) => {
+        this.currentRoute = event.urlAfterRedirects;
+
+        this.hideInAdmin = this.currentRoute.includes('/admin');
+
+        this.closeMenu();
+      });
+
+      this.currentRoute = this.router.url;
+
       this.responsiveSubscription = this.responsiveService.isMobile$.subscribe(
         isMobile => this.isMobile = isMobile
       );
