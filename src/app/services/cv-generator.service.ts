@@ -129,8 +129,10 @@ export class CvGeneratorService {
       }
 
       // Generate preview URL with better quality
+      const timestamp = new Date().toISOString().split('T')[0];
+      const filename = `Francesco_Sisti_Curriculum_Vitae_${timestamp}.pdf`;
       const previewUrl = this.pdfDoc.output('datauristring', {
-        filename: 'preview.pdf'
+        filename: filename
       });
       return previewUrl;
 
@@ -152,10 +154,26 @@ export class CvGeneratorService {
   downloadCV(): void {
     if (this.pdfDoc) {
       const timestamp = new Date().toISOString().split('T')[0];
-      const filename = `Francesco_Sisti_CV_${timestamp}.pdf`;
+      const filename = `Francesco_Sisti_Curriculum_Vitae_${timestamp}.pdf`;
 
-      // Usa il metodo save() di jsPDF che gestisce meglio il download su diversi browser
-      this.pdfDoc.save(filename);
+      // Crea un blob dal PDF
+      const blob = this.pdfDoc.output('blob');
+
+      // Crea un URL per il blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Crea un elemento anchor temporaneo
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+
+      // Aggiungi l'elemento al DOM, cliccalo e rimuovilo
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Pulisci l'URL del blob
+      window.URL.revokeObjectURL(url);
     } else {
       console.error('No PDF document available. Generate it first.');
     }
