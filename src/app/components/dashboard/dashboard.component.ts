@@ -11,11 +11,14 @@ import { CookieService, CookieConsent } from '../../services/cookie.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="verona-dashboard" [class.collapsed]="(dashboardService.isDashboardCollapsed$ | async)">
-      <div class="dashboard-toggle">
+    <div class="verona-dashboard" [class.collapsed]="(dashboardService.isDashboardCollapsed$ | async)" [class.active]="isActive">
+      <div class="dashboard-toggle" (click)="toggleDashboard()">
         <i class="fas fa-compass"></i>
       </div>
       <div class="dashboard-card">
+        <div class="close-btn" (click)="toggleDashboard()">
+          <i class="fas fa-times"></i>
+        </div>
         <div class="time-section">
           <i class="far fa-clock"></i>
           <span class="time">{{currentTime | date:'HH:mm:ss'}}</span>
@@ -78,6 +81,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   weatherDescription: string = 'Caricamento...';
   greeting: string = '';
   showCookieSettings = false;
+  isActive = false;
   cookiePreferences: CookieConsent = {
     necessary: true,
     analytics: true,
@@ -194,5 +198,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   saveCookiePreferences() {
     this.cookieService.setCookieConsent(this.cookiePreferences);
     this.showCookieSettings = false;
+  }
+
+  toggleDashboard() {
+    this.isActive = !this.isActive;
+    this.dashboardService.setDashboardCollapsed(!this.isActive);
   }
 }
