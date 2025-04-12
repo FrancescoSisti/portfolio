@@ -44,6 +44,9 @@ export class CvGeneratorService {
 
       console.log('Starting PDF generation...');
 
+      // Add print-specific class to prepare for printing
+      element.classList.add('printing');
+
       // Create canvas with better quality and resource handling
       const canvas = await html2canvas(element, {
         scale: 2,
@@ -54,12 +57,6 @@ export class CvGeneratorService {
         imageTimeout: 15000,
         width: element.offsetWidth,
         height: element.offsetHeight,
-        x: 0,
-        y: 0,
-        scrollX: 0,
-        scrollY: 0,
-        windowWidth: element.offsetWidth,
-        windowHeight: element.offsetHeight,
         onclone: (clonedDoc) => {
           console.log('Cloning document...');
           const clonedElement = clonedDoc.getElementById(elementId);
@@ -71,6 +68,7 @@ export class CvGeneratorService {
             clonedElement.style.height = 'auto';
             clonedElement.style.overflow = 'visible';
             clonedElement.style.opacity = '1';
+            clonedElement.classList.add('printing');
 
             // Ensure Font Awesome is loaded in the clone
             const fontAwesomeLink = clonedDoc.createElement('link');
@@ -113,20 +111,35 @@ export class CvGeneratorService {
 
       // Add the image with better quality
       const imgData = canvas.toDataURL('image/jpeg', 0.95);
-      this.pdfDoc.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, '', 'MEDIUM');
 
-      // Handle multiple pages if needed
-      if (imgHeight > pageHeight) {
-        let heightLeft = imgHeight - pageHeight;
-        let position = -pageHeight;
+      // Handle multiple pages with better page breaks
+      const totalPages = Math.ceil(imgHeight / pageHeight);
+      let heightLeft = imgHeight;
 
-        while (heightLeft >= 0) {
+      for (let i = 0; i < totalPages; i++) {
+        // For the first page
+        if (i === 0) {
+          this.pdfDoc.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, '', 'FAST');
+        } else {
+          // For subsequent pages
           this.pdfDoc.addPage();
-          this.pdfDoc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, '', 'MEDIUM');
-          heightLeft -= pageHeight;
-          position -= pageHeight;
+          this.pdfDoc.addImage(
+            imgData,
+            'JPEG',
+            0,
+            -pageHeight * i,
+            imgWidth,
+            imgHeight,
+            '',
+            'FAST'
+          );
         }
+
+        heightLeft -= pageHeight;
       }
+
+      // Remove print-specific class
+      element.classList.remove('printing');
 
       // Generate preview URL with better quality
       const timestamp = new Date().toISOString().split('T')[0];
@@ -148,6 +161,7 @@ export class CvGeneratorService {
       element.style.height = originalHeight;
       element.style.overflow = originalOverflow;
       element.style.opacity = originalOpacity;
+      element.classList.remove('printing');
     }
   }
 
