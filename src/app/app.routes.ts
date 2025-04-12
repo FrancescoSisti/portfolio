@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { isMobileDevice } from './utils/device.utils';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -110,6 +111,58 @@ export const routes: Routes = [
       description: 'Termini e condizioni di utilizzo del sito web di Francesco Sisti. Informazioni legali e regolamenti.',
       preload: true
     }
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./components/login/login.component')
+      .then(m => m.LoginComponent),
+    title: 'Login | Francesco Sisti',
+    data: {
+      description: 'Accedi all\'area di amministrazione del portfolio.',
+      preload: false
+    }
+  },
+  {
+    path: 'admin',
+    loadComponent: () => import('./components/admin/admin.component')
+      .then(m => m.AdminComponent),
+    title: 'Area Amministrazione | Francesco Sisti',
+    canActivate: [authGuard],
+    data: {
+      description: 'Area di amministrazione privata per la gestione del sito.',
+      preload: false
+    },
+    children: [
+      {
+        path: '',
+        redirectTo: 'projects',
+        pathMatch: 'full'
+      },
+      {
+        path: 'projects',
+        loadComponent: () => import('./components/admin/projects/projects.component')
+          .then(m => m.ProjectsComponent),
+        title: 'Gestione Progetti | Area Amministrazione',
+      },
+      {
+        path: 'skills',
+        loadComponent: () => import('./components/admin/skills/skills.component')
+          .then(m => m.SkillsComponent),
+        title: 'Gestione Skills | Area Amministrazione',
+      },
+      {
+        path: 'profile',
+        loadComponent: () => import('./components/admin/profile/profile.component')
+          .then(m => m.ProfileComponent),
+        title: 'Gestione Profilo | Area Amministrazione',
+      },
+      {
+        path: 'statistics',
+        loadComponent: () => import('./components/admin/statistics/statistics.component')
+          .then(m => m.StatisticsComponent),
+        title: 'Statistiche | Area Amministrazione',
+      }
+    ]
   },
   {
     path: '**',

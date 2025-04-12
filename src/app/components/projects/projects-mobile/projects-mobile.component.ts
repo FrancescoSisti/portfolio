@@ -63,6 +63,13 @@ export class ProjectsMobileComponent {
 
   otherProjects = [
     {
+      title: 'Wellness Website',
+      description: 'Piattaforma moderna per il benessere e la salute con interfaccia reattiva e prenotazioni online.',
+      technologies: ['React', 'Node.js', 'MongoDB', 'TailwindCSS'],
+      status: 'completed',
+      githubUrl: 'https://github.com/FrancescoSisti/wellness-website-2.0'
+    },
+    {
       title: 'E-commerce Platform',
       description: 'Piattaforma e-commerce completa con gestione prodotti e pagamenti.',
       technologies: ['Angular', 'Node.js', 'MongoDB', 'Stripe'],

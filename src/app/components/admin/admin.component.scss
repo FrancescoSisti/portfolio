@@ -1,0 +1,243 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fc;
+  font-family: 'Roboto', sans-serif;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 20;
+
+  .header-left {
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin: 0;
+      color: #2c3e50;
+      letter-spacing: -0.5px;
+    }
+
+    p {
+      margin: 0.25rem 0 0;
+      color: #5d6778;
+      font-size: 0.95rem;
+    }
+  }
+
+  .header-right {
+    position: relative;
+    z-index: 30;
+
+    button {
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+
+      i {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+
+.admin-body {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 80px);
+}
+
+.admin-nav {
+  width: 260px;
+  background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+  color: white;
+  padding: 1.5rem 0;
+  box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 10;
+  overflow-y: auto;
+
+  .nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nav-item {
+    margin-bottom: 0.3rem;
+    padding: 0 0.8rem;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      transition: all 0.4s ease;
+    }
+
+    i {
+      margin-right: 0.9rem;
+      font-size: 1.1rem;
+      width: 22px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    &:hover {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: translateX(5px);
+
+      &::before {
+        left: 0;
+      }
+
+      i {
+        transform: scale(1.2);
+      }
+    }
+
+    &.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      border-left: 3px solid #3498db;
+
+      i {
+        color: #3498db;
+      }
+    }
+  }
+}
+
+.admin-content {
+  flex: 1;
+  padding: 2rem 2.5rem;
+  overflow-y: auto;
+  background-color: #f8f9fc;
+  position: relative;
+}
+
+// Stili per Bootstrap
+.btn-outline-danger {
+  background-color: transparent;
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #e74c3c;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.25);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 1rem 1.5rem;
+  }
+
+  .admin-body {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .admin-nav {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .nav-list {
+      display: flex;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      padding: 0.5rem 0;
+      &::-webkit-scrollbar {
+        height: 4px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+      }
+    }
+
+    .nav-item {
+      margin-bottom: 0;
+      margin-right: 0.5rem;
+      padding: 0;
+    }
+
+    .nav-link {
+      padding: 0.7rem 1rem;
+      border-radius: 6px;
+      flex-shrink: 0;
+
+      &:hover {
+        transform: translateY(-3px);
+      }
+
+      &.active {
+        border-left: none;
+        border-bottom: 2px solid #3498db;
+      }
+
+      i {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+
+  .admin-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .header-right {
+      margin-top: 1rem;
+      align-self: flex-end;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+

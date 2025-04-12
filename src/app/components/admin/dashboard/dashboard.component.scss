@@ -1,0 +1,196 @@
+.dashboard-content {
+  padding-top: 1rem;
+
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 0.5rem;
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #3498db, #2ecc71);
+      border-radius: 3px;
+    }
+  }
+
+  p {
+    margin-bottom: 2.5rem;
+    color: #5d6778;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.8rem;
+  margin-top: 2rem;
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+
+      .card-icon {
+        transform: scale(1.05);
+        i {
+          transform: scale(1.1);
+        }
+      }
+
+      .card-action button {
+        background-color: darken(#3498db, 8%);
+        transform: translateY(-2px);
+      }
+    }
+
+    .card-icon {
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+
+      i {
+        font-size: 3.5rem;
+        transition: all 0.3s ease;
+        filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.1));
+      }
+    }
+
+    .card-content {
+      padding: 1.8rem;
+      flex-grow: 1;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+
+      h3 {
+        font-size: 1.3rem;
+        margin: 0 0 0.75rem;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      p {
+        margin: 0;
+        color: #5d6778;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+    }
+
+    .card-action {
+      padding: 0 1.8rem 1.8rem;
+
+      button {
+        width: 100%;
+        padding: 0.8rem;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(52, 152, 219, 0.15);
+        border: none;
+      }
+    }
+
+    &:nth-child(1) .card-icon {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+    }
+
+    &:nth-child(2) .card-icon {
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      color: white;
+    }
+
+    &:nth-child(3) .card-icon {
+      background: linear-gradient(135deg, #9b59b6, #8e44ad);
+      color: white;
+    }
+
+    &:nth-child(4) .card-icon {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+    }
+  }
+}
+
+// Stili per Bootstrap
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+
+  &.btn-sm {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.875rem;
+  }
+
+  &.btn-primary {
+    background: linear-gradient(to right, #3498db, #2980b9);
+    color: white;
+
+    &:hover {
+      background: linear-gradient(to right, #2980b9, #2573a7);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 10px rgba(41, 128, 185, 0.2);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 5px rgba(41, 128, 185, 0.2);
+    }
+  }
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+    margin-top: 1.5rem;
+  }
+
+  .dashboard-content {
+    padding-top: 0.5rem;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    p {
+      margin-bottom: 1.5rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-content {
+    padding-top: 3rem; // Aggiunto spazio in alto per evitare sovrapposizioni con il pulsante logout
+  }
+}

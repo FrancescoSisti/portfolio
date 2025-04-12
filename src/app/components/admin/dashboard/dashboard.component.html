@@ -1,0 +1,50 @@
+<div class="dashboard-content">
+    <h2>Dashboard</h2>
+    <p>Benvenuto nell'area di amministrazione del tuo portfolio.</p>
+
+    <div class="dashboard-cards">
+        <div class="card" (click)="router.navigate(['/admin/projects'])">
+            <div class="card-icon"><i class="fas fa-project-diagram"></i></div>
+            <div class="card-content">
+                <h3>Gestione Progetti</h3>
+                <p>Aggiungi, modifica o elimina progetti dal tuo portfolio.</p>
+            </div>
+            <div class="card-action">
+                <button class="btn btn-primary">Gestisci</button>
+            </div>
+        </div>
+
+        <div class="card" (click)="router.navigate(['/admin/skills'])">
+            <div class="card-icon"><i class="fas fa-code"></i></div>
+            <div class="card-content">
+                <h3>Gestione Skills</h3>
+                <p>Aggiorna le tue competenze tecniche e professionali.</p>
+            </div>
+            <div class="card-action">
+                <button class="btn btn-primary">Gestisci</button>
+            </div>
+        </div>
+
+        <div class="card" (click)="router.navigate(['/admin/profile'])">
+            <div class="card-icon"><i class="fas fa-user-circle"></i></div>
+            <div class="card-content">
+                <h3>Gestione Profilo</h3>
+                <p>Modifica le informazioni del tuo profilo personale.</p>
+            </div>
+            <div class="card-action">
+                <button class="btn btn-primary">Gestisci</button>
+            </div>
+        </div>
+
+        <div class="card" (click)="router.navigate(['/admin/statistics'])">
+            <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
+            <div class="card-content">
+                <h3>Statistiche</h3>
+                <p>Visualizza statistiche e metriche del tuo portfolio.</p>
+            </div>
+            <div class="card-action">
+                <button class="btn btn-primary">Visualizza</button>
+            </div>
+        </div>
+    </div>
+</div>
