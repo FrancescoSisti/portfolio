@@ -1,1 +1,195 @@
-<p>statistics works!</p>
+<div class="statistics-container">
+  <div class="statistics-header">
+    <h2>📊 Statistiche Portfolio</h2>
+    <p>Panoramica delle metriche del tuo portfolio</p>
+    <button class="btn btn-primary" (click)="refreshStats()" [disabled]="isLoading">
+      <i class="fas fa-sync-alt" [class.fa-spin]="isLoading"></i> Aggiorna
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-indicator" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Caricamento statistiche...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    <i class="fas fa-exclamation-triangle"></i> {{ errorMessage }}
+  </div>
+
+  <!-- Statistics Content -->
+  <div class="statistics-content" *ngIf="!isLoading && stats">
+    
+    <!-- Overview Cards -->
+    <div class="stats-overview">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-project-diagram"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ stats.totalProjects }}</h3>
+          <p>Progetti Totali</p>
+          <span class="stat-growth" [class.positive]="stats.projectsGrowth > 0" [class.negative]="stats.projectsGrowth < 0">
+            {{ getProjectsGrowth() }}
+          </span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-code"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ stats.totalSkills }}</h3>
+          <p>Competenze</p>
+          <span class="stat-growth" [class.positive]="stats.skillsGrowth > 0" [class.negative]="stats.skillsGrowth < 0">
+            {{ getSkillsGrowth() }}
+          </span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-eye"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ stats.totalVisits | number }}</h3>
+          <p>Visite</p>
+          <span class="stat-growth" [class.positive]="stats.visitsGrowth > 0" [class.negative]="stats.visitsGrowth < 0">
+            {{ getVisitsGrowth() }}
+          </span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-star"></i>
+        </div>
+        <div class="stat-content">
+          <h3>{{ stats.featuredProjects }}</h3>
+          <p>Progetti in Evidenza</p>
+          <span class="stat-label">Attivi</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Stats -->
+    <div class="detailed-stats">
+      
+      <!-- Projects Breakdown -->
+      <div class="stat-section">
+        <h3>📁 Progetti</h3>
+        <div class="stat-details">
+          <div class="stat-row">
+            <span>Progetti pubblicati:</span>
+            <strong>{{ stats.publishedProjects }}</strong>
+          </div>
+          <div class="stat-row">
+            <span>Progetti in bozza:</span>
+            <strong>{{ stats.draftProjects }}</strong>
+          </div>
+          <div class="stat-row">
+            <span>Progetti con demo live:</span>
+            <strong>{{ stats.projectsWithDemo }}</strong>
+          </div>
+          <div class="stat-row">
+            <span>Progetti con repository:</span>
+            <strong>{{ stats.projectsWithRepo }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills Breakdown -->
+      <div class="stat-section">
+        <h3>🛠️ Competenze</h3>
+        <div class="stat-details">
+          <div class="stat-row">
+            <span>Frontend:</span>
+            <strong>{{ stats.frontendSkills }}</strong>
+          </div>
+          <div class="stat-row">
+            <span>Backend:</span>
+            <strong>{{ stats.backendSkills }}</strong>
+          </div>
+          <div class="stat-row">
+            <span>Tools:</span>
+            <strong>{{ stats.toolsSkills }}</strong>
+          </div>
+          <div class="stat-row">
+            <span>Competenze avanzate (livello 4-5):</span>
+            <strong>{{ stats.advancedSkills }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Performance Metrics -->
+      <div class="stat-section">
+        <h3>⚡ Performance</h3>
+        <div class="stat-details">
+          <div class="stat-row">
+            <span>Tempo di caricamento medio:</span>
+            <strong>{{ stats.avgLoadTime }}ms</strong>
+          </div>
+          <div class="stat-row">
+            <span>Score di performance:</span>
+            <strong>{{ stats.performanceScore }}/100</strong>
+          </div>
+          <div class="stat-row">
+            <span>SEO Score:</span>
+            <strong>{{ stats.seoScore }}/100</strong>
+          </div>
+          <div class="stat-row">
+            <span>Accessibilità:</span>
+            <strong>{{ stats.accessibilityScore }}/100</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="stat-section">
+        <h3>🔄 Attività Recente</h3>
+        <div class="stat-details">
+          <div class="stat-row">
+            <span>Ultimo aggiornamento:</span>
+            <strong>{{ getLastUpdateFormatted() }}</strong>
+          </div>
+          <div class="stat-row">
+            <span>Modifiche questa settimana:</span>
+            <strong>{{ stats.weeklyUpdates }}</strong>
+          </div>
+          <div class="stat-row">
+            <span>Progetti aggiunti questo mese:</span>
+            <strong>{{ stats.monthlyNewProjects }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <h3>⚡ Azioni Rapide</h3>
+      <div class="action-buttons">
+        <button class="btn btn-outline-primary" routerLink="/admin/projects">
+          <i class="fas fa-plus"></i> Nuovo Progetto
+        </button>
+        <button class="btn btn-outline-secondary" routerLink="/admin/skills">
+          <i class="fas fa-code"></i> Gestisci Skills
+        </button>
+        <button class="btn btn-outline-info" routerLink="/admin/profile">
+          <i class="fas fa-user"></i> Modifica Profilo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!isLoading && !stats && !errorMessage">
+    <i class="fas fa-chart-line"></i>
+    <h3>Nessuna statistica disponibile</h3>
+    <p>Le statistiche verranno generate automaticamente con l'uso del portfolio.</p>
+    <button class="btn btn-primary" (click)="refreshStats()">
+      <i class="fas fa-sync-alt"></i> Riprova
+    </button>
+  </div>
+</div>

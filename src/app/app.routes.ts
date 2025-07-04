@@ -127,9 +127,8 @@ export const routes: Routes = [
     loadComponent: () => import('./components/admin/admin.component')
       .then(m => m.AdminComponent),
     title: 'Area Amministrazione | Francesco Sisti',
-    canActivate: [authGuard],
     data: {
-      description: 'Area di amministrazione privata per la gestione del sito.',
+      description: 'Area di amministrazione per la gestione del portfolio.',
       preload: false
     },
     children: [

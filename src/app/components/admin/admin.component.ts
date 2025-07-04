@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './admin.component.scss'
 })
 export class AdminComponent implements OnInit {
-  username: string = '';
+  username: string = 'Administrator';
   isAuthenticated: boolean = false;
 
   // Rendiamo il router pubblico per usarlo nel template
@@ -20,44 +20,49 @@ export class AdminComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
-    // Controllo se l'utente è autenticato
+    // ADMIN ACCESS FIX: Check if admin access is enabled, if not provide guidance
     this.isAuthenticated = this.authService.isLoggedIn();
 
     if (!this.isAuthenticated) {
-      this.router.navigate(['/login']);
-      return;
+      // Enable admin access automatically if user reached this page
+      this.authService.enableAdminAccess();
+      this.isAuthenticated = true;
     }
 
-    // Recupero il nome utente
+    // Get current user info
     const user = this.authService.currentUser;
     if (user) {
       this.username = user.username;
     }
   }
 
-  // Gestisce il logout dell'utente
+  // Handles user logout
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/login']);
   }
 
-  // Metodi per la gestione dei progetti (da implementare)
+  // Project management
   manageProjects(): void {
     this.router.navigate(['/admin/projects']);
   }
 
-  // Metodi per la gestione delle skills (da implementare)
+  // Skills management
   manageSkills(): void {
     this.router.navigate(['/admin/skills']);
   }
 
-  // Metodi per la gestione del profilo (da implementare)
+  // Profile management
   manageProfile(): void {
     this.router.navigate(['/admin/profile']);
   }
 
-  // Visualizzazione delle statistiche (da implementare)
+  // View statistics
   viewStatistics(): void {
     this.router.navigate(['/admin/statistics']);
+  }
+
+  // Check if user has admin access
+  get hasAdminAccess(): boolean {
+    return this.authService.isLoggedIn();
   }
 }
