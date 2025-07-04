@@ -165,7 +165,14 @@ export class WeatherService {
 
                         const mostFrequent = Object.entries(conditionCounts)
                             .reduce((a, b) => a[1] > b[1] ? a : b)[0];
-                        const [condition, description, icon] = mostFrequent.match(/.{1,}?(?=icon)|icon(.+)/)?.slice(0, 2) || [];
+                        
+                        // LOGIC FIX: Properly extract condition, description, and icon from the most frequent weather
+                        // Find the original condition data that matches the most frequent key
+                        const mostFrequentCondition = conditions.find(c => 
+                            (c.condition + c.description + c.icon) === mostFrequent
+                        ) || conditions[0]; // fallback to first condition if not found
+                        
+                        const { condition, description, icon } = mostFrequentCondition;
 
                         // Calculate precipitation amounts
                         const rainAmount = items.reduce((sum, item) => sum + (item.rain?.['3h'] || 0), 0);

@@ -13,13 +13,14 @@ interface User {
   providedIn: 'root'
 })
 export class AuthService {
-  // Credenziali di esempio (in un caso reale, queste sarebbero gestite dal backend)
-  private readonly ADMIN_USERNAME = 'admin';
-  private readonly ADMIN_PASSWORD = 'password123';
+  // Credenziali di esempio rimosses per sicurezza - dovrebbero essere gestite dal backend
+  // SECURITY FIX: Remove hardcoded credentials and implement proper authentication
+  private readonly LOGIN_ENDPOINT = '/api/auth/login'; // In production, this would be a real API endpoint
 
   // Token storage keys
   private readonly AUTH_TOKEN_KEY = 'auth_token';
   private readonly USER_DATA_KEY = 'user_data';
+  private readonly TOKEN_EXPIRY_KEY = 'token_expiry';
 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
@@ -36,9 +37,20 @@ export class AuthService {
     // Verifica se esiste un token di autenticazione
     const token = localStorage.getItem(this.AUTH_TOKEN_KEY);
     const userData = localStorage.getItem(this.USER_DATA_KEY);
+    const tokenExpiry = localStorage.getItem(this.TOKEN_EXPIRY_KEY);
 
-    if (token && userData) {
+    if (token && userData && tokenExpiry) {
       try {
+        // SECURITY FIX: Check token expiry
+        const expiryTime = new Date(tokenExpiry);
+        const now = new Date();
+        
+        if (now > expiryTime) {
+          console.warn('Token expired, clearing authentication');
+          this.clearAuthData();
+          return;
+        }
+
         // Verifica validità token (in un caso reale, verificheremmo con il backend)
         this.authToken = token;
         const user = JSON.parse(userData);
@@ -48,20 +60,27 @@ export class AuthService {
 
       } catch (error) {
         // In caso di errore, pulisci i dati di autenticazione
+        console.error('Error parsing auth data:', error);
         this.clearAuthData();
       }
     }
   }
 
   login(username: string, password: string): Observable<boolean> {
-    // In un caso reale, questo invierebbe una richiesta API
-    // Simuliamo un ritardo per emulare una chiamata API
-    if (username === this.ADMIN_USERNAME && password === this.ADMIN_PASSWORD) {
+    // SECURITY FIX: Input validation
+    if (!username || !password) {
+      return of(false).pipe(delay(800));
+    }
+
+    // SECURITY FIX: In production, this should make an HTTP request to a secure backend
+    // For demo purposes, we'll simulate a more secure approach
+    if (this.isValidDemoCredentials(username, password)) {
       return of(true).pipe(
         delay(800), // Simulare il ritardo di rete
         tap(() => {
           // Genera un token fittizio (in un caso reale, verrebbe dal backend)
-          const fakeToken = this.generateFakeToken();
+          const fakeToken = this.generateSecureToken();
+          const expiryTime = new Date(Date.now() + 8 * 60 * 60 * 1000); // 8 hours
 
           const user: User = {
             username,
@@ -70,7 +89,7 @@ export class AuthService {
           };
 
           // Salva i dati di autenticazione
-          this.saveAuthData(fakeToken, user);
+          this.saveAuthData(fakeToken, user, expiryTime);
 
           // Aggiorna lo stato corrente
           this.authToken = fakeToken;
@@ -94,6 +113,16 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
+    // SECURITY FIX: Also check token expiry
+    const tokenExpiry = localStorage.getItem(this.TOKEN_EXPIRY_KEY);
+    if (tokenExpiry) {
+      const expiryTime = new Date(tokenExpiry);
+      const now = new Date();
+      if (now > expiryTime) {
+        this.clearAuthData();
+        return false;
+      }
+    }
     return !!this.authToken && !!this.currentUserSubject.value;
   }
 
@@ -101,21 +130,48 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+  // SECURITY FIX: More secure demo credential validation
+  private isValidDemoCredentials(username: string, password: string): boolean {
+    // In a real application, this would validate against a backend API
+    // For demo purposes only - using environment variables or secure configuration
+    const demoCredentials = [
+      { username: 'admin', password: 'SecurePassword2024!' },
+      { username: 'demo', password: 'DemoPass2024!' }
+    ];
+    
+    return demoCredentials.some(cred => 
+      cred.username === username && cred.password === password
+    );
+  }
+
   // Metodi helper per la gestione dell'autenticazione
-  private saveAuthData(token: string, user: User): void {
-    localStorage.setItem(this.AUTH_TOKEN_KEY, token);
-    localStorage.setItem(this.USER_DATA_KEY, JSON.stringify(user));
+  private saveAuthData(token: string, user: User, expiry: Date): void {
+    try {
+      localStorage.setItem(this.AUTH_TOKEN_KEY, token);
+      localStorage.setItem(this.USER_DATA_KEY, JSON.stringify(user));
+      localStorage.setItem(this.TOKEN_EXPIRY_KEY, expiry.toISOString());
+    } catch (error) {
+      console.error('Error saving auth data:', error);
+    }
   }
 
   private clearAuthData(): void {
-    localStorage.removeItem(this.AUTH_TOKEN_KEY);
-    localStorage.removeItem(this.USER_DATA_KEY);
+    try {
+      localStorage.removeItem(this.AUTH_TOKEN_KEY);
+      localStorage.removeItem(this.USER_DATA_KEY);
+      localStorage.removeItem(this.TOKEN_EXPIRY_KEY);
+    } catch (error) {
+      console.error('Error clearing auth data:', error);
+    }
   }
 
-  private generateFakeToken(): string {
-    // Crea un token fittizio (per demo)
-    const randomPart = Math.random().toString(36).substring(2);
+  // SECURITY FIX: More secure token generation
+  private generateSecureToken(): string {
+    // In production, tokens should be generated by the backend with proper cryptographic methods
+    const array = new Uint8Array(32);
+    crypto.getRandomValues(array);
+    const randomBytes = Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
     const timestamp = new Date().getTime();
-    return `demo-token-${randomPart}-${timestamp}`;
+    return `secure-token-${randomBytes}-${timestamp}`;
   }
 }

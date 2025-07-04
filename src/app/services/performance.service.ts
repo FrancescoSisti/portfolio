@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 
 // Dichiarazione del tipo gtag
 declare global {
@@ -11,9 +11,29 @@ declare global {
 @Injectable({
     providedIn: 'root'
 })
-export class PerformanceService {
+export class PerformanceService implements OnDestroy {
+    // PERFORMANCE FIX: Store observers to clean them up later
+    private observers: PerformanceObserver[] = [];
+
     constructor() {
         this.initPerformanceMonitoring();
+    }
+
+    // PERFORMANCE FIX: Implement cleanup to prevent memory leaks
+    ngOnDestroy(): void {
+        this.cleanup();
+    }
+
+    private cleanup(): void {
+        // Disconnect all observers to prevent memory leaks
+        this.observers.forEach(observer => {
+            try {
+                observer.disconnect();
+            } catch (error) {
+                console.warn('Error disconnecting performance observer:', error);
+            }
+        });
+        this.observers = [];
     }
 
     private initPerformanceMonitoring() {
@@ -42,6 +62,8 @@ export class PerformanceService {
         };
 
         const po = new PerformanceObserver(entryHandler);
+        // PERFORMANCE FIX: Store observer for later cleanup
+        this.observers.push(po);
         po.observe({ type: 'paint', buffered: true });
     }
 
@@ -55,6 +77,8 @@ export class PerformanceService {
         };
 
         const po = new PerformanceObserver(entryHandler);
+        // PERFORMANCE FIX: Store observer for later cleanup
+        this.observers.push(po);
         po.observe({ type: 'largest-contentful-paint', buffered: true });
     }
 
@@ -84,6 +108,8 @@ export class PerformanceService {
         };
 
         const po = new PerformanceObserver(entryHandler);
+        // PERFORMANCE FIX: Store observer for later cleanup
+        this.observers.push(po);
         po.observe({ type: 'layout-shift', buffered: true });
     }
 
@@ -97,6 +123,8 @@ export class PerformanceService {
         };
 
         const po = new PerformanceObserver(entryHandler);
+        // PERFORMANCE FIX: Store observer for later cleanup
+        this.observers.push(po);
         po.observe({ type: 'first-input', buffered: true });
     }
 
