@@ -28,11 +28,9 @@
           <i class="fas fa-project-diagram"></i>
         </div>
         <div class="stat-content">
-          <h3>{{ stats.totalProjects }}</h3>
+          <h3>{{ getTotalProjects() }}</h3>
           <p>Progetti Totali</p>
-          <span class="stat-growth" [class.positive]="stats.projectsGrowth > 0" [class.negative]="stats.projectsGrowth < 0">
-            {{ getProjectsGrowth() }}
-          </span>
+          <span class="stat-label">{{ getCompletedProjects() }} completati</span>
         </div>
       </div>
 
@@ -41,11 +39,9 @@
           <i class="fas fa-code"></i>
         </div>
         <div class="stat-content">
-          <h3>{{ stats.totalSkills }}</h3>
+          <h3>{{ stats.skillStats.length }}</h3>
           <p>Competenze</p>
-          <span class="stat-growth" [class.positive]="stats.skillsGrowth > 0" [class.negative]="stats.skillsGrowth < 0">
-            {{ getSkillsGrowth() }}
-          </span>
+          <span class="stat-label">Diverse tecnologie</span>
         </div>
       </div>
 
@@ -54,11 +50,9 @@
           <i class="fas fa-eye"></i>
         </div>
         <div class="stat-content">
-          <h3>{{ stats.totalVisits | number }}</h3>
-          <p>Visite</p>
-          <span class="stat-growth" [class.positive]="stats.visitsGrowth > 0" [class.negative]="stats.visitsGrowth < 0">
-            {{ getVisitsGrowth() }}
-          </span>
+          <h3>{{ getTotalVisits() | number }}</h3>
+          <p>Visite Totali</p>
+          <span class="stat-label">{{ getUniqueVisitors() | number }} visitatori unici</span>
         </div>
       </div>
 
@@ -67,7 +61,7 @@
           <i class="fas fa-star"></i>
         </div>
         <div class="stat-content">
-          <h3>{{ stats.featuredProjects }}</h3>
+          <h3>{{ stats.projectStats.featuredProjects }}</h3>
           <p>Progetti in Evidenza</p>
           <span class="stat-label">Attivi</span>
         </div>
@@ -82,20 +76,20 @@
         <h3>📁 Progetti</h3>
         <div class="stat-details">
           <div class="stat-row">
-            <span>Progetti pubblicati:</span>
-            <strong>{{ stats.publishedProjects }}</strong>
+            <span>Progetti totali:</span>
+            <strong>{{ getTotalProjects() }}</strong>
           </div>
           <div class="stat-row">
-            <span>Progetti in bozza:</span>
-            <strong>{{ stats.draftProjects }}</strong>
+            <span>Progetti completati:</span>
+            <strong>{{ getCompletedProjects() }}</strong>
           </div>
           <div class="stat-row">
-            <span>Progetti con demo live:</span>
-            <strong>{{ stats.projectsWithDemo }}</strong>
+            <span>Progetti in evidenza:</span>
+            <strong>{{ stats.projectStats.featuredProjects }}</strong>
           </div>
           <div class="stat-row">
-            <span>Progetti con repository:</span>
-            <strong>{{ stats.projectsWithRepo }}</strong>
+            <span>Percentuale completamento:</span>
+            <strong>{{ getProjectCompletionPercentage() }}%</strong>
           </div>
         </div>
       </div>
@@ -106,42 +100,64 @@
         <div class="stat-details">
           <div class="stat-row">
             <span>Frontend:</span>
-            <strong>{{ stats.frontendSkills }}</strong>
+            <strong>{{ getSkillsByCategory('frontend') }}</strong>
           </div>
           <div class="stat-row">
             <span>Backend:</span>
-            <strong>{{ stats.backendSkills }}</strong>
+            <strong>{{ getSkillsByCategory('backend') }}</strong>
+          </div>
+          <div class="stat-row">
+            <span>Design:</span>
+            <strong>{{ getSkillsByCategory('design') }}</strong>
           </div>
           <div class="stat-row">
             <span>Tools:</span>
-            <strong>{{ stats.toolsSkills }}</strong>
-          </div>
-          <div class="stat-row">
-            <span>Competenze avanzate (livello 4-5):</span>
-            <strong>{{ stats.advancedSkills }}</strong>
+            <strong>{{ getSkillsByCategory('tools') }}</strong>
           </div>
         </div>
       </div>
 
-      <!-- Performance Metrics -->
+      <!-- Technology Stats -->
       <div class="stat-section">
-        <h3>⚡ Performance</h3>
+        <h3>⚙️ Tecnologie</h3>
+        <div class="stat-details">
+          <div class="stat-row" *ngFor="let tech of stats.projectStats.projectsByTechnology.slice(0, 5)">
+            <span>{{ tech.name }}:</span>
+            <strong>{{ tech.count }} progetti</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Stats -->
+      <div class="stat-section">
+        <h3>📞 Contatti</h3>
         <div class="stat-details">
           <div class="stat-row">
-            <span>Tempo di caricamento medio:</span>
-            <strong>{{ stats.avgLoadTime }}ms</strong>
+            <span>Contatti totali:</span>
+            <strong>{{ getTotalContacts() }}</strong>
+          </div>
+          <div class="stat-row" *ngFor="let contact of stats.contactStats.contactsByType">
+            <span>{{ contact.type }}:</span>
+            <strong>{{ contact.count }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visits Breakdown -->
+      <div class="stat-section">
+        <h3>👥 Visite</h3>
+        <div class="stat-details">
+          <div class="stat-row">
+            <span>Visite totali:</span>
+            <strong>{{ getTotalVisits() | number }}</strong>
           </div>
           <div class="stat-row">
-            <span>Score di performance:</span>
-            <strong>{{ stats.performanceScore }}/100</strong>
+            <span>Visitatori unici:</span>
+            <strong>{{ getUniqueVisitors() | number }}</strong>
           </div>
-          <div class="stat-row">
-            <span>SEO Score:</span>
-            <strong>{{ stats.seoScore }}/100</strong>
-          </div>
-          <div class="stat-row">
-            <span>Accessibilità:</span>
-            <strong>{{ stats.accessibilityScore }}/100</strong>
+          <div class="stat-row" *ngFor="let page of stats.visitStats.visitsPerPage.slice(0, 3)">
+            <span>{{ page.page }}:</span>
+            <strong>{{ page.count }} visite ({{ page.percentage }}%)</strong>
           </div>
         </div>
       </div>
@@ -155,12 +171,12 @@
             <strong>{{ getLastUpdateFormatted() }}</strong>
           </div>
           <div class="stat-row">
-            <span>Modifiche questa settimana:</span>
-            <strong>{{ stats.weeklyUpdates }}</strong>
+            <span>Pagina più visitata:</span>
+            <strong>{{ getMostVisitedPage() }}</strong>
           </div>
           <div class="stat-row">
-            <span>Progetti aggiunti questo mese:</span>
-            <strong>{{ stats.monthlyNewProjects }}</strong>
+            <span>Tecnologia più usata:</span>
+            <strong>{{ getMostUsedTechnology() }}</strong>
           </div>
         </div>
       </div>

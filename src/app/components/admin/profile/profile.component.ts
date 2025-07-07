@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ProfileService, ProfileData } from '../../../services/profile.service';
+import { ProfileService, Profile } from '../../../services/profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit {
   isSaving = false;
   successMessage = '';
   errorMessage = '';
-  profileData: ProfileData | null = null;
+  profileData: Profile | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -31,17 +31,14 @@ export class ProfileComponent implements OnInit {
 
   createProfileForm(): FormGroup {
     return this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
+      firstName: ['', [Validators.required, Validators.minLength(2)]],
+      lastName: ['', [Validators.required, Validators.minLength(2)]],
       title: ['', [Validators.required, Validators.minLength(3)]],
       bio: ['', [Validators.required, Validators.minLength(10)]],
-      email: ['', [Validators.required, Validators.email]],
-      phone: [''],
+      summary: ['', [Validators.required, Validators.minLength(10)]],
       location: [''],
-      website: [''],
-      github: [''],
-      linkedin: [''],
-      instagram: [''],
-      avatarUrl: ['']
+      avatarUrl: [''],
+      availableForWork: [true]
     });
   }
 
@@ -50,12 +47,14 @@ export class ProfileComponent implements OnInit {
     this.clearMessages();
 
     this.profileService.getProfile().subscribe({
-      next: (profile) => {
+      next: (profile: Profile | null) => {
         this.profileData = profile;
-        this.populateForm(profile);
+        if (profile) {
+          this.populateForm(profile);
+        }
         this.isLoading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         this.errorMessage = 'Errore nel caricamento del profilo';
         console.error('Profile load error:', error);
         this.isLoading = false;
@@ -63,19 +62,16 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  populateForm(profile: ProfileData): void {
+  populateForm(profile: Profile): void {
     this.profileForm.patchValue({
-      name: profile.name || '',
+      firstName: profile.firstName || '',
+      lastName: profile.lastName || '',
       title: profile.title || '',
       bio: profile.bio || '',
-      email: profile.email || '',
-      phone: profile.phone || '',
+      summary: profile.summary || '',
       location: profile.location || '',
-      website: profile.website || '',
-      github: profile.github || '',
-      linkedin: profile.linkedin || '',
-      instagram: profile.instagram || '',
-      avatarUrl: profile.avatarUrl || ''
+      avatarUrl: profile.avatarUrl || '',
+      availableForWork: profile.availableForWork || false
     });
   }
 
@@ -88,12 +84,12 @@ export class ProfileComponent implements OnInit {
     this.isSaving = true;
     this.clearMessages();
 
-    const profileData: ProfileData = {
+    const profileData: Partial<Profile> = {
       ...this.profileForm.value
     };
 
     this.profileService.updateProfile(profileData).subscribe({
-      next: (updatedProfile) => {
+      next: (updatedProfile: Profile) => {
         this.profileData = updatedProfile;
         this.successMessage = 'Profilo aggiornato con successo!';
         this.isSaving = false;
@@ -103,7 +99,7 @@ export class ProfileComponent implements OnInit {
           this.successMessage = '';
         }, 3000);
       },
-      error: (error) => {
+      error: (error: any) => {
         this.errorMessage = 'Errore nel salvataggio del profilo';
         console.error('Profile save error:', error);
         this.isSaving = false;
@@ -132,9 +128,18 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  // Image error handler
+  onImageError(event: Event): void {
+    const target = event.target as HTMLImageElement;
+    if (target) {
+      target.style.display = 'none';
+    }
+  }
+
   // Form getters
-  get name() { return this.profileForm.get('name'); }
+  get firstName() { return this.profileForm.get('firstName'); }
+  get lastName() { return this.profileForm.get('lastName'); }
   get title() { return this.profileForm.get('title'); }
   get bio() { return this.profileForm.get('bio'); }
-  get email() { return this.profileForm.get('email'); }
+  get summary() { return this.profileForm.get('summary'); }
 }

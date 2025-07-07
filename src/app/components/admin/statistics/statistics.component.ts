@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { StatisticsService, PortfolioStats } from '../../../services/statistics.service';
+import { StatisticsService, DashboardStats } from '../../../services/statistics.service';
 
 @Component({
   selector: 'app-statistics',
@@ -11,7 +11,7 @@ import { StatisticsService, PortfolioStats } from '../../../services/statistics.
   styleUrl: './statistics.component.scss'
 })
 export class StatisticsComponent implements OnInit {
-  stats: PortfolioStats | null = null;
+  stats: DashboardStats | null = null;
   isLoading = false;
   errorMessage = '';
 
@@ -25,12 +25,12 @@ export class StatisticsComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.statisticsService.getPortfolioStatistics().subscribe({
-      next: (stats) => {
+    this.statisticsService.getDashboardStats().subscribe({
+      next: (stats: DashboardStats) => {
         this.stats = stats;
         this.isLoading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         this.errorMessage = 'Errore nel caricamento delle statistiche';
         console.error('Statistics load error:', error);
         this.isLoading = false;
@@ -43,26 +43,56 @@ export class StatisticsComponent implements OnInit {
   }
 
   // Helper methods for display
-  getProjectsGrowth(): string {
-    if (!this.stats) return '0%';
-    const growth = this.stats.projectsGrowth;
-    return growth > 0 ? `+${growth}%` : `${growth}%`;
+  getTotalProjects(): number {
+    return this.stats?.projectStats.totalProjects || 0;
   }
 
-  getSkillsGrowth(): string {
-    if (!this.stats) return '0%';
-    const growth = this.stats.skillsGrowth;
-    return growth > 0 ? `+${growth}%` : `${growth}%`;
+  getCompletedProjects(): number {
+    return this.stats?.projectStats.completedProjects || 0;
   }
 
-  getVisitsGrowth(): string {
-    if (!this.stats) return '0%';
-    const growth = this.stats.visitsGrowth;
-    return growth > 0 ? `+${growth}%` : `${growth}%`;
+  getTotalVisits(): number {
+    return this.stats?.visitStats.totalVisits || 0;
+  }
+
+  getUniqueVisitors(): number {
+    return this.stats?.visitStats.uniqueVisitors || 0;
+  }
+
+  getTotalContacts(): number {
+    return this.stats?.contactStats.totalContacts || 0;
   }
 
   getLastUpdateFormatted(): string {
-    if (!this.stats?.lastUpdate) return 'N/A';
-    return new Date(this.stats.lastUpdate).toLocaleString('it-IT');
+    if (!this.stats?.lastUpdated) return 'N/A';
+    return new Date(this.stats.lastUpdated).toLocaleString('it-IT');
+  }
+
+  // Get completion percentage
+  getProjectCompletionPercentage(): number {
+    if (!this.stats?.projectStats.totalProjects) return 0;
+    return Math.round((this.stats.projectStats.completedProjects / this.stats.projectStats.totalProjects) * 100);
+  }
+
+  // Get skills by category count
+  getSkillsByCategory(category: string): number {
+    if (!this.stats?.skillStats) return 0;
+    return this.stats.skillStats.filter(skill => skill.category === category).length;
+  }
+
+  // Get most visited page
+  getMostVisitedPage(): string {
+    if (!this.stats?.visitStats.visitsPerPage || this.stats.visitStats.visitsPerPage.length === 0) {
+      return 'N/A';
+    }
+    return this.stats.visitStats.visitsPerPage[0].page;
+  }
+
+  // Get most used technology
+  getMostUsedTechnology(): string {
+    if (!this.stats?.projectStats.projectsByTechnology || this.stats.projectStats.projectsByTechnology.length === 0) {
+      return 'N/A';
+    }
+    return this.stats.projectStats.projectsByTechnology[0].name;
   }
 }

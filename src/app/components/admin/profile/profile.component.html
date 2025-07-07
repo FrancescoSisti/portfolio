@@ -29,23 +29,33 @@
         
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="name">Nome Completo *</label>
-            <input type="text" id="name" formControlName="name" class="form-control"
-                   [class.is-invalid]="name?.invalid && name?.touched">
-            <div class="invalid-feedback" *ngIf="name?.invalid && name?.touched">
-              <span *ngIf="name?.errors?.['required']">Il nome è obbligatorio</span>
-              <span *ngIf="name?.errors?.['minlength']">Il nome deve avere almeno 2 caratteri</span>
+            <label for="firstName">Nome *</label>
+            <input type="text" id="firstName" formControlName="firstName" class="form-control"
+                   [class.is-invalid]="firstName?.invalid && firstName?.touched">
+            <div class="invalid-feedback" *ngIf="firstName?.invalid && firstName?.touched">
+              <span *ngIf="firstName?.errors?.['required']">Il nome è obbligatorio</span>
+              <span *ngIf="firstName?.errors?.['minlength']">Il nome deve avere almeno 2 caratteri</span>
             </div>
           </div>
 
           <div class="form-group col-md-6">
-            <label for="title">Titolo Professionale *</label>
-            <input type="text" id="title" formControlName="title" class="form-control"
-                   [class.is-invalid]="title?.invalid && title?.touched">
-            <div class="invalid-feedback" *ngIf="title?.invalid && title?.touched">
-              <span *ngIf="title?.errors?.['required']">Il titolo è obbligatorio</span>
-              <span *ngIf="title?.errors?.['minlength']">Il titolo deve avere almeno 3 caratteri</span>
+            <label for="lastName">Cognome *</label>
+            <input type="text" id="lastName" formControlName="lastName" class="form-control"
+                   [class.is-invalid]="lastName?.invalid && lastName?.touched">
+            <div class="invalid-feedback" *ngIf="lastName?.invalid && lastName?.touched">
+              <span *ngIf="lastName?.errors?.['required']">Il cognome è obbligatorio</span>
+              <span *ngIf="lastName?.errors?.['minlength']">Il cognome deve avere almeno 2 caratteri</span>
             </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="title">Titolo Professionale *</label>
+          <input type="text" id="title" formControlName="title" class="form-control"
+                 [class.is-invalid]="title?.invalid && title?.touched">
+          <div class="invalid-feedback" *ngIf="title?.invalid && title?.touched">
+            <span *ngIf="title?.errors?.['required']">Il titolo è obbligatorio</span>
+            <span *ngIf="title?.errors?.['minlength']">Il titolo deve avere almeno 3 caratteri</span>
           </div>
         </div>
 
@@ -59,63 +69,35 @@
             <span *ngIf="bio?.errors?.['minlength']">La biografia deve avere almeno 10 caratteri</span>
           </div>
         </div>
-      </div>
 
-      <!-- Contact Information -->
-      <div class="form-section">
-        <h3>Contatti</h3>
-        
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="email">Email *</label>
-            <input type="email" id="email" formControlName="email" class="form-control"
-                   [class.is-invalid]="email?.invalid && email?.touched">
-            <div class="invalid-feedback" *ngIf="email?.invalid && email?.touched">
-              <span *ngIf="email?.errors?.['required']">L'email è obbligatoria</span>
-              <span *ngIf="email?.errors?.['email']">Inserisci un'email valida</span>
-            </div>
-          </div>
-
-          <div class="form-group col-md-6">
-            <label for="phone">Telefono</label>
-            <input type="tel" id="phone" formControlName="phone" class="form-control">
+        <div class="form-group">
+          <label for="summary">Riassunto *</label>
+          <textarea id="summary" formControlName="summary" class="form-control" rows="3"
+                    [class.is-invalid]="summary?.invalid && summary?.touched"
+                    placeholder="Un breve riassunto del tuo profilo professionale..."></textarea>
+          <div class="invalid-feedback" *ngIf="summary?.invalid && summary?.touched">
+            <span *ngIf="summary?.errors?.['required']">Il riassunto è obbligatorio</span>
+            <span *ngIf="summary?.errors?.['minlength']">Il riassunto deve avere almeno 10 caratteri</span>
           </div>
         </div>
+      </div>
 
+      <!-- Additional Information -->
+      <div class="form-section">
+        <h3>Informazioni Aggiuntive</h3>
+        
         <div class="form-group">
           <label for="location">Ubicazione</label>
           <input type="text" id="location" formControlName="location" class="form-control"
-                 placeholder="es. Verona, Italia">
+                 placeholder="es. Milano, Italia">
         </div>
-      </div>
 
-      <!-- Social Links -->
-      <div class="form-section">
-        <h3>Link e Social</h3>
-        
         <div class="form-group">
-          <label for="website">Sito Web</label>
-          <input type="url" id="website" formControlName="website" class="form-control"
-                 placeholder="https://tuosito.com">
-        </div>
-
-        <div class="form-row">
-          <div class="form-group col-md-4">
-            <label for="github">GitHub</label>
-            <input type="url" id="github" formControlName="github" class="form-control"
-                   placeholder="https://github.com/username">
-          </div>
-
-          <div class="form-group col-md-4">
-            <label for="linkedin">LinkedIn</label>
-            <input type="url" id="linkedin" formControlName="linkedin" class="form-control"
-                   placeholder="https://linkedin.com/in/username">
-          </div>
-
-          <div class="form-group col-md-4">
-            <label for="instagram">Instagram</label>
-            <input type="url" id="instagram" formControlName="instagram" class="form-control"
-                   placeholder="https://instagram.com/username">
+          <div class="form-check">
+            <input type="checkbox" id="availableForWork" formControlName="availableForWork" class="form-check-input">
+            <label class="form-check-label" for="availableForWork">
+              Disponibile per nuove opportunità lavorative
+            </label>
           </div>
         </div>
       </div>
@@ -134,7 +116,7 @@
         <!-- Avatar Preview -->
         <div class="avatar-preview" *ngIf="profileForm.get('avatarUrl')?.value">
           <img [src]="profileForm.get('avatarUrl')?.value" alt="Avatar Preview" 
-               class="avatar-img" (error)="$event.target.style.display='none'">
+               class="avatar-img" (error)="onImageError($event)">
         </div>
       </div>
     </div>
