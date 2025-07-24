@@ -171,12 +171,18 @@ export class ContactComponent implements OnInit, AfterViewInit {
               }, 8000);
             }, 1500);
             console.log('Message sent successfully. Contact ID:', response.contact_id);
+            
+            // Reset isSubmitting on success
+            this.isSubmitting = false;
           } else {
             this.submitError = true;
             this.errorMessage = response.message || 'Si è verificato un errore durante l\'invio.';
             if (response.errors) {
               this.validationErrors = response.errors;
             }
+            
+            // Reset isSubmitting on API error response
+            this.isSubmitting = false;
           }
         },
         error: (error: HttpErrorResponse) => {
@@ -197,8 +203,12 @@ export class ContactComponent implements OnInit, AfterViewInit {
             // Generic error
             this.errorMessage = error.error?.message || 'Si è verificato un errore durante l\'invio. Riprova più tardi.';
           }
+          
+          // Reset isSubmitting immediately on error
+          this.isSubmitting = false;
         },
         complete: () => {
+          // Ensure isSubmitting is always reset
           this.isSubmitting = false;
         }
       });
@@ -240,6 +250,11 @@ export class ContactComponent implements OnInit, AfterViewInit {
     return !!(this.formData.name?.trim() && 
              this.formData.email?.trim() && 
              this.formData.message?.trim());
+  }
+
+  // Helper method to check if button should be disabled
+  get isButtonDisabled(): boolean {
+    return !this.isFormValid() || this.isSubmitting;
   }
 
   getDirections() {

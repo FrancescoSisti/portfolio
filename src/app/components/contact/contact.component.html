@@ -59,7 +59,7 @@
       </div>
 
       <div class="contact-form">
-        <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
+        <form (ngSubmit)="onSubmit()" #contactForm="ngForm" novalidate>
           <div class="form-group" [class.has-error]="hasFieldError('name')">
             <label for="name">Nome *</label>
             <input type="text" id="name" name="name" [(ngModel)]="formData.name" required placeholder="Il tuo nome" (input)="onFieldChange('name')">
@@ -101,7 +101,7 @@
             <div *ngIf="getFieldError('message')" class="field-error">{{ getFieldError('message') }}</div>
           </div>
 
-          <button type="submit" class="submit-btn" [disabled]="!isFormValid() || isSubmitting">
+          <button type="submit" class="submit-btn" [disabled]="isButtonDisabled">
             {{ isSubmitting ? 'Invio in corso...' : 'Invia Messaggio' }}
             <i class="fas fa-paper-plane"></i>
           </button>
