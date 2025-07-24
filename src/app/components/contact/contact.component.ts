@@ -1,14 +1,17 @@
 import { Component, OnInit, AfterViewInit, PLATFORM_ID, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import * as L from 'leaflet';
+import { ContactApiService, ContactFormData, ContactApiResponse } from '../../services/contact-api.service';
 
 interface ContactForm {
   name: string;
   email: string;
   subject: string;
   message: string;
+  phone?: string;
+  company?: string;
 }
 
 @Component({
@@ -23,15 +26,18 @@ export class ContactComponent implements OnInit, AfterViewInit {
     name: '',
     email: '',
     subject: '',
-    message: ''
+    message: '',
+    phone: '',
+    company: ''
   };
 
   isSubmitting = false;
   submitSuccess = false;
   submitError = false;
+  errorMessage = '';
+  validationErrors: { [key: string]: string[] } = {};
   private map: L.Map | null = null;
   private isBrowser: boolean;
-  private readonly FORMSPREE_ENDPOINT = 'https://formspree.io/f/mdkkrjjy';
 
   // Map configuration
   private readonly center: L.LatLngExpression = [45.4396, 11.0025]; // Corso Venezia 83, Verona
@@ -44,7 +50,7 @@ export class ContactComponent implements OnInit, AfterViewInit {
 
   constructor(
     @Inject(PLATFORM_ID) platformId: Object,
-    private http: HttpClient
+    private contactApiService: ContactApiService
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
@@ -122,33 +128,83 @@ export class ContactComponent implements OnInit, AfterViewInit {
     this.isSubmitting = true;
     this.submitSuccess = false;
     this.submitError = false;
+    this.errorMessage = '';
+    this.validationErrors = {};
 
-    const formspreeData = {
-      _subject: this.formData.subject,
+    // Prepare data for the API
+    const contactData: ContactFormData = {
       name: this.formData.name,
       email: this.formData.email,
       message: this.formData.message
     };
 
-    this.http.post(this.FORMSPREE_ENDPOINT, formspreeData)
+    // Add optional fields if they have values
+    if (this.formData.subject?.trim()) {
+      contactData.subject = this.formData.subject;
+    }
+    if (this.formData.phone?.trim()) {
+      contactData.phone = this.formData.phone;
+    }
+    if (this.formData.company?.trim()) {
+      contactData.company = this.formData.company;
+    }
+
+    this.contactApiService.submitContact(contactData)
       .subscribe({
-        next: () => {
-          this.submitSuccess = true;
-          this.formData = {
-            name: '',
-            email: '',
-            subject: '',
-            message: ''
-          };
+        next: (response: ContactApiResponse) => {
+          if (response.success) {
+            this.submitSuccess = true;
+            // Reset form on success
+            this.formData = {
+              name: '',
+              email: '',
+              subject: '',
+              message: '',
+              phone: '',
+              company: ''
+            };
+            console.log('Message sent successfully. Contact ID:', response.contact_id);
+          } else {
+            this.submitError = true;
+            this.errorMessage = response.message || 'Si è verificato un errore durante l\'invio.';
+            if (response.errors) {
+              this.validationErrors = response.errors;
+            }
+          }
         },
-        error: (error) => {
+        error: (error: HttpErrorResponse) => {
           console.error('Error submitting form:', error);
           this.submitError = true;
+          
+          if (error.status === 422 && error.error?.errors) {
+            // Validation errors
+            this.validationErrors = error.error.errors;
+            this.errorMessage = error.error.message || 'I dati forniti non sono validi';
+          } else if (error.status === 429) {
+            // Rate limit exceeded
+            this.errorMessage = 'Troppi tentativi. Riprova tra qualche minuto.';
+          } else if (error.status === 0) {
+            // Network error
+            this.errorMessage = 'Errore di connessione. Controlla la tua connessione internet.';
+          } else {
+            // Generic error
+            this.errorMessage = error.error?.message || 'Si è verificato un errore durante l\'invio. Riprova più tardi.';
+          }
         },
         complete: () => {
           this.isSubmitting = false;
         }
       });
+  }
+
+  // Helper method to get validation error for a specific field
+  getFieldError(fieldName: string): string | null {
+    return this.validationErrors[fieldName]?.[0] || null;
+  }
+
+  // Helper method to check if a field has validation errors
+  hasFieldError(fieldName: string): boolean {
+    return !!this.validationErrors[fieldName];
   }
 
   getDirections() {

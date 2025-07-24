@@ -295,6 +295,44 @@
                         resize: vertical;
                         line-height: 1.6;
                     }
+
+                    // Error state styles
+                    &.has-error {
+                        label {
+                            color: #EA4335;
+                        }
+
+                        input,
+                        textarea {
+                            border-color: #EA4335;
+                            background: rgba(234, 67, 53, 0.05);
+
+                            &:focus {
+                                border-color: #EA4335;
+                                box-shadow: 0 0 0 4px rgba(234, 67, 53, 0.1);
+                            }
+
+                            &:hover {
+                                border-color: #EA4335;
+                            }
+                        }
+                    }
+
+                    .field-error {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        margin-top: 0.5rem;
+                        font-size: 0.85rem;
+                        color: #EA4335;
+                        font-weight: 500;
+                        animation: slideIn 0.3s ease;
+
+                        &::before {
+                            content: '⚠';
+                            font-size: 1rem;
+                        }
+                    }
                 }
 
                 .submit-btn {
