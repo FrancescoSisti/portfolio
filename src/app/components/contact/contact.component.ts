@@ -124,13 +124,11 @@ export class ContactComponent implements OnInit, AfterViewInit {
   }
 
   async onSubmit() {
-    if (this.isSubmitting) return;
+    if (this.isSubmitting || !this.isFormValid()) return;
 
     this.isSubmitting = true;
     this.submitSuccess = false;
-    this.submitError = false;
-    this.errorMessage = '';
-    this.validationErrors = {};
+    this.resetValidationErrors();
 
     // Prepare data for the API
     const contactData: ContactFormData = {
@@ -214,6 +212,34 @@ export class ContactComponent implements OnInit, AfterViewInit {
   // Helper method to check if a field has validation errors
   hasFieldError(fieldName: string): boolean {
     return !!this.validationErrors[fieldName];
+  }
+
+  // Reset validation errors when user starts typing
+  onFieldChange(fieldName: string): void {
+    // Clear the error for this specific field when user starts editing
+    if (this.validationErrors[fieldName]) {
+      delete this.validationErrors[fieldName];
+    }
+    
+    // Clear general error message if user is editing after an error
+    if (this.submitError) {
+      this.submitError = false;
+      this.errorMessage = '';
+    }
+  }
+
+  // Reset all validation errors
+  resetValidationErrors(): void {
+    this.validationErrors = {};
+    this.submitError = false;
+    this.errorMessage = '';
+  }
+
+  // Check if form has required fields filled
+  isFormValid(): boolean {
+    return !!(this.formData.name?.trim() && 
+             this.formData.email?.trim() && 
+             this.formData.message?.trim());
   }
 
   getDirections() {

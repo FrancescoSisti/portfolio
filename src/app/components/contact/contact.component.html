@@ -62,46 +62,46 @@
         <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
           <div class="form-group" [class.has-error]="hasFieldError('name')">
             <label for="name">Nome *</label>
-            <input type="text" id="name" name="name" [(ngModel)]="formData.name" required placeholder="Il tuo nome">
+            <input type="text" id="name" name="name" [(ngModel)]="formData.name" required placeholder="Il tuo nome" (input)="onFieldChange('name')">
             <div *ngIf="getFieldError('name')" class="field-error">{{ getFieldError('name') }}</div>
           </div>
 
           <div class="form-group" [class.has-error]="hasFieldError('email')">
             <label for="email">Email *</label>
             <input type="email" id="email" name="email" [(ngModel)]="formData.email" required
-              placeholder="tua.email@esempio.com">
+              placeholder="tua.email@esempio.com" (input)="onFieldChange('email')">
             <div *ngIf="getFieldError('email')" class="field-error">{{ getFieldError('email') }}</div>
           </div>
 
           <div class="form-group" [class.has-error]="hasFieldError('subject')">
             <label for="subject">Oggetto</label>
             <input type="text" id="subject" name="subject" [(ngModel)]="formData.subject"
-              placeholder="Richiesta Progetto">
+              placeholder="Richiesta Progetto" (input)="onFieldChange('subject')">
             <div *ngIf="getFieldError('subject')" class="field-error">{{ getFieldError('subject') }}</div>
           </div>
 
           <div class="form-group" [class.has-error]="hasFieldError('phone')">
             <label for="phone">Telefono</label>
             <input type="tel" id="phone" name="phone" [(ngModel)]="formData.phone"
-              placeholder="+39 123 456 7890">
+              placeholder="+39 123 456 7890" (input)="onFieldChange('phone')">
             <div *ngIf="getFieldError('phone')" class="field-error">{{ getFieldError('phone') }}</div>
           </div>
 
           <div class="form-group" [class.has-error]="hasFieldError('company')">
             <label for="company">Azienda</label>
             <input type="text" id="company" name="company" [(ngModel)]="formData.company"
-              placeholder="Nome della tua azienda">
+              placeholder="Nome della tua azienda" (input)="onFieldChange('company')">
             <div *ngIf="getFieldError('company')" class="field-error">{{ getFieldError('company') }}</div>
           </div>
 
           <div class="form-group" [class.has-error]="hasFieldError('message')">
             <label for="message">Messaggio *</label>
             <textarea id="message" name="message" [(ngModel)]="formData.message" required rows="5"
-              placeholder="Parlami del tuo progetto..."></textarea>
+              placeholder="Parlami del tuo progetto..." (input)="onFieldChange('message')"></textarea>
             <div *ngIf="getFieldError('message')" class="field-error">{{ getFieldError('message') }}</div>
           </div>
 
-          <button type="submit" class="submit-btn" [disabled]="!contactForm.form.valid || isSubmitting">
+          <button type="submit" class="submit-btn" [disabled]="!isFormValid() || isSubmitting">
             {{ isSubmitting ? 'Invio in corso...' : 'Invia Messaggio' }}
             <i class="fas fa-paper-plane"></i>
           </button>
