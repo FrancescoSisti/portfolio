@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
     googleMapsApiKey: '', // Add your Google Maps API key here
-    apiUrl: 'https://sistiwebdevelopment.tech' // Add your API base URL here
+    apiUrl: 'https://hub-personale-main-whwpm1.laravel.cloud' // Add your API base URL here
 };
