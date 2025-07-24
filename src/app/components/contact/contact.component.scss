@@ -234,6 +234,7 @@
             border: 1px solid var(--border-light);
             box-shadow: var(--shadow-lg);
             transition: transform 0.3s ease;
+            position: relative;
 
             &:hover {
                 transform: translateY(-5px);
@@ -432,29 +433,70 @@
 
 // Custom Development Tooltip
 .custom-tooltip {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin-left: 1.5rem;
     z-index: 1000;
-    animation: tooltipFadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: tooltipSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    // Fallback for screens where tooltip would go off-screen
+    @media (max-width: 1200px) {
+        position: static;
+        margin: 1.5rem 0 0 0;
+        animation: tooltipSlideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+        .tooltip-content {
+            width: 100%;
+
+            // Remove arrow when positioned below
+            &::before,
+            &::after {
+                display: none;
+            }
+        }
+    }
 
     .tooltip-content {
         background: var(--surface);
         border: 2px solid var(--primary);
         border-radius: 1.5rem;
-        padding: 2rem;
-        max-width: 500px;
-        min-width: 320px;
+        padding: 1.8rem;
+        width: 320px;
         box-shadow: 0 20px 40px rgba(var(--primary-rgb), 0.2), 
                     0 10px 20px rgba(0, 0, 0, 0.1);
         position: relative;
         overflow: hidden;
-        z-index: 1001;
 
-        // Animated gradient border effect
+        // Arrow pointing to the form
         &::before {
             content: '';
+            position: absolute;
+            top: 2rem;
+            left: -10px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 10px solid var(--primary);
+            z-index: 1;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            left: -8px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 10px solid var(--surface);
+            z-index: 2;
+        }
+
+        // Animated gradient border effect
+        .gradient-border {
             position: absolute;
             top: 0;
             left: 0;
@@ -565,37 +607,14 @@
     }
 }
 
-// Tooltip Backdrop
-.custom-tooltip .tooltip-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
-    z-index: 999;
-    animation: backdropFadeIn 0.3s ease;
-    cursor: pointer;
-}
-
-@keyframes tooltipFadeIn {
+@keyframes tooltipSlideIn {
     0% {
         opacity: 0;
-        transform: translate(-50%, -50%) scale(0.8) rotateY(20deg);
+        transform: translateX(-20px) scale(0.9);
     }
     100% {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(1) rotateY(0deg);
-    }
-}
-
-@keyframes backdropFadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
+        transform: translateX(0) scale(1);
     }
 }
 
@@ -644,6 +663,18 @@
             grid-template-columns: 1fr;
             gap: 2rem;
         }
+    }
+}
+
+// Animation keyframes
+@keyframes tooltipSlideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
 
@@ -722,13 +753,10 @@
         }
     }
 
-    // Custom tooltip responsive styles
+    // Custom tooltip mobile styles
     .custom-tooltip {
         .tooltip-content {
-            max-width: 90vw;
-            min-width: 280px;
             padding: 1.5rem;
-            margin: 1rem;
 
             .tooltip-header {
                 margin-bottom: 1rem;
