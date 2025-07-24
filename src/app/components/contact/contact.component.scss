@@ -430,6 +430,202 @@
     }
 }
 
+// Custom Development Tooltip
+.custom-tooltip {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    animation: tooltipFadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    .tooltip-content {
+        background: var(--surface);
+        border: 2px solid var(--primary);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        max-width: 500px;
+        min-width: 320px;
+        box-shadow: 0 20px 40px rgba(var(--primary-rgb), 0.2), 
+                    0 10px 20px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+        z-index: 1001;
+
+        // Animated gradient border effect
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 1.5rem;
+            padding: 2px;
+            background: var(--gradient-1);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            z-index: -1;
+            animation: gradientRotate 3s linear infinite;
+        }
+
+        .tooltip-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            
+            .tooltip-icon {
+                width: 40px;
+                height: 40px;
+                background: var(--gradient-1);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                margin-right: 1rem;
+                animation: iconPulse 2s ease-in-out infinite;
+
+                i {
+                    font-size: 1.2rem;
+                }
+            }
+
+            h4 {
+                color: var(--text-primary);
+                font-size: 1.4rem;
+                font-weight: 600;
+                margin: 0;
+                flex: 1;
+                background: var(--gradient-1);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .close-btn {
+                background: none;
+                border: none;
+                color: var(--text-secondary);
+                font-size: 1.2rem;
+                cursor: pointer;
+                padding: 0.5rem;
+                border-radius: 50%;
+                transition: all 0.3s ease;
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &:hover {
+                    background: var(--primary);
+                    color: white;
+                    transform: rotate(90deg);
+                }
+            }
+        }
+
+        p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .tooltip-tech {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+
+            .tech-badge {
+                background: var(--gradient-1);
+                color: white;
+                padding: 0.4rem 0.8rem;
+                border-radius: 1rem;
+                font-size: 0.8rem;
+                font-weight: 500;
+                box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.3);
+                animation: badgeFloat 2s ease-in-out infinite;
+
+                &:nth-child(1) {
+                    animation-delay: 0s;
+                }
+
+                &:nth-child(2) {
+                    animation-delay: 0.3s;
+                }
+
+                &:nth-child(3) {
+                    animation-delay: 0.6s;
+                }
+            }
+        }
+    }
+}
+
+// Tooltip Backdrop
+.custom-tooltip .tooltip-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    z-index: 999;
+    animation: backdropFadeIn 0.3s ease;
+    cursor: pointer;
+}
+
+@keyframes tooltipFadeIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8) rotateY(20deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotateY(0deg);
+    }
+}
+
+@keyframes backdropFadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes iconPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes badgeFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+@keyframes gradientRotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 @keyframes float {
 
     0%,
@@ -522,6 +718,54 @@
             .map-container {
                 height: 300px;
                 border-radius: 1rem;
+            }
+        }
+    }
+
+    // Custom tooltip responsive styles
+    .custom-tooltip {
+        .tooltip-content {
+            max-width: 90vw;
+            min-width: 280px;
+            padding: 1.5rem;
+            margin: 1rem;
+
+            .tooltip-header {
+                margin-bottom: 1rem;
+
+                .tooltip-icon {
+                    width: 35px;
+                    height: 35px;
+                    margin-right: 0.8rem;
+
+                    i {
+                        font-size: 1rem;
+                    }
+                }
+
+                h4 {
+                    font-size: 1.2rem;
+                }
+
+                .close-btn {
+                    width: 28px;
+                    height: 28px;
+                    font-size: 1rem;
+                }
+            }
+
+            p {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+            }
+
+            .tooltip-tech {
+                gap: 0.4rem;
+
+                .tech-badge {
+                    padding: 0.3rem 0.6rem;
+                    font-size: 0.75rem;
+                }
             }
         }
     }

@@ -36,6 +36,7 @@ export class ContactComponent implements OnInit, AfterViewInit {
   submitError = false;
   errorMessage = '';
   validationErrors: { [key: string]: string[] } = {};
+  showCustomTooltip = false;
   private map: L.Map | null = null;
   private isBrowser: boolean;
 
@@ -163,6 +164,14 @@ export class ContactComponent implements OnInit, AfterViewInit {
               phone: '',
               company: ''
             };
+            // Show custom tooltip after successful submission
+            setTimeout(() => {
+              this.showCustomTooltip = true;
+              // Auto-hide tooltip after 8 seconds
+              setTimeout(() => {
+                this.showCustomTooltip = false;
+              }, 8000);
+            }, 1500);
             console.log('Message sent successfully. Contact ID:', response.contact_id);
           } else {
             this.submitError = true;
@@ -210,5 +219,10 @@ export class ContactComponent implements OnInit, AfterViewInit {
   getDirections() {
     const address = encodeURIComponent('Corso Venezia 83, Verona');
     window.open(`https://www.google.com/maps/dir/?api=1&destination=${address}`, '_blank');
+  }
+
+  // Close custom tooltip
+  closeCustomTooltip() {
+    this.showCustomTooltip = false;
   }
 }

@@ -116,6 +116,28 @@
             {{ errorMessage || 'Si è verificato un errore durante l\'invio. Per favore riprova più tardi o contattami direttamente via email.' }}
           </div>
         </form>
+
+        <!-- Custom Development Tooltip -->
+        <div *ngIf="showCustomTooltip" class="custom-tooltip">
+          <div class="tooltip-backdrop" (click)="closeCustomTooltip()"></div>
+          <div class="tooltip-content">
+            <div class="tooltip-header">
+              <div class="tooltip-icon">
+                <i class="fas fa-lightbulb"></i>
+              </div>
+              <h4>Lo sapevi che...</h4>
+              <button class="close-btn" (click)="closeCustomTooltip()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <p>Questo form di contatto è stato integrato completamente su misura, senza utilizzare servizi di terze parti come Formspree o EmailJS. Tutto il backend è sviluppato in house per garantire massima sicurezza e controllo sui dati!</p>
+            <div class="tooltip-tech">
+              <span class="tech-badge">Custom Backend</span>
+              <span class="tech-badge">Zero Dependencies</span>
+              <span class="tech-badge">Full Control</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
