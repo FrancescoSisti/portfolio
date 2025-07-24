@@ -106,6 +106,12 @@
             <i class="fas fa-paper-plane"></i>
           </button>
 
+          <!-- Waiting tooltip -->
+          <div *ngIf="showWaitingTooltip" class="waiting-tooltip">
+            <i class="fas fa-coffee"></i>
+            Non sono bloccato, sto svegliando il backend...
+          </div>
+
           <div *ngIf="submitSuccess" class="success-message">
             <i class="fas fa-check-circle"></i>
             Grazie per il tuo messaggio! Ti risponderò il prima possibile.

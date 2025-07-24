@@ -37,8 +37,10 @@ export class ContactComponent implements OnInit, AfterViewInit {
   errorMessage = '';
   validationErrors: { [key: string]: string[] } = {};
   showCustomTooltip = false;
+  showWaitingTooltip = false;
   private map: L.Map | null = null;
   private isBrowser: boolean;
+  private waitingTooltipTimer: any = null;
 
   // Map configuration
   private readonly center: L.LatLngExpression = [45.4396, 11.0025]; // Corso Venezia 83, Verona
@@ -129,6 +131,13 @@ export class ContactComponent implements OnInit, AfterViewInit {
     this.isSubmitting = true;
     this.submitSuccess = false;
     this.resetValidationErrors();
+    
+    // Show waiting tooltip after 3 seconds
+    this.waitingTooltipTimer = setTimeout(() => {
+      if (this.isSubmitting) {
+        this.showWaitingTooltip = true;
+      }
+    }, 3000);
 
     // Prepare data for the API
     const contactData: ContactFormData = {
@@ -174,6 +183,7 @@ export class ContactComponent implements OnInit, AfterViewInit {
             
             // Reset isSubmitting on success
             this.isSubmitting = false;
+            this.clearWaitingTooltip();
           } else {
             this.submitError = true;
             this.errorMessage = response.message || 'Si è verificato un errore durante l\'invio.';
@@ -183,6 +193,7 @@ export class ContactComponent implements OnInit, AfterViewInit {
             
             // Reset isSubmitting on API error response
             this.isSubmitting = false;
+            this.clearWaitingTooltip();
           }
         },
         error: (error: HttpErrorResponse) => {
@@ -206,10 +217,12 @@ export class ContactComponent implements OnInit, AfterViewInit {
           
           // Reset isSubmitting immediately on error
           this.isSubmitting = false;
+          this.clearWaitingTooltip();
         },
         complete: () => {
           // Ensure isSubmitting is always reset
           this.isSubmitting = false;
+          this.clearWaitingTooltip();
         }
       });
   }
@@ -265,5 +278,14 @@ export class ContactComponent implements OnInit, AfterViewInit {
   // Close custom tooltip
   closeCustomTooltip() {
     this.showCustomTooltip = false;
+  }
+
+  // Clear waiting tooltip and timer
+  private clearWaitingTooltip() {
+    this.showWaitingTooltip = false;
+    if (this.waitingTooltipTimer) {
+      clearTimeout(this.waitingTooltipTimer);
+      this.waitingTooltipTimer = null;
+    }
   }
 }
