@@ -8,7 +8,7 @@ export const routes: Routes = [
     pathMatch: 'full',
     loadComponent: () => import('./components/maintenance/maintenance.component')
       .then(m => m.MaintenanceComponent),
-    title: 'Manutenzione | Francesco Sisti - Portfolio',
+    title: 'In Manutenzione | Francesco Sisti - Portfolio',
     data: {
       description: 'Il sito è attualmente in manutenzione programmata. Torna presto!',
       preload: true
