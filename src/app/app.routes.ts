@@ -6,11 +6,11 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    loadComponent: () => import('./components/home/home.component')
-      .then(m => m.HomeComponent),
-    title: 'Francesco Sisti • Full Stack Developer & UI Designer | Portfolio',
+    loadComponent: () => import('./components/maintenance/maintenance.component')
+      .then(m => m.MaintenanceComponent),
+    title: 'Manutenzione | Francesco Sisti - Portfolio',
     data: {
-      description: 'Portfolio professionale di Francesco Sisti - Full Stack Developer & UI Designer a Verona. Esperienza in sviluppo web, design UI/UX e ottimizzazione delle performance.',
+      description: 'Il sito è attualmente in manutenzione programmata. Torna presto!',
       preload: true
     }
   },
